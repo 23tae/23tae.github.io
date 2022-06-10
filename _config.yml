@@ -10,7 +10,7 @@ baseurl: ''
 # The language of the webpage › http://www.lingoes.net/en/translator/langcode.htm
 # If it has the same name as one of the files in folder `_data/locales`, the layout language will also be changed,
 # otherwise, the layout language will use the default value of 'en'.
-lang: ko
+lang: ko-KR
 
 # Additional parameters for datetime localization, optional. › https://github.com/iamkun/dayjs/tree/dev/src/locale
 prefer_datetime_locale:
@@ -33,18 +33,17 @@ url: 'https://23tae.github.io/'
 github:
   username: 23tae             # change to your github username
 
-# twitter:
-#   username: twitter_username            # change to your twitter username
 
 social:
   # Change to your full name.
   # It will be displayed as the default author of the posts and the copyright owner in the Footer
-  name: 23tae
+  name: Taehoon
   email: k2t3h4@gmail.com             # change to your email address
   links:
     # The first element serves as the copyright owner's link
-    - https://github.com/23tae       # change to your github homepage
+    - https://github.com/23tae       #sssss change to your github homepage
     # Uncomment below to add more social links
+    # - https://twitter.com/username      # change to your twitter homepage
     # - https://www.facebook.com/username
     # - https://www.linkedin.com/in/username
 
