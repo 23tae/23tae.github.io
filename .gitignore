@@ -18,3 +18,7 @@ vendor
 # npm dependencies
 node_modules
 package-lock.json
+
+# etc
+**/.DS_Store
+Gemfile.lock
