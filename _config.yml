@@ -21,7 +21,7 @@ timezone: Asia/Seoul
 # jekyll-seo-tag settings › https://github.com/jekyll/jekyll-seo-tag/blob/master/docs/usage.md
 # ↓ --------------------------
 
-title: THK                         # the main title
+title: Justnote                         # the main title
 
 tagline: "배운 내용을 정리하고 기록하는 곳"   # it will display as the sub-title
 
