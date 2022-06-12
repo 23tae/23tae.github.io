@@ -1,7 +1,7 @@
 ---
 title:  "macOS 단축키 모음"
 categories: [Tips]
-tags: [단축키]
+tags: [단축키, mac]
  
 date: 2022-03-17
 ---
