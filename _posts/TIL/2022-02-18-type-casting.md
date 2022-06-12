@@ -1,11 +1,17 @@
 ---
-title: "TIL 220218"
+title: "[C언어] 자료형 변환"
 date: 2022-02-18T14:59:52.761Z
 categories: [TIL]
 tags: [c]
 ---
-# C
-## 형변환
+
+# 자료형 변환
+![type-casting](/assets/img/til/type-casting.svg)
+## 형 확장 (암시적 형 변환)
+자료형의 범위가 넓어지는 경우
+
+## 형 축소 (명시적 형 변환) (= 형 변환)
+자료형의 범위가 좁아지는 경우
 
 int를 나누어서 float형인 변수에 저장하는 코드를 컴파일하게 되면 다음과 같은 경고가 발생한다.
 ```shell
@@ -22,3 +28,6 @@ test.c:8:14: warning: format ‘%d’ expects argument of type ‘int’, but ar
 위 코드는 float형인 memory에 맞게 저장하기 위해 h를 float형으로 변환한 것이다.
 
 [예제](https://codeup.kr/problem.php?id=1085)
+
+# Ref.
+<https://dojang.io/mod/page/view.php?id=493>
