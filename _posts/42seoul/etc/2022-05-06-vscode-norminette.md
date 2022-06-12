@@ -1,7 +1,7 @@
 ---
 title:  "VSCode에서 Norminette 확장 오류"
 categories: [42Seoul, etc_42]
-tags: [42seoul, issue]
+tags: [42seoul, issue, vscode]
  
 date: 2022-05-06
 ---
