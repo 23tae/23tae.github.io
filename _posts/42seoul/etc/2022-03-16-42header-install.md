@@ -1,6 +1,6 @@
 ---
 title:  "42header 개인pc 설치방법"
-categories: [42Seoul, etc]
+categories: [42Seoul, etc_42]
 tags: [42seoul]
  
 date: 2022-03-16
