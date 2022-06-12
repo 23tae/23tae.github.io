@@ -34,4 +34,4 @@ norminette을 Global에서 설치한 상태에서 vscode extenstion 중 **42 Nor
 ## 3. vscode 재시작 후 확장 설치
 
 # Ref.
-https://jinnynote.com/learn/how-to-add-paths-on-mac/
+<https://jinnynote.com/learn/how-to-add-paths-on-mac/>
