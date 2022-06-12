@@ -5,6 +5,7 @@ categories: [42Seoul, Piscine]
 tags: [회고]
 ---
 ![42](/assets/img/42seoul/piscine/result1.jpeg)
+
 결과 발표가 지난 3일에 나왔다. 내가 진행한 과정은 6기 1차였고 2차가 종료된 2/25에야 선발이 진행되었기 때문에 시간이 조금 걸린 것 같다. 결과는 이메일로 개별 통보되었다.
 
 # 결과 발표📧
