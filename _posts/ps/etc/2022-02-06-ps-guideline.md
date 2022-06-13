@@ -29,5 +29,5 @@ tags: [계획, ps]
 - C++
 - Python
 
-# 참조
+# Ref.
 [대기업 IT직군 코딩테스트 합격을 위한 현실적이고 직관적인 공부 순서](https://youtu.be/ukkLCl9yBvE)
