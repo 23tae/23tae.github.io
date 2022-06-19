@@ -1,8 +1,8 @@
 ---
 title: "VSCode (비주얼 스튜디오 코드) 단축키"
-date: 2022-02-08
 categories: [Tips]
 tags: [단축키, vscode]
+date: 2022-02-08
 ---
 ![vscode](/assets/img/tips/vscode.png)
 # General
