@@ -27,7 +27,7 @@ Git의 로컬저장소 버전관리는 아래 3가지 영역을 통해 이루어
 
 # 명령어
 ```shell
-git clone [repo url] [dir name]
+git clone [repo url] [dirname]
 # 저장소 복사. 원격 저장소의 레포지토리를 로컬 저장소로 복사함.
 
 git init
