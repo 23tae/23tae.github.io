@@ -28,7 +28,7 @@ tagline: "배운 내용을 정리하고 기록하는 곳"   # it will display as
 description: 배운 내용을 정리하고 기록하는 곳              # used by seo meta and the atom feed
 
 # fill in the protocol & hostname for your site, e.g., 'https://username.github.io'
-url: 'https://23tae.github.io/'
+url: 'https://23tae.github.io'
 
 github:
   username: 23tae             # change to your github username
@@ -157,11 +157,11 @@ defaults:
       layout: page
       permalink: /:title/
   - scope:
-      path: assets/img/favicons
+      path: /assets/img/favicons
     values:
       swcache: true
   - scope:
-      path: assets/js/dist
+      path: /assets/js/dist
     values:
       swcache: true
 
