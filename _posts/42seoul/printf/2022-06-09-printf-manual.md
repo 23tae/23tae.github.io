@@ -1,8 +1,8 @@
 ---
 title: "printf manual"
-date: 2022-06-22
-categories: [TIL]
-tags: [c, manual]
+categories: [42Seoul, ft_printf]
+tags: [42seoul, c]
+date: 2022-06-09
 ---
 # c programming standard
 ```plaintext
