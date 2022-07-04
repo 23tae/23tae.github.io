@@ -6,7 +6,7 @@ tags: [c]
 ---
 
 # 자료형 변환
-![type-casting](/assets/img/til/type-casting.svg)
+![type-casting](/assets/img/til/type_casting.png)
 ## 형 확장 (암시적 형 변환)
 자료형의 범위가 넓어지는 경우
 

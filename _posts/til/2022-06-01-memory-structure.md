@@ -11,7 +11,7 @@ tags: [cs]
 3. 스택(stack) 영역
 4. 힙(heap) 영역
 
-![memory](/assets/img/til/memory%20area.svg)
+![memory](/assets/img/til/memory_area.png)
 
 *Heap과 Stack의 데이터 저장 방향은 운영체제 따라 다르다고 함.
 
