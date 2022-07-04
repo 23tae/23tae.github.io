@@ -23,9 +23,9 @@ timezone: Asia/Seoul
 
 title: Justnote                         # the main title
 
-tagline: "배운 내용을 정리하고 기록하는 곳"   # it will display as the sub-title
+tagline: "배운 내용을 기록하는 곳"   # it will display as the sub-title
 
-description: 배운 내용을 정리하고 기록하는 곳              # used by seo meta and the atom feed
+description: 배운 내용을 기록하는 곳              # used by seo meta and the atom feed
 
 # fill in the protocol & hostname for your site, e.g., 'https://username.github.io'
 url: 'https://23tae.github.io'
