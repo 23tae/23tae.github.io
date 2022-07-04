@@ -7,7 +7,7 @@ tags: [c]
 # Description
 
 해제된 메모리 영역을 가리키고 있는 포인터
-![dangling](/assets/img/til/dangling%20pointer.svg)
+![dangling](/assets/img/til/dangling_pointer.png)
 
 ```c
 char *ptr1 = (char *)malloc(sizeof(char));

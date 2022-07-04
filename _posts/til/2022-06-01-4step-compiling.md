@@ -4,7 +4,7 @@ date: 2022-06-01T13:18:13.506Z
 categories: [TIL]
 tags: [c]
 ---
-![compiling](/assets/img/til/4step-compiling.svg)
+![compiling](/assets/img/til/4step_compiling.png)
 
 # 전처리
 
