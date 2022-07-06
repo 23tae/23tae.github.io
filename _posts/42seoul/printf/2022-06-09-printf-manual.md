@@ -1,10 +1,10 @@
 ---
-title: "printf manual"
+title: "Printf Manual"
 categories: [42Seoul, ft_printf]
 tags: [42seoul, c]
 date: 2022-06-09
 ---
-# c programming standard
+# C Programming Standard
 ```plaintext
 7.19.6.3 The printf function
 
@@ -21,7 +21,7 @@ The printf function returns the number of characters transmitted,
  or a negative value if an output or encoding error occurred.
 ```
 
-# manpage
+# man page
 ```plaintext
 PRINTF(3)                Library Functions Manual               PRINTF(3)
 
