@@ -2,7 +2,7 @@
 title: "앞으로의 계획"
 date: 2022-02-02
 categories: [etc]
-tags: ["계획"]
+tags: [계획]
 ---
 > 프로그래밍, 영어, 전공에 관한 계획
 
@@ -52,15 +52,15 @@ tags: ["계획"]
 ## 주요 개념
 
 ### 시스템 프로그래밍
-Computer Systems - A Programmers Perspective (3rd)
+Computer Systems - A Programmers Perspective
 
 ### 자료 구조
 
 ### 운영 체제
-Operating System Concepts (10th)
+Operating System Concepts
 
 ### 컴퓨터 구조
-Computer Architecture - A Quantitative Approach (5th)
+Computer Architecture - A Quantitative Approach
 
 ### 알고리즘
 
