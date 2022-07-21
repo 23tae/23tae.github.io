@@ -1,5 +1,5 @@
 ---
-title: "임베디드 시스템"
+title: "임베디드 시스템 (Embedded System)"
 date: 2022-05-05T07:29:27.754Z
 categories: [TIL]
 tags: [cs]
