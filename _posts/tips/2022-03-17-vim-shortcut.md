@@ -183,6 +183,19 @@ gT or :tabprev or :tabp # move to the previous tab
 :tabdo command          # run the command on all tabs (e.g. :tabdo q - closes all opened tabs)
 ```
 
+# vim 설정
+
+아래 내용을 vim 내 명령 모드에서 입력하면 일시 적용, `~/.vimrc` 에 작성하면 영구 적용됨
+
+```shell
+set number # 줄 번호 적용 (또는 :se nu)
+syntax on # 문법 컬러 적용
+set cin # 자동 들여쓰기
+set ts=<number> # 탭 너비를 몇 개의 스페이스로 화면에 보여줄 지 설정
+set sts=<number> # 탭을 몇 개의 스페이스로 입력할 지 설정
+set shiftwidth=<number> # 자동 들여쓰기에서 스페이스 개수 설정
+```
+
 # Ref.
 [Vim Cheat Sheet1](https://github.com/hackjutsu/vim-cheatsheet)  
 [Vim Cheat Sheet2](https://vim.rtorr.com/lang/ko)  

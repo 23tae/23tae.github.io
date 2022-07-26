@@ -1,12 +1,12 @@
 ---
-title: "Shell"
+title: "Shell 명령어 정리"
 date: 2022-01-08
 categories: [42Seoul, Piscine]
 tags: [shell]
 ---
-> 라피신 첫번째 과제인 Shell을 통해 배운 내용
+> 라피신 첫 과제인 Shell 내용 정리
 
-## Shell
+# Shell 명령어
 ```shell
 man
 #명령어 별로 매뉴얼을 볼 수 있음
@@ -63,11 +63,3 @@ klist
 file -m ft_magic 42f
 #매직파일 확인
 ```
-## vim
-
-```shell
-:se nu
-:set number
-#줄번호
-```
-
