@@ -5,6 +5,9 @@ tags: [단축키, vscode]
 date: 2022-02-08
 ---
 ![vscode](/assets/img/tips/vscode.png)
+
+[Pdf](/assets/file/vscode_shortcuts_mac.pdf){:target="_blank"}
+
 # General
 - undo/redo `cmd + Z / cmd + shift + Z` 
 - 터미널 실행 ``ctrl + ` `` 
@@ -41,6 +44,6 @@ date: 2022-02-08
 - 호버 보기 `cmd + K, cmd + I`
 
 # Ref.
+<https://code.visualstudio.com/docs/getstarted/keybindings#_keyboard-shortcuts-reference>
 <https://jhnyang.tistory.com/408>  
 <https://velog.io/@gillog/IDE-VSCode-Mac-OS-단축키-정리>
-
