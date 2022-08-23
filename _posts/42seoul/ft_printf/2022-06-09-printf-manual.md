@@ -1,7 +1,7 @@
 ---
 title: "Printf Manual"
 categories: [42Seoul, ft_printf]
-tags: [42seoul, c]
+tags: [c]
 date: 2022-06-09
 ---
 # C Programming Standard
