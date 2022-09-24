@@ -49,26 +49,27 @@ tags: [계획]
 [효과적인 Go 프로그래밍](https://gosudaweb.gitbooks.io/effective-go-in-korean/content)
 
 
-## 주요 개념
+## 주요 CS 과목
 
 ### 시스템 프로그래밍
-Computer Systems - A Programmers Perspective
+- Computer Systems - A Programmers Perspective
 
 ### 자료 구조
 
 ### 운영 체제
-Operating System Concepts
+- Operating System Concepts
+- 22.7.20 ~ 10.2 종료 예정
 
 ### 컴퓨터 구조
-Computer Architecture - A Quantitative Approach
+- Computer Architecture - A Quantitative Approach
 
 ### 알고리즘
 
+### 컴퓨터 네트워크
+- Computer Networking: A Top-Down Approach
+- 22.8.29 ~ 10.2 종료 예정
+
 ### 데이터베이스
-[SQL 전문가 되어보기](https://wikidocs.net/book/159)
-
-### 소프트웨어 공학
-
 
 ## 개발
 
@@ -78,14 +79,7 @@ Django, Flask 등의 웹 프레임워크를 활용해 서비스를 배포
 [점프 투 플라스크](https://wikidocs.net/book/4542)
 ### App
 
-<br>
-
-# 🌎Language
-
-- 원서
-- 영어 신문
-
-<br>
+---
 
 # 🌳Major
 
@@ -97,7 +91,6 @@ Django, Flask 등의 웹 프레임워크를 활용해 서비스를 배포
   - SketchUp
   - Lumion
   - V-Ray
-  <br>
   
 - 전공 공부
   - 이전 강의자료 공부
