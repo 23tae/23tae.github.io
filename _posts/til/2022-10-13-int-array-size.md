@@ -7,7 +7,7 @@ tags: [cs, c]
 
 # 개요
 
-이번 주에 42서울 라피신 rush01 평가 봉사를 한 이후에 int형 배열의 길이를 `while(arr != '\0')`과 같이 확인하면 `gcc -fsanitize=address -g *.c` 로 옵션을 지정하여 컴파일할 때 buffer-overflow가 발생할 수 있다는 사실을 알게됐다.
+이번 주에 42서울 라피신 rush01 평가 봉사를 하면서 int형 배열의 길이를 `while(arr != '\0')`로 확인할 경우 `gcc -fsanitize=address -g *.c` 로 옵션을 지정하여 컴파일하면 buffer-overflow가 발생할 수 있다는 사실을 알게됐다.
 
 # 원인
 
