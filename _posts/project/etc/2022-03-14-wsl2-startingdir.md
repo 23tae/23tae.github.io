@@ -1,7 +1,7 @@
 ---
 title: "WSL2 시작 경로 변경하기"
 date: 2022-03-14T13:03:28.099Z
-categories: [Project]
+categories: [Project, etc_Project]
 tags: [wsl2, issue]
 ---
 # Issue

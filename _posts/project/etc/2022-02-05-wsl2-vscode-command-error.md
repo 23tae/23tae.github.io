@@ -1,7 +1,7 @@
 ---
-title: "WSL2에서 vscode 실행 안됨 (code 명령어)"
+title: "WSL2에서 vscode가 실행되지 않는 문제 (code 명령어)"
 date: 2022-02-05T14:51:03.704Z
-categories: [Project]
+categories: [Project, etc_Project]
 tags: [wsl2, issue, vscode]
 ---
 >WSL2에서 Ubuntu를 실행하여 `code .` 명령어를 입력했을 때 `not found`가 출력되는 문제에 관한 해결방법을 담고있음.
