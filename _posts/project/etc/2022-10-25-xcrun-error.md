@@ -10,7 +10,6 @@ tags: [mac, issue]
 macOS Ventura로 업데이트를 한 뒤 git을 실행하니 아래와 같은 오류 메시지가 출력됐다.
 
 ```bash
-$git
 xcrun: error: invalid active developer path (/Library/Developer/CommandLineTools), missing xcrun at: /Library/Developer/CommandLineTools/usr/bin/xcrun
 ```
 

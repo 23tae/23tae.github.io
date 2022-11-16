@@ -24,10 +24,11 @@ date: 2022-02-08
 ## advanced
 - 자동 줄정리 `cmd + K + F` 
 - 함수/변수명 일괄 변경 `cmd+F2`, (검토 후 적용)`F2`
-- 글자가 포함된 부분 전체변경 `cmd + shift + L` 
+- 글자가 포함된 부분 전체변경 `cmd + shift + L`
 - 현재 행 이동 `option + ↑/↓` 
 - 현재 행 복제 `option + shift + ↑/↓`
 - 해당 줄 한번에 잘라내기/복사 (커서만 위치한 상태로)`cmd + X/C`
+- 검색 `shift + cmd + F`
 
 ## blocked line
 - 블럭 한번에 묶기 `( 또는 "` 
