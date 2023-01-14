@@ -3,6 +3,7 @@ title: "[42 Seoul] 본과정 합격"
 date: 2022-03-09
 categories: [42Seoul, Piscine]
 tags: [회고]
+published: false
 ---
 ![42](/assets/img/42seoul/piscine/result1.jpeg)
 
