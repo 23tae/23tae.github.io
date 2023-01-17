@@ -5,8 +5,6 @@ tags: [cs]
 date: 2023-01-15
 ---
 
-# 배경 지식
-
 # 네트워크 구조 (OSI 7계층)
 
 ![Untitled](/assets/img/42seoul/netpractice/netpractice2/Untitled.png)
@@ -218,30 +216,17 @@ date: 2023-01-15
 
 # Ref.
 
-[OSI 7 계층이란?, OSI 7 계층을 나눈 이유](https://shlee0882.tistory.com/110)
-
-[OSI 7 계층](http://wiki.hash.kr/index.php/OSI_7_%EA%B3%84%EC%B8%B5)
-
-[The relationship between the Maximum Transmission Unit (MTU) and the Maximum Segment Size (MSS)](https://crnetpackets.com/2016/01/27/the-relation-between-maximum-transmission-unit-mtu-and-the-maximum-segment-size-mss/)
-
-[패킷과 프레임의 차이](https://jacking75.github.io/network_packet_frame/)
-
-[IT위키](https://itwiki.kr/w/OSI_7계층)
-
-[공인 IP와 사설 IP... 다양한 IP 유형의 차이는?](https://nordvpn.com/ko/blog/public-ip-and-private-ip/)
-
-[[네트워크] 서브넷, 서브넷마스크, 서브넷팅이란? | 서브넷팅 예제](https://code-lab1.tistory.com/34)
-
-[서브넷과 Broadcast 주소](https://velog.io/@dnstlr2933/%EC%84%9C%EB%B8%8C%EB%84%B7%EA%B3%BC-Broadcast-%EC%A3%BC%EC%86%8C)
-
-[라우터와 스위치의 차이점](https://ko.gadget-info.com/difference-between-router)
-
-[라우터 - 위키백과, 우리 모두의 백과사전](https://ko.wikipedia.org/wiki/%EB%9D%BC%EC%9A%B0%ED%84%B0)
-
-[네트워크 통신하기](https://catsbi.oopy.io/eec728e7-0a31-4c96-9d33-20421bd5e6b3)
-
-[네트워크 연결과 구성요소](https://catsbi.oopy.io/75315c4f-20d7-4196-a239-363f374f7727)
-
-[https://infinity-cable-products.com/blogs/hardware/what-is-a-network-switch](https://infinity-cable-products.com/blogs/hardware/what-is-a-network-switch)
-
+[OSI 7계층 - IT위키](https://itwiki.kr/w/OSI_7계층)  
+[OSI 7 계층이란?, OSI 7 계층을 나눈 이유 :: effortDev](https://shlee0882.tistory.com/110)  
+[OSI 7 계층 - 해시넷](http://wiki.hash.kr/index.php/OSI_7_%EA%B3%84%EC%B8%B5)  
+[The relationship between the Maximum Transmission Unit (MTU) and the Maximum Segment Size (MSS)](https://crnetpackets.com/2016/01/27/the-relation-between-maximum-transmission-unit-mtu-and-the-maximum-segment-size-mss/)  
+[패킷과 프레임의 차이](https://jacking75.github.io/network_packet_frame/)  
+[공인 IP와 사설 IP... 다양한 IP 유형의 차이는?](https://nordvpn.com/ko/blog/public-ip-and-private-ip/)  
+[[네트워크] 서브넷, 서브넷마스크, 서브넷팅이란?](https://code-lab1.tistory.com/34)  
+[서브넷과 Broadcast 주소](https://velog.io/@dnstlr2933/%EC%84%9C%EB%B8%8C%EB%84%B7%EA%B3%BC-Broadcast-%EC%A3%BC%EC%86%8C)  
+[라우터와 스위치의 차이점](https://ko.gadget-info.com/difference-between-router)  
+[라우터 - 위키백과, 우리 모두의 백과사전](https://ko.wikipedia.org/wiki/%EB%9D%BC%EC%9A%B0%ED%84%B0)  
+[네트워크 통신하기](https://catsbi.oopy.io/eec728e7-0a31-4c96-9d33-20421bd5e6b3)  
+[네트워크 연결과 구성요소](https://catsbi.oopy.io/75315c4f-20d7-4196-a239-363f374f7727)  
+[https://infinity-cable-products.com/blogs/hardware/what-is-a-network-switch](https://infinity-cable-products.com/blogs/hardware/what-is-a-network-switch)  
 [https://www.lifewire.com/what-is-a-router-2618162](https://www.lifewire.com/what-is-a-router-2618162)

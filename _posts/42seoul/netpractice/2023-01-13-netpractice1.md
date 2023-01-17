@@ -5,8 +5,6 @@ tags: [cs]
 date: 2023-01-13
 ---
 
-# Subject
-
 ![netpractice_thumbnail.png](/assets/img/42seoul/netpractice/netpractice1/netpractice_thumbnail.png)
 
 # General guidelines
