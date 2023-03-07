@@ -127,5 +127,6 @@ Fixes #2310
 
 # Ref.
 
+- [Git Commit Message Convention Matter](https://imamhossainroni.me/git-commit-message-convention-matter)
 - [Semantic Commit Messages](https://gist.github.com/joshbuchea/6f47e86d2510bce28f8e7f42ae84c716)
 - [Karma - Git Commit Msg](http://karma-runner.github.io/6.3/dev/git-commit-msg.html)
