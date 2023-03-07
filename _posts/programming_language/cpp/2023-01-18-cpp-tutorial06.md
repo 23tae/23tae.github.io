@@ -8,8 +8,8 @@ tags: [cpp]
 # 표준 string 클래스
 
 - 특징
-    - 연산자 +, == 등이 오버로딩되어 있기 때문에 strcmp등의 함수 없이도 문자열 간의 비교, 붙이는 작업 등이 가능함.
-    - 문자열을 하나의 타입처럼 표현할 수 있게 해줌
+    - 연산자 `+`, `==` 등이 오버로딩되어 있기 때문에 strcmp등의 함수 없이도 문자열 간의 비교, 붙이는 작업 등이 가능하다.
+    - 문자열을 하나의 타입처럼 표현할 수 있게 해준다.
 - 선언과 초기화
     
     ```cpp
@@ -49,9 +49,9 @@ tags: [cpp]
     - **상속받는 클래스**에서는 접근 가능하도록 함.
     - **파생 클래스**에 대해서는 **public** 멤버처럼 취급되며, **외부**에서는 **private** 멤버처럼 취급됨.
 - 접근 가능한 영역
-    1. 이 멤버를 선언한 클래스의 멤버 함수
-    2. 이 멤버를 선언한 클래스의 friend
-    3. 이 멤버를 선언한 클래스에서 public 또는 protected 접근 제어로 파생된 클래스
+    1. 이 멤버를 **선언한 클래스**의 멤버 함수
+    2. 이 멤버를 선언한 클래스의 **friend**
+    3. 이 멤버를 선언한 클래스에서 **public 또는 protected 접근 제어로 파생**된 클래스
 
 ## "is a" vs "has a"
 
@@ -206,4 +206,4 @@ tags: [cpp]
 
 # Ref.
 
-[https://www.geeksforgeeks.org/multiple-inheritance-in-c/](https://www.geeksforgeeks.org/multiple-inheritance-in-c/)
+[Multiple Inheritance in C++ - GeeksforGeeks](https://www.geeksforgeeks.org/multiple-inheritance-in-c/)

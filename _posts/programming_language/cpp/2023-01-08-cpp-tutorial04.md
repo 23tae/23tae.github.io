@@ -1,17 +1,24 @@
 ---
-title: "C++ 개념 정리 : 객체지향, 생성/소멸자"
+title: "C++ 개념 정리 : 객체 지향 프로그래밍, 생성자 & 소멸자"
 date: 2023-01-08
 categories: [Programming Language, CPP]
 tags: [cpp]
 ---
 
-# 객체 지향
+# 객체 지향 프로그래밍 (Object-Oriented Programming, OOP)
 
-## 객체
+- 개념
+    - 소프트웨어 시스템을 설계하고 구축하기 위해 **객체**를 사용하는 것에 초점을 맞춘 프로그래밍 패러다임
+    - 코드를 **모듈화(modular)**하고 **재사용** 가능(reusable)하며 **이해**하기 쉽고 **유지 보수(maintain)**가 용이하도록 만드는 것을 목표로 한다.
+    - 핵심 개념으로는 **캡슐화(encapsulation)**, **상속(inheritance)**, **다형성(polymorphism)** 등이 있다.
+
+## 객체 (object)
 
 ![Untitled](/assets/img/programming_language/cpp/tutorial04/Untitled.png)
 
 - **변수**들과 **참고 자료**들로 이루어진 소프트웨어 덩어리
+    - **데이터**와 해당 데이터를 **조작하는 코드**로 이루어져 있다.
+- 각 객체는 **클래스의 인스턴스**이며 메서드 또는 함수를 통해 다른 개체와 상호 작용할 수 있다.
 - **추상화**가 필요함.
 - 변수들이 외부로부터 보호됨.(**캡슐화**)
     
@@ -26,16 +33,16 @@ tags: [cpp]
   - **캡슐화** : 외부에서 직접 인스턴스 변수의 값을 바꿀 수 없고 항상 **인스턴스 메소드**를 통해서 간접적으로 조절하는 것
   - 객체의 내부를 완전하게 이해하지 않고 있어도 사용할 수 있음.
 
-## 클래스
+## 클래스 (class)
 
 ![Untitled](/assets/img/programming_language/cpp/tutorial04/Untitled%201.png)
 
-- 클래스 : 객체가 어떻게 생성될지에 대한 정보를 담은 청사진.
+- 객체가 어떻게 **생성될지에 대한 정보**를 담은 청사진.
 - 인스턴스 : 클래스로 만든 객체
-- 멤버 변수, 멤버 함수
+- 멤버 변수, 멤버 함수를 갖는다.
 - 접근 제어자
     - private : 객체 내에서 보호됨. 자기 객체 안에서만 접근 가능. 아무것도 명시하지 않으면 기본적으로 설정되는 제어자.
-    - public : 외부에서 마음껏 이용 가능.
+    - public : 외부에서도 접근 가능.
 
 # 함수 오버로딩
 
@@ -46,7 +53,7 @@ tags: [cpp]
         - 자신과 최대로 근접한 함수를 찾음
 - `[class_name]::[function_name]` 형태로 작성하여 함수를 클래스 밖에 정의할 수 있음
 
-# 생성자
+# 생성자 (Constructor)
 
 - 특징
     - 객체 생성 시 자동으로 호출되는 함수
@@ -152,7 +159,7 @@ tags: [cpp]
     - 해결책
         - name에 대해 깊은 복사를 수행함. (이 경우 직접 복사 생성자를 만들어야 함.)
 
-## 초기화 리스트 ****(Initializer list)****
+## 초기화 리스트 (Initializer list)
 
 - 생성자가 호출될 때 초기화를 해준다.
 
@@ -165,7 +172,7 @@ Marine::Marine() : hp(50), coord_x(0), coord_y(0), damage(5), is_dead(false) {}
 - 클래스 내부에 **레퍼런스 변수**나 **상수**가 있는 경우 초기화 리스트를 통해 초기화해야한다.
     - 이들은 **생성과 동시에 초기화** 되어야 하기 때문.
 
-# 소멸자
+# 소멸자 (Destructor)
 
 - 특징
     - 객체의 **수명이 끝나면** 컴파일러에 의해 **자동으로 호출**되며, 사용이 끝난 객체를 정리해준다.
@@ -192,7 +199,7 @@ Marine::Marine() : hp(50), coord_x(0), coord_y(0), damage(5), is_dead(false) {}
       ```
         
 
-# Static 변수/함수
+# Static/const 변수/함수
 
 ## Static 멤버 변수
 
@@ -216,7 +223,7 @@ Marine::Marine() : hp(50), coord_x(0), coord_y(0), damage(5), is_dead(false) {}
     - `(클래스)::(static 함수)` 와 같이 사용.
         - `(객체).(멤버 함수)` 로 사용하지 않는 이유 : 객체가 아니라 클래스에 종속되기 때문이다.
 
-# Const 멤버 함수
+## Const 멤버 함수
 
 - 개념
     - **다른 변수의 값을 바꾸지 않는** 함수라고 명시할 수 있음.
@@ -272,4 +279,4 @@ Marine::Marine() : hp(50), coord_x(0), coord_y(0), damage(5), is_dead(false) {}
 
 # Ref.
 
-[https://chanhuiseok.github.io/posts/algo-14/](https://chanhuiseok.github.io/posts/algo-14/)
+- [씹어먹는 C++ - \<4 - 3. 스타크래프트를 만들자 ① (복사 생성자, 소멸자)\>](https://modoocode.com/188)

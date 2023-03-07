@@ -94,29 +94,26 @@ tags: [cpp]
   ```
     
 - 특징
-    1. 하나 이상의 템플릿 인수를 가지는 클래스 템플릿의 선언이 가능함
-        
-      ```cpp
-      template <typename T, int i> // 두 개의 템플릿 인수를 가지는 클래스 템플릿을 선언함.
-      class X
-      { ... }
-      ```
+    1. 하나 이상의 템플릿 인수를 가지는 클래스 템플릿의 선언이 가능함        
+        ```cpp
+        template <typename T, int i> // 두 개의 템플릿 인수를 가지는 클래스 템플릿을 선언함.
+        class X
+        { ... }
+        ```
         
     2. 클래스 템플릿에 디폴트 템플릿 인수를 명시할 수 있음.
-        
-      ```cpp
-      template <typename T = int, int i> // 디폴트 템플릿 인수의 타입을 int형으로 명시함.
-      class X
-      { ... }
-      ```
+        ```cpp
+        template <typename T = int, int i> // 디폴트 템플릿 인수의 타입을 int형으로 명시함.
+        class X
+        { ... }
+        ```
         
     3. 클래스 템플릿을 기초 클래스로 해서 상속할 수 있음.
-        
-      ```cpp
-      template <typename Type>
-      class Y : public X <Type> // 클래스 템플릿 X를 상속받음.
-      { ... }
-      ```
+        ```cpp
+        template <typename Type>
+        class Y : public X <Type> // 클래스 템플릿 X를 상속받음.
+        { ... }
+        ```
         
 
 ### 중첩 클래스 템플릿(nested class template)
@@ -164,7 +161,7 @@ tags: [cpp]
   ```
     
 
-### 부분 특수화(partial specialization)
+### 부분 특수화 (partial specialization)
 
 - 템플릿 인수가 두 개 이상인 상황에서 **일부에 대해서만 특수화**를 해야할 때 사용.
 - 사용 방법
