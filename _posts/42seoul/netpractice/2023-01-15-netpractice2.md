@@ -1,7 +1,7 @@
 ---
 title: "NetPractice ② 배경 지식"
 categories: [42Seoul, NetPractice]
-tags: [cs]
+tags: [cs, network]
 date: 2023-01-15
 ---
 

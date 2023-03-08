@@ -2,7 +2,7 @@
 title: "프록시 (Proxy)란?"
 date: 2023-03-08
 categories: [Computer Science, Computer Network]
-tags: [cs, til]
+tags: [cs, til, network]
 ---
 
 # 프록시 (Proxy)

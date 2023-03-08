@@ -1,5 +1,5 @@
 ---
-title: "Git 커밋 메시지 관련 (Commit Message Convention)"
+title: "Git 커밋 메시지 관련 지침 (Commit Message Convention)"
 date: 2023-03-07
 categories: [Project, etc_Project]
 tags: [git]
@@ -7,7 +7,7 @@ tags: [git]
 
 > Git 커밋 메시지 관련 지침을 다룸.
 
-# 개념
+# 개요
 커밋 메시지를 일관되고 표준화된 방식으로 형식화하여 작성하기 위한 지침
 
 # 사용 목적
