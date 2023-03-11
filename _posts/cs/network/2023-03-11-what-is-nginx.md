@@ -5,7 +5,7 @@ categories: [Computer Science, Computer Network]
 tags: [cs, til, network]
 ---
 
-![Untitled](/assets/img/cs/network/what-is-nginx/nginx-logo.svg)
+![Untitled](/assets/img/cs/network/what-is-nginx/nginx-logo.png)
 
 # 개요
 
