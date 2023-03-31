@@ -40,7 +40,7 @@ tags: [cs, til, network]
 # 참고
 
 - [Nagle's algorithm - Wikipedia](https://en.wikipedia.org/wiki/Nagle%27s_algorithm)
-- [[네트워크] TCP Nagle 알고리즘](https://devjh.tistory.com/106)
+- [\[네트워크\] TCP Nagle 알고리즘](https://devjh.tistory.com/106)
 - [Nagle's algorithm - Network Encyclopedia](https://networkencyclopedia.com/nagles-algorithm/)
 - [TTA정보통신용어사전](http://terms.tta.or.kr/dictionary/dictionaryView.do?subject=internetwork)
 - [Request for Comments - Wikipedia](https://en.wikipedia.org/wiki/Request_for_Comments)
