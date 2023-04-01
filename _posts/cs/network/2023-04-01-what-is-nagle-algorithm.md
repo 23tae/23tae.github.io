@@ -7,12 +7,12 @@ tags: [cs, til, network]
 
 # 개요
 
-네이글 알고리즘은 네트워크를 통해 **전송되는 패킷의 수를 줄여** **TCP/IP** 네트워크의 **효율성을 향상**시키는 방법이다. 이 알고리즘은 존 네이글(John Nagle)이 정의한 것으로, 네이글이 Ford Aerospace에서 일하던 시기인 1984년에 [RFC 896](https://www.rfc-editor.org/rfc/rfc896)에 **TCP/IP 인터네트워크 혼잡 제어**라는 이름으로 소개되었다.
+네이글 알고리즘은 네트워크를 통해 **전송되는 패킷의 수를 줄여** TCP/IP **네트워크의 효율성을 향상**시키는 방법이다. 이 알고리즘은 존 네이글(John Nagle)이 정의한 것으로, 네이글이 Ford Aerospace에서 일하던 시기인 1984년에 [RFC 896](https://www.rfc-editor.org/rfc/rfc896)에 **TCP/IP 인터네트워크 혼잡 제어**라는 이름으로 소개되었다.
 
 - 인터네트워크(internetwork) : 통신 프로토콜이 다르거나 같은 복수의 통신망을 상호 접속하여 형성한 통신망의 집합 또는 광역 통신망
 - RFC (Request for Comments)
-    - 인터넷의 주요 기술 개발, 표준을 설정 등을 기술한 메모
-    - IETF(Internet Engineering Task Force, 국제 인터넷 표준화 기구)에서 문서에 번호를 붙여 관리한다.
+    - 인터넷의 주요 기술 개발, 표준 등을 기술한 메모
+    - IETF (Internet Engineering Task Force, 국제 인터넷 표준화 기구)에서 문서에 번호를 매겨 관리한다.
 
 # 작동 방식
 
