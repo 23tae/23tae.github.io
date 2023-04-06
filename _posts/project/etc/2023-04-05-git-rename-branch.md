@@ -9,7 +9,7 @@ tags: [git]
 git의 브랜치명 변경에는 로컬 브랜치명 변경 뿐 아니라 remote 저장소와 관련한 재설정이 필요하다.
 
 # 변경 방법
-![Untitled](/assets/img/project/git-rename-branch/Untitled.png)
+![Untitled](/assets/img/project/git-rename-branch/rename_original.png)
 
 이름이 `old_name`인 브랜치를 `new_name` 으로 변경한다고 하자.
 
@@ -24,8 +24,14 @@ git의 브랜치명 변경에는 로컬 브랜치명 변경 뿐 아니라 remote
     ```bash
     git push origin --delete old_name
     ```
+        
+3. 변경한 브랜치로 이동
     
-3. **upstream** 브랜치 업데이트
+    ```bash
+    git checkout new_name
+    ```
+
+4. **upstream** 브랜치 업데이트
     
     ```bash
     git push -u origin new_name
@@ -45,6 +51,7 @@ git의 브랜치명 변경에는 로컬 브랜치명 변경 뿐 아니라 remote
 
 - 브랜치 이름을 변경하기 전에 모든 변경사항을 commit하고 **remote 저장소에 push** 해두어야 한다.
 - 변경 전 브랜치로 작업하는 사람이 있는 경우, 해당 로컬에서도 아래 과정을 통해 **브랜치명을 업데이트** 해주어야 한다.
+    ![Untitled](/assets/img/project/git-rename-branch/rename_other.png)
     1. 로컬 브랜치명 변경 (다른 브랜치에서 실행되어야 한다.)
         
         ```bash
@@ -57,7 +64,7 @@ git의 브랜치명 변경에는 로컬 브랜치명 변경 뿐 아니라 remote
         git fetch origin
         ```
         
-    3. 해당 브랜치로 이동
+    3. 변경한 브랜치로 이동
         
         ```bash
         git checkout new_name
