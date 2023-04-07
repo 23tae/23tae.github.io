@@ -5,7 +5,7 @@ categories: [Project, etc_Project]
 tags: [aws, blog]
 ---
 
-> 본 포스팅은 Ubuntu 22.04 LTS 를 기준으로 작성하였습니다.
+> 본 게시글은 Ubuntu 22.04 LTS 를 기준으로 작성하였습니다.
 
 # 개요
 
@@ -42,16 +42,16 @@ bundle install
 
 ## 포트 포워딩
 
-로컬에서 브라우저로 서버에 접속하기 위해서는 `~.ssh/config` 파일에 `LocalForward` 지시어로 포워딩할 포트를 명시해주어야 한다.
+로컬에서 브라우저로 서버에 접속하기 위해서는 `~/.ssh/config` 파일에 `LocalForward` 지시어로 포워딩할 포트를 명시해주어야 한다.
 
 - config 파일
     
     ```
-    Host your_hostname
-    		HostName <your_public_ip_address>
-    		User <your_username>
-    		IdentityFile <your_pem_file_path>
-        LocalForward your_local_port server_address
+    Host <your_hostname>
+        HostName <your_public_ip_address>
+        User <your_username>
+        IdentityFile <your_pem_file_path>
+        LocalForward <your_local_port> <server_address>
     ```
     
 - 예시
