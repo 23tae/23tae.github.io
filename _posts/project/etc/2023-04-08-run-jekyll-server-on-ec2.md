@@ -11,19 +11,46 @@ tags: [aws, blog]
 
 Jekyll 서버를 EC2에서 구동하기 위해서는 다음과 같은 과정을 거쳐야 한다.
 
-1. 패키지 설치
-2. 포트 포워딩
-3. 서버 구동
+1. 포트 포워딩
+2. 패키지 설치
+3. Jekyll 서버 구동
 
 # 전체 과정
 
-## 패키지 리스트 업데이트
+## 포트 포워딩
+
+로컬에서 브라우저로 서버에 접속하기 위해서는 로컬의 `~/.ssh/config` 파일의 `LocalForward` 지시어에 포워딩할 포트를 명시해주어야 한다.
+
+- 설정 파일
+    
+    ```
+    Host <your_hostname>
+        HostName <your_public_ip_address>
+        User <your_username>
+        IdentityFile <your_pem_file_path>
+        LocalForward <your_local_port> <server_address>
+    ```
+    
+- 예시
+    - 로컬에서 5050포트로 접속하려면 아래와 같이 작성한다. (Jekyll 서버는 4000번 포트를 사용)
+    
+    ```
+    LocalForward 5050 localhost:4000
+    ```
+
+## 패키지 설치
+
+EC2 인스턴스에 접속하여 다음과 같은 패키지를 설치해야 한다.
+
+- Ruby
+- Bundler
+- Gems
+
+### 패키지 리스트 업데이트
 
 ```bash
 sudo apt-get update
 ```
-
-## 패키지 설치
 
 ### Ruby
 
@@ -51,37 +78,16 @@ bundle install
 - 위 명령어로 홈에 Gems가 설치되고 Gemfile.lock 파일이 생성된다.
     - Gemfile.lock : 기기에 설치된 gems의 버전을 기록한 파일
 
-## 포트 포워딩
-
-로컬에서 브라우저로 서버에 접속하기 위해서는 `~/.ssh/config` 파일에 `LocalForward` 지시어로 포워딩할 포트를 명시해주어야 한다.
-
-- 설정 파일
-    
-    ```
-    Host <your_hostname>
-        HostName <your_public_ip_address>
-        User <your_username>
-        IdentityFile <your_pem_file_path>
-        LocalForward <your_local_port> <server_address>
-    ```
-    
-- 예시
-    - 로컬에서 5050포트로 접속하려면 아래와 같이 작성하면 된다. (Jekyll 서버는 4000번 포트를 사용)
-    
-    ```
-    LocalForward 5050 localhost:4000
-    ```
-    
 
 ## Jekyll 서버 구동
 
-로컬에서와 동일하게 아래 명령어를 사용하여 구동한다.
+위 과정을 모두 마쳤다면 EC2 터미널에서 아래 명령어를 사용하여 Jekyll 서버를 구동한다.
 
 ```bash
 bundle exec jekyll serve
 ```
 
-`127.0.0.1:<위에서 설정한 포트>` 로 접속할 수 있다.
+포트 포워딩을 하였기 때문에 로컬에서 `localhost:<위에서 설정한 포트>` 로 접속할 수 있다.
 
 # 참고
 
