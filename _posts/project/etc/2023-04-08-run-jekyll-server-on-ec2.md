@@ -2,7 +2,7 @@
 title: "[AWS EC2] Jekyll 서버 구동 방법"
 date: 2023-04-08
 categories: [Project, etc_Project]
-tags: [aws, blog]
+tags: [aws, ec2, blog]
 ---
 
 > 본 게시글은 Ubuntu 22.04 LTS 를 기준으로 작성하였습니다.

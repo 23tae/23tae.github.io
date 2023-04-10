@@ -132,7 +132,7 @@ tags: [cpp]
     - 위와 같이 Base 클래스 포인터가 Derived 클래스 객체를 가리킬 때, 해당 객체를 delete하여도 Base 클래스의 소멸자가 호출됨. 메모리 누수 발생 가능.
         
         ```bash
-        $> ./a.out
+        $ ./a.out
         --- 평범한 Child 만들었을 때 ---
         Parent 생성자 호출
         Child 생성자 호출
@@ -147,7 +147,7 @@ tags: [cpp]
 - 기반 클래스의 소멸자를 virtual로 선언해주면 다음과 같이 Child 소멸자가 정상적으로 호출됨.
     
     ```bash
-    $> ./a.out
+     ./a.out
     --- 평범한 Child 만들었을 때 ---
     Parent 생성자 호출
     Child 생성자 호출
