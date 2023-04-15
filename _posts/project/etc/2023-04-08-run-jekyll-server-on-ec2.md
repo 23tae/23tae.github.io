@@ -5,7 +5,7 @@ categories: [Project, etc_Project]
 tags: [aws, ec2, blog]
 ---
 
-> 본 게시글은 Ubuntu 22.04 LTS 를 기준으로 작성하였습니다.
+> 본 게시글은 Ubuntu 22.04 LTS를 기준으로 작성하였습니다.
 
 # 개요
 
