@@ -1,7 +1,7 @@
 ---
 title: "Zsh 설치 및 커스텀 (Oh My Zsh)"
 date: 2023-04-07
-categories: [Project, etc_Project]
+categories: [Project, etc_p]
 tags: [shell]
 ---
 

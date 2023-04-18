@@ -1,7 +1,7 @@
 ---
 title: "mac에서 vscode가 실행되지 않는 문제 (code 명령어)"
 date: 2022-03-25T07:32:21.250Z
-categories: [Project, etc_Project]
+categories: [Project, etc_p]
 tags: [issue, mac, vscode]
 ---
 >macOS에서 `code .` 명령어를 입력했을 때 `not found`가 출력되는 문제에 관한 해결방법을 담고있음.

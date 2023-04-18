@@ -1,6 +1,6 @@
 ---
 title: "Git 기본 개념"
-categories: [Project, etc_Project]
+categories: [Project, etc_p]
 tags: [git]
 date: 2022-01-07
 ---

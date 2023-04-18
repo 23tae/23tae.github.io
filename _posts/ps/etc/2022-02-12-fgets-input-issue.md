@@ -1,7 +1,7 @@
 ---
 title: "fgets함수가 입력을 받지 않음"
 date: 2022-02-12
-categories: [Problem Solving, etc_PS]
+categories: [Problem Solving, etc_ps]
 tags: [c, issue]
 ---
 >scanf와 fgets를 동시에 사용할 때 fgets가 입력을 받지 않는 문제를 다룸

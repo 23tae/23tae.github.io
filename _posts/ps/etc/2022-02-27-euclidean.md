@@ -1,7 +1,7 @@
 ---
 title: "유클리드 호제법(Euclidean algorithm)"
 date: 2022-02-27T14:48:38.276Z
-categories: [Problem Solving, etc_PS]
+categories: [Problem Solving, etc_ps]
 tags: [python, algorithm, til]
 ---
 ## 요약

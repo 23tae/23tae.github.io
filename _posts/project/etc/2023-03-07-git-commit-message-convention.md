@@ -1,7 +1,7 @@
 ---
 title: "Git 커밋 메시지 관련 지침 (Commit Message Convention)"
 date: 2023-03-07
-categories: [Project, etc_Project]
+categories: [Project, etc_p]
 tags: [git]
 ---
 

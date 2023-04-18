@@ -1,7 +1,7 @@
 ---
 title: "Git 브랜치 이름 변경 방법"
 date: 2023-04-05
-categories: [Project, etc_Project]
+categories: [Project, etc_p]
 tags: [git]
 ---
 

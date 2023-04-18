@@ -1,7 +1,7 @@
 ---
 title: "macOS 업데이트 이후 발생하는 xcrun error"
 date: 2022-10-25
-categories: [Project, etc_Project]
+categories: [Project, etc_p]
 tags: [mac, issue]
 ---
 

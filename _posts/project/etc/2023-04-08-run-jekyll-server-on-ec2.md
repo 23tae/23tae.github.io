@@ -1,7 +1,7 @@
 ---
 title: "[AWS EC2] Jekyll 서버 구동 방법"
 date: 2023-04-08
-categories: [Project, etc_Project]
+categories: [Project, etc_p]
 tags: [aws, ec2, blog]
 ---
 

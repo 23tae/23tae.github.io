@@ -1,7 +1,7 @@
 ---
 title: "Line Feed (LF)와 Carriage Return (CR)의 차이점"
 date: 2022-10-06
-categories: [Computer Science, etc_CS]
+categories: [Computer Science, etc_cs]
 tags: [til]
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: "[AWS EC2] Java 설치 방법"
 date: 2023-04-14
-categories: [Project, etc_Project]
+categories: [Project, etc_p]
 tags: [til, ec2, java]
 ---
 

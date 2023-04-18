@@ -1,7 +1,7 @@
 ---
 title: "메모리 구조"
 date: 2022-06-01T13:22:58.513Z
-categories: [Computer Science, etc_CS]
+categories: [Computer Science, etc_cs]
 tags: [memory, til]
 ---
 # 메모리 공간의 구분

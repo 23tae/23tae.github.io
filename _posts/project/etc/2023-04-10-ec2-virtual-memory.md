@@ -1,7 +1,7 @@
 ---
 title: "[AWS EC2] 가상 메모리 설정"
 date: 2023-04-10
-categories: [Project, etc_Project]
+categories: [Project, etc_p]
 tags: [aws, ec2, issue]
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: "Git Flow란?"
 date: 2023-04-12
-categories: [Project, etc_Project]
+categories: [Project, etc_p]
 tags: [git, til]
 ---
 

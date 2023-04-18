@@ -1,7 +1,7 @@
 ---
 title: "WSL2 종료 후 Vmmem이 Windows의 메모리를 차지하는 문제"
 date: 2022-02-11T10:59:49.941Z
-categories: [Project, etc_Project]
+categories: [Project, etc_p]
 tags: [wsl2, issue]
 ---
 # Issue

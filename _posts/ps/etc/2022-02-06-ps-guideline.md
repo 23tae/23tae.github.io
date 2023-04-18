@@ -1,7 +1,7 @@
 ---
 title: "코딩테스트 합격을 위한 로드맵"
 date: 2022-02-06T07:16:56.999Z
-categories: [Problem Solving, etc_PS]
+categories: [Problem Solving, etc_ps]
 tags: [계획, ps]
 ---
 # 방법

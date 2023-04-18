@@ -1,7 +1,7 @@
 ---
 title: "Encryption과 Encoding의 차이점"
 date: 2022-10-20
-categories: [Computer Science, etc_CS]
+categories: [Computer Science, etc_cs]
 tags: [til]
 ---
 

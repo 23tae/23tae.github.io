@@ -1,7 +1,7 @@
 ---
 title: "Dynamic Programming(동적계획법)"
 date: 2022-03-01T04:00:41.690Z
-categories: [Problem Solving, etc_PS]
+categories: [Problem Solving, etc_ps]
 tags: [algorithm, til]
 ---
 
