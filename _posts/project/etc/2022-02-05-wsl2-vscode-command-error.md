@@ -15,7 +15,7 @@ tags: [wsl2, issue, vscode]
 
 # Solution
 ![code2](/assets/img/project/wsl-code2.jpeg)
-해결방법은 의외로 간단하다. 홈디렉토리에서 `.profile`을 편집기로 실행시킨 후 맨 아래에 `PATH="$/mnt/c/Users/(유저이름)/AppData/Local/Programs/Microsoft\ VS\ Code/bin"` 다음과 같은 환경변수를 추가하면 된다.
+홈디렉토리에서 `.profile`을 편집기로 실행시킨 후 맨 아래에 `PATH="$/mnt/c/Users/(유저이름)/AppData/Local/Programs/Microsoft\ VS\ Code/bin"` 다음과 같은 환경변수를 추가하면 해결된다.
 
 
 
