@@ -5,7 +5,7 @@ categories: [Project, 시대팅5]
 tags: [spring-boot]
 ---
 
-## 개요2
+## 개요
 
 ![start_page](/assets/img/project/sidaeting5/01-retrospect/start_page.png)
 
