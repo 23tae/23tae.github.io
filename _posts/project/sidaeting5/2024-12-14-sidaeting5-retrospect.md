@@ -26,18 +26,23 @@ _시작 페이지_
 
 나는 **백엔드 개발**을 담당했으며 이메일 인증, JWT 인증, 매칭 결과 조회, 매칭 알고리즘 구현, Redis 적용, 어드민 API 개발 등을 맡았다. 그리고 **인증 시스템**과 **매칭 알고리즘 구현**에 특히 집중하였다.
 
-## 소프트웨어 아키텍처
-
-### 기술 스택
+## 시스템 아키텍처
 
 ![backend_architecture.png](/assets/img/project/sidaeting5/01-retrospect/backend_architecture.png)
 _백엔드 아키텍처_
 
+![db schema](/assets/img/project/sidaeting5/01-retrospect/sidaeting-erd.png)
+_ERD_
+
+### 기술 스택
+
 프론트엔드는 **Typescript+React**를, 백엔드는 **Kotlin+Spring Boot**를 사용했다.
 
-배포는 프론트엔드의 경우 **AWS Cloudfront**를 사용했고, 백엔드는 **AWS EC2**를 기반으로 이루어졌다. CI/CD는 **GitHub Actions**를 통해 자동화했으며, Gradle 빌드부터 Docker 이미지 생성 및 배포까지의 과정을 효율적으로 관리했다.
+배포는 프론트엔드의 경우 **AWS CloudFront**를 사용했고, 백엔드는 **AWS EC2**를 기반으로 이루어졌다. CI/CD는 **GitHub Actions**를 통해 자동화했으며, Gradle 빌드부터 Docker 이미지 생성 및 배포까지의 과정을 효율적으로 관리했다.
 
 백엔드 아키텍처는 **EC2**에 **Docker** 컨테이너로 **Spring Boot**를 실행하고, **Redis**를 설치해 스프링 애플리케이션과 연결하는 방식으로 구성하였다. 데이터베이스는 **RDS(PostgreSQL)**를 사용했으며, 이메일 전송은 **Simple Email Service(SES)**를 통해 처리했다.
+
+## 서비스 프로세스
 
 ### 주요 흐름
 

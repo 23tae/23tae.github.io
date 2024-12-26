@@ -9,7 +9,7 @@ mermaid: true
 ## 배경
 
 ![image.png](/assets/img/project/sidaeting5/03-jwt/refresh-token-rotation-example.png)
-_리프레시 토큰을 활용한 인증 방식_
+_출처: https://auth0.com/blog/refresh-tokens-what-are-they-and-when-to-use-them_
 
 JWT 인증 기능을 개발할 당시에는 토큰 재발급시 **액세스 토큰만 재발급**하도록 구현했었다. 시대팅의 운영 기간은 짧았기 때문에 리프레시 토큰의 유효 기간을 7일로 설정하고, 재발급 없이 액세스 토큰만 갱신하는 방식을 선택했었다. 그러나 이 방식은 **리프레시 토큰이 탈취**될 경우, 공격자가 해당 토큰을 이용해 액세스 토큰을 재발급받을 수 있는 보안 취약점이 있었다. 이를 해결하기 위해, 리프레시 토큰이 탈취되더라도 재발급된 **새로운 리프레시 토큰**을 통해 보안을 강화할 수 있는 **Refresh Token Rotation** 방식을 도입하게 되었다.
 

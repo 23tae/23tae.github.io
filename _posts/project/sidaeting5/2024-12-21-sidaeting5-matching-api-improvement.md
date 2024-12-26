@@ -20,7 +20,10 @@ _매칭 결과 페이지_
 
 ### 도전과제
 
-**데이터베이스 구조의 복잡성**
+**데이터베이스의 복잡성**
+
+![db schema](/assets/img/project/sidaeting5/01-retrospect/sidaeting-erd.png)
+_ERD_
 
 매칭 API는 여러 테이블 간의 복잡한 관계를 처리해야 했다. 주요 테이블은 다음과 같다.
 
