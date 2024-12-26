@@ -2,7 +2,7 @@
 title: "Kotlin object에서 Spring 설정값이 주입되지 않는 문제"
 date: 2024-12-23T08:00:00.000Z
 categories: [Project, 시대팅5]
-tags: [spring-boot]
+tags: [spring-boot, kotlin, issue]
 ---
 
 ## 문제 상황

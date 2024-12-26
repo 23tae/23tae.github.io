@@ -1,8 +1,8 @@
 ---
-title: "시대팅 매칭 알고리즘 개발"
+title: "시대팅 매칭 알고리즘 개발 과정"
 date: 2024-12-22T08:00:00.000Z
 categories: [Project, 시대팅5]
-tags: [spring-boot]
+tags: [python]
 mermaid: true
 ---
 
@@ -72,14 +72,13 @@ graph LR
 1. **전처리**
     1. 여러 항목이 쉼표로 구분된 문자열을 리스트로 변환한다.
     2. 문자열 값을 숫자로 변환한다.
+    ```python
+    def preprocessing(df):
+        df['prefer_appearance'] = df['prefer_appearance'].apply(
+            lambda x: x.split(','))
     
-  ```python
-  def preprocessing(df):
-      df['prefer_appearance'] = df['prefer_appearance'].apply(
-          lambda x: x.split(','))
-  
-      df['height'] = pd.to_numeric(df['height'], errors='coerce')
-  ```
+        df['height'] = pd.to_numeric(df['height'], errors='coerce')
+    ```
     
 2. **필터링**
     1. 핵심 선호 항목을 만족하지 않거나 기피 대상인 유저를 필터링한다.

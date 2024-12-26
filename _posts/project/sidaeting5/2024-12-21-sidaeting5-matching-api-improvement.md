@@ -2,7 +2,7 @@
 title: "시대팅 매칭 API 개선 과정: 대규모 트래픽 대응 전략"
 date: 2024-12-21T08:00:00.000Z
 categories: [Project, 시대팅5]
-tags: [spring-boot]
+tags: [spring-boot, caching, redis]
 ---
 
 ## 배경

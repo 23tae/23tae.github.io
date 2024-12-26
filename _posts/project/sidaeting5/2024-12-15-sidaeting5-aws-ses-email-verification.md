@@ -1,8 +1,8 @@
 ---
-title: "시대팅 이메일 인증 기능 구현 (AWS SES)"
+title: "시대팅 이메일 인증 기능 구현하기 (AWS SES)"
 date: 2024-12-15T09:00:00.000Z
 categories: [Project, 시대팅5]
-tags: [spring-boot, aws]
+tags: [spring-boot, aws, redis]
 mermaid: true
 ---
 

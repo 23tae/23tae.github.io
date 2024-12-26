@@ -2,7 +2,7 @@
 title: "로컬 환경에서 쿠키 설정이 안되는 문제: Secure 쿠키"
 date: 2024-12-22T11:00:00.000Z
 categories: [Project, 시대팅5]
-tags: [spring-boot]
+tags: [spring-boot, cookie, issue]
 ---
 
 ## 개요
@@ -20,6 +20,7 @@ _프론트엔드 팀원이 슬랙에 남긴 이슈_
     
     ![image.png](/assets/img/project/sidaeting5/secure-cookie-issue/dev-tools-1.png)
     _개발자 도구에서 확인한 응답 헤더의 Set-Cookie_
+    > This Set-Cookie didn't specify a "SameSite" attribute and was default to "SameSite=Lax," and was blocked because it came from a cross-site response which was not the response to a top-level navigation. The Set-Cookie had to have been set with "SameSite=None" to enable cross-site usage.
     
 2. **쿠키 도메인 변경**
     
@@ -30,6 +31,7 @@ _프론트엔드 팀원이 슬랙에 남긴 이슈_
     그 후 **쿠키 도메인**을 다시 `.uoslife.net`으로 되돌리고, `SameSite=None`을 설정했다. 하지만 이번에는 "`SameSite=None`은 `Secure` 속성과 함께 사용해야 한다"는 에러가 발생했다.
     
     ![image.png](/assets/img/project/sidaeting5/secure-cookie-issue/dev-tools-2.png)
+    > This attempt to set a cookie via a Set-Cookie header was blocked because it had the "SameSite=None" attribute but did not have the "Secure" attibute, which is required in order to use "SameSite=None".
     
 4. **Secure 설정과 HTTPS**
     

@@ -2,7 +2,7 @@
 title: "Refresh Token Rotation으로 보안 강화하기"
 date: 2024-12-20T08:00:00.000Z
 categories: [Project, 시대팅5]
-tags: [spring-boot]
+tags: [spring-boot, jwt, cookie]
 mermaid: true
 ---
 
