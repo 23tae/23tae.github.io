@@ -1,6 +1,6 @@
 ---
-title: "시대팅 시즌5 회고"
-date: 2024-12-14T09:00:00.000Z
+title: "시대팅 시즌5 개발을 마치며"
+date: 2024-12-14T09:0 0:00.000Z
 categories: [Project, 시대팅5]
 tags: [spring-boot]
 ---

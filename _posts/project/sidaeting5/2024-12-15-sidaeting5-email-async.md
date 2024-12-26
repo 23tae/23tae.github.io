@@ -1,5 +1,5 @@
 ---
-title: "이메일 전송 비동기 처리로 성능 개선하기 (@Async)"
+title: "비동기 처리를 통해 이메일 전송 API의 성능 개선하기"
 date: 2024-12-15T13:00:00.000Z
 categories: [Project, 시대팅5]
 tags: [spring-boot]

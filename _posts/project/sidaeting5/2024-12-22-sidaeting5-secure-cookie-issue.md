@@ -1,5 +1,5 @@
 ---
-title: "로컬 환경에서 쿠키 설정이 안되는 문제: Secure 쿠키"
+title: "로컬 환경에서 Secure 쿠키 설정이 안되는 문제"
 date: 2024-12-22T11:00:00.000Z
 categories: [Project, 시대팅5]
 tags: [spring-boot, cookie, issue]
@@ -24,7 +24,7 @@ _프론트엔드 팀원이 슬랙에 남긴 이슈_
     
 2. **쿠키 도메인 변경**
     
-    이를 해결하기 위해 **쿠키 도메인**을 `localhost`로 변경했으나, 이번에는 서버 도메인(`uosmeeting.uoslife.net`)과 쿠키 도메인이 달라져서 쿠키가 설정되지 않는 문제가 발생했다.
+    이를 해결하기 위해 **쿠키 도메인**을 `localhost`로 변경했으나, 이번에는 서버 도메인(`uosmeeting.uoslife.net`)과 쿠키 도메인이 달라져서 쿠키가 설정되지 않았다.
     
 3. **SameSite=None 설정**
     
