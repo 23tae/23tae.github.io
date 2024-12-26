@@ -10,6 +10,7 @@ tags: [spring-boot]
 백엔드를 배포한 이후, 프론트엔드가 로컬 환경에서 리프레시 토큰이 담긴 쿠키를 설정하지 못하는 문제가 발생했다. 이 문제는 쿠키의 `Secure`와 `SameSite` 설정과 관련이 있었다. 이를 해결한 과정을 정리한다.
 
 ![slack frontend](/assets/img/project/sidaeting5/secure-cookie-issue/slack-frontend-issue.png)
+_프론트엔드 팀원이 슬랙에 남긴 이슈_
 
 ## 접근 과정
 
@@ -18,6 +19,7 @@ tags: [spring-boot]
     처음에는 쿠키를 `Secure=true`와 `Domain=.uoslife.net`으로 설정했다. 그러나 프론트엔드가 **localhost**에서 실행되었을 때, 쿠키를 사용할 수 없는 문제가 발생했다.
     
     ![image.png](/assets/img/project/sidaeting5/secure-cookie-issue/dev-tools-1.png)
+    _개발자 도구에서 확인한 응답 헤더의 Set-Cookie_
     
 2. **쿠키 도메인 변경**
     
@@ -31,7 +33,7 @@ tags: [spring-boot]
     
 4. **Secure 설정과 HTTPS**
     
-    위 에러는 Chrome에서 `Secure=false` 설정과 `SameSite=None`이 함께 사용될 때 발생하는 제약 때문이었다. 이를 해결하기 위해 `Secure=true`를 다시 설정했다. 그러나 **localhost**는 **HTTP**를 사용하고 있었기 때문에 쿠키를 설정할 수 없었다.
+    위 에러는 Chrome에서 `Secure=false` 설정과 `SameSite=None`이 함께 사용될 때 발생하는 제약(2020년부터 적용된 것으로 보인다) 때문이었다. 이를 해결하기 위해 `Secure=true`를 다시 설정했다. 그러나 **localhost**는 **HTTP**를 사용하고 있었기 때문에 쿠키를 설정할 수 없었다.
     
 
 ## 해결 방법

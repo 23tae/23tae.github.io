@@ -8,6 +8,7 @@ tags: [spring-boot]
 ## 개요
 
 ![start_page](/assets/img/project/sidaeting5/01-retrospect/start_page.png)
+_시작 페이지_
 
 [시대팅 사이트](https://meeting5.uoslife.net/)
 
@@ -29,9 +30,8 @@ tags: [spring-boot]
 
 ### 기술 스택
 
-- 백엔드 아키텍처
-
 ![backend_architecture.png](/assets/img/project/sidaeting5/01-retrospect/backend_architecture.png)
+_백엔드 아키텍처_
 
 프론트엔드는 **Typescript+React**를, 백엔드는 **Kotlin+Spring Boot**를 사용했다.
 

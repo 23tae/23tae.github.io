@@ -1,5 +1,5 @@
 ---
-title: "이메일 인증 제한 초기화용 어드민 API 구현"
+title: "시대팅 이메일 전송 횟수 초기화용 어드민 API 구현"
 date: 2024-12-21T11:00:00.000Z
 categories: [Project, 시대팅5]
 tags: [spring-boot]
@@ -8,6 +8,7 @@ tags: [spring-boot]
 ## 배경
 
 ![email cs](/assets/img/project/sidaeting5/05-admin-api/kakaotalk-cs-email.png)
+_인증 횟수 초기화 요청_
 
 이메일 인증 시스템에서는 일일 인증 횟수를 5회로 제한하고 있다. 하지만 이러한 제한은 정상적인 사용자에게도 영향을 미칠 수 있어 CS팀이 필요한 경우 사용자의 인증 횟수를 초기화할 수 있는 기능이 필요했다.
 
@@ -38,141 +39,134 @@ tags: [spring-boot]
 ### 설정
 
 - `.env`
-
-```
-ADMIN_API_KEY=your_api_key
-```
+  ```
+  ADMIN_API_KEY=your_api_key
+  ```
 
 - `application.yml`
-
-```yaml
-api:
-  admin:
-    key: ${ADMIN_API_KEY}
-```
+  ```yaml
+  api:
+    admin:
+      key: ${ADMIN_API_KEY}
+  ```
 
 - `AdminApiKeyInterceptor.kt`
+  ```kotlin
+  class AdminApiKeyInterceptor(private val adminApiKey: String) : HandlerInterceptor {
+      companion object {
+          private const val API_KEY_HEADER = "X-API-Key"
+      }
 
-```kotlin
-class AdminApiKeyInterceptor(private val adminApiKey: String) : HandlerInterceptor {
-    companion object {
-        private const val API_KEY_HEADER = "X-API-Key"
-    }
+      override fun preHandle(
+          request: HttpServletRequest,
+          response: HttpServletResponse,
+          handler: Any
+      ): Boolean {
+          val apiKey = request.getHeader(API_KEY_HEADER) ?: throw ApiKeyNotFoundException()
 
-    override fun preHandle(
-        request: HttpServletRequest,
-        response: HttpServletResponse,
-        handler: Any
-    ): Boolean {
-        val apiKey = request.getHeader(API_KEY_HEADER) ?: throw ApiKeyNotFoundException()
-
-        if (apiKey != adminApiKey) {
-            throw ApiKeyInvalidException()
-        }
-        return true
-    }
-}
-```
+          if (apiKey != adminApiKey) {
+              throw ApiKeyInvalidException()
+          }
+          return true
+      }
+  }
+  ```
 
 - `WebConfig.kt`
+  ```kotlin
+  @Configuration
+  class WebConfig : WebMvcConfigurer {
+      @Value("\${api.admin.key}") private lateinit var adminApiKey: String
 
-```kotlin
-@Configuration
-class WebConfig : WebMvcConfigurer {
-    @Value("\${api.admin.key}") private lateinit var adminApiKey: String
-
-    override fun addInterceptors(registry: InterceptorRegistry) {
-        registry
-            .addInterceptor(AdminApiKeyInterceptor(adminApiKey))
-            .addPathPatterns("/api/admin/**")
-    }
-}
-```
+      override fun addInterceptors(registry: InterceptorRegistry) {
+          registry
+              .addInterceptor(AdminApiKeyInterceptor(adminApiKey))
+              .addPathPatterns("/api/admin/**")
+      }
+  }
+  ```
 
 - `SecurityConfig.kt`
+  ```kotlin
+  @Configuration
+  @EnableWebSecurity
+  class SecurityConfig(
+      private val jwtAuthenticationFilter: JwtAuthenticationFilter,
+      @Qualifier("handlerExceptionResolver") private val resolver: HandlerExceptionResolver,
+  ) {
+      @Bean
+      @Throws(Exception::class)
+      fun filterChain(http: HttpSecurity): SecurityFilterChain? {
+          http.authorizeHttpRequests {
+                  it.requestMatchers(
+                          ...
+                          "/api/admin/**"
+                      ) // 토큰 검사 미실시 리스트
+                      .permitAll()
+              }
 
-```kotlin
-@Configuration
-@EnableWebSecurity
-class SecurityConfig(
-    private val jwtAuthenticationFilter: JwtAuthenticationFilter,
-    @Qualifier("handlerExceptionResolver") private val resolver: HandlerExceptionResolver,
-) {
-    @Bean
-    @Throws(Exception::class)
-    fun filterChain(http: HttpSecurity): SecurityFilterChain? {
-        http.authorizeHttpRequests {
-                it.requestMatchers(
-                        ...
-                        "/api/admin/**"
-                    ) // 토큰 검사 미실시 리스트
-                    .permitAll()
-            }
-
-        http.addFilterBefore(
-            jwtAuthenticationFilter,
-            UsernamePasswordAuthenticationFilter::class.java
-        )
-        return http.build()
-    }
-```
+          http.addFilterBefore(
+              jwtAuthenticationFilter,
+              UsernamePasswordAuthenticationFilter::class.java
+          )
+          return http.build()
+      }
+  ```
 
 ### API 구현
 
 - `AdminApi.kt`
+  ```kotlin
+  @RestController
+  @RequestMapping("/api/admin")
+  class AdminApi(
+      private val adminService: AdminService,
+      private val requestUtils: RequestUtils,
+  ) {
 
-```kotlin
-@RestController
-@RequestMapping("/api/admin")
-class AdminApi(
-    private val adminService: AdminService,
-    private val requestUtils: RequestUtils,
-) {
+      @PostMapping("/verification/send-email/reset")
+      fun resetEmailSendCount(
+          request: HttpServletRequest,
+          @RequestBody body: ResetEmailRequest
+      ): ResponseEntity<Unit> {
+          val requestInfo = requestUtils.toRequestInfoDto(request)
 
-    @PostMapping("/verification/send-email/reset")
-    fun resetEmailSendCount(
-        request: HttpServletRequest,
-        @RequestBody body: ResetEmailRequest
-    ): ResponseEntity<Unit> {
-        val requestInfo = requestUtils.toRequestInfoDto(request)
+          adminService.resetEmailSendCount(body.email, requestInfo)
 
-        adminService.resetEmailSendCount(body.email, requestInfo)
-
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build()
-    }
-}
-```
+          return ResponseEntity.status(HttpStatus.NO_CONTENT).build()
+      }
+  }
+  ```
 
 - `AdminService.kt`
+  ```kotlin
+  @Service
+  class AdminService(
+      private val redisTemplate: RedisTemplate<String, Any>,
+  ) {
+      fun resetEmailSendCount(email: String, requestInfo: RequestInfoDto) {
+          val sendCountKey =
+              VerificationUtils.generateRedisKey(VerificationConstants.SEND_COUNT_PREFIX, email, true)
 
-```kotlin
-@Service
-class AdminService(
-    private val redisTemplate: RedisTemplate<String, Any>,
-) {
-    fun resetEmailSendCount(email: String, requestInfo: RequestInfoDto) {
-        val sendCountKey =
-            VerificationUtils.generateRedisKey(VerificationConstants.SEND_COUNT_PREFIX, email, true)
+          redisTemplate.opsForValue().set(sendCountKey, "0")
+          redisTemplate.expire(sendCountKey, Duration.ofDays(1))
 
-        redisTemplate.opsForValue().set(sendCountKey, "0")
-        redisTemplate.expire(sendCountKey, Duration.ofDays(1))
-
-        logger.info("[ADMIN-이메일 발송 횟수 초기화] targetEmail: $email, $requestInfo")
-    }
-}
-```
+          logger.info("[ADMIN-이메일 발송 횟수 초기화] targetEmail: $email, $requestInfo")
+      }
+  }
+  ```
 
 ### 보안 고려사항
 
-1. API Key는 환경 변수로 관리하여 코드에 노출되지 않도록 하였다.
-2. 모든 관리자 작업에 대해 로깅을 하여 추적성을 확보하였다.
-    ```kotlin
-    logger.info("[ADMIN-이메일 발송 횟수 초기화] targetEmail: $email, $requestInfo")
-    ```
-  - 로깅 예시
-    ```
-    2024-12-23T00:58:24.037+09:00  INFO 96508 --- [nio-8081-exec-3] u.s.admin.service.AdminService: [ADMIN-이메일 발송 횟수 초기화] targetEmail: example@uos.ac.kr, ip: 0:0:0:0:0:0:0:1, userAgent: PostmanRuntime/7.43.0
-    ```
+1. **API Key는 환경 변수로 관리**하여 코드에 노출되지 않도록 하였다.
+2. 모든 관리자 작업에 대해 **로깅**을 하여 추적성을 확보하였다.
+  ```kotlin
+  logger.info("[ADMIN-이메일 발송 횟수 초기화] targetEmail: $email, $requestInfo")
+  ```
+  ```
+  2024-12-13T00:58:24.037+09:00  INFO 96508 --- [nio-8081-exec-3] u.s.admin.service.AdminService: [ADMIN-이메일 발송 횟수 초기화] targetEmail: example@uos.ac.kr, ip: 0:0:0:0:0:0:0:1, userAgent: PostmanRuntime/7.43.0
+  ```
 
 ## 참고자료
+
 - [[JAVA] Spring으로 REST API 구현하기 (2) - Interceptor](https://heodolf.tistory.com/40)

@@ -1,5 +1,5 @@
 ---
-title: "AWS SES를 활용한 이메일 인증 기능 구현"
+title: "시대팅 이메일 인증 기능 구현 (AWS SES)"
 date: 2024-12-15T09:00:00.000Z
 categories: [Project, 시대팅5]
 tags: [spring-boot, aws]
@@ -7,6 +7,7 @@ mermaid: true
 ---
 
 ![email-verification-page](/assets/img/project/sidaeting5/02-email-verification/email-verification-page.png)
+_이메일 인증 페이지_
 
 이 글에서는 AWS SES를 사용한 이메일 발송, Redis를 이용한 인증코드 저장 및 만료 관리, 일일 발송 및 인증 횟수 제한 구현 방법 등을 다룬다.
 
@@ -94,6 +95,7 @@ sequenceDiagram
 ### AWS SES 설정
 
 ![aws-ses-configuration](/assets/img/project/sidaeting5/02-email-verification/aws-ses-configuration.png)
+_AWS 콘솔_
 
 AWS 콘솔에서 SES를 이용하는데 필요한 기본적인 설정은 이미 되어 있었기 때문에 IAM 사용자 생성 외에 추가적인 설정은 하지 않았다.
 
@@ -320,6 +322,7 @@ fun verifyEmail(email: String, code: String) {
 ### 에러 처리
 
 ![email-verification-page-error](/assets/img/project/sidaeting5/02-email-verification/email-verification-page-error.png)
+_에러 예시_
 
 - **예외 상황**
     - **이메일 형식**이 잘못된 경우.

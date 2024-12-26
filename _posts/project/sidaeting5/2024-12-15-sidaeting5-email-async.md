@@ -1,5 +1,5 @@
 ---
-title: "이메일 전송 비동기 처리로 성능 최적화하기"
+title: "이메일 전송 비동기 처리로 성능 최적화하기 (@Async)"
 date: 2024-12-15T13:00:00.000Z
 categories: [Project, 시대팅5]
 tags: [spring-boot]
@@ -9,9 +9,10 @@ mermaid: true
 
 ## 배경
 
-기존 이메일 인증 기능에서는 동기 처리 방식으로 인해 응답 시간이 길어지는 문제가 있었다. 이로 인해 사용자 경험이 저하되고 서버의 부담이 가중될 우려가 있었다. AWS SES를 사용하여 인증 이메일을 전송하는 동안 API 요청이 차단되었고, 인증 코드 생성 및 Redis 저장 작업도 동기적으로 처리되어 전반적인 성능에 부정적인 영향을 미쳤다.
-
 ![image.png](/assets/img/project/sidaeting5/02-email-verification/before-async.png)
+_기존 API 호출 시간_
+
+기존 이메일 인증 기능에서는 동기 처리 방식으로 인해 응답 시간이 길어지는 문제가 있었다. 이로 인해 사용자 경험이 저하되고 서버의 부담이 가중될 우려가 있었다. AWS SES를 사용하여 인증 이메일을 전송하는 동안 API 요청이 차단되었고, 인증 코드 생성 및 Redis 저장 작업도 동기적으로 처리되어 전반적인 성능에 부정적인 영향을 미쳤다.
 
 ## 성능 문제 분석
 
@@ -170,6 +171,7 @@ class AsyncEmailService(
 - **개선된 방식:** 136ms
 
 ![image.png](/assets/img/project/sidaeting5/02-email-verification/after-async.png)
+_개선된 API 호출 시간_
 
 
 ### 기타 개선 사항
