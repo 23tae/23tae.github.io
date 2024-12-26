@@ -305,5 +305,3 @@ fun reissueTokens(request: HttpServletRequest, response: HttpServletResponse): J
 - [JWT vs Session Authentication - DEV Community](https://dev.to/codeparrot/jwt-vs-session-authentication-1mol)
 - [[Spring] jwt토큰을 더 안전하게 ! (RefreshToken , Cookie) — sudoSoooooo](https://soobysu.tistory.com/67)
 - [node.js - How to extract token string from Bearer token? - Stack Overflow](https://stackoverflow.com/questions/50284841/how-to-extract-token-string-from-bearer-token)
-- [새로운 SameSite=None; Secure 쿠키 설정에 대비  \|  Google 검색 센터 블로그  \|  Google for Developers](https://developers.google.com/search/blog/2020/01/get-ready-for-new-samesitenone-secure?hl=ko)
-- [로컬 개발에 HTTPS 사용  \|  Articles  \|  web.dev](https://web.dev/articles/how-to-use-local-https?hl=ko)

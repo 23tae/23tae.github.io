@@ -3,12 +3,13 @@ title: "이메일 전송 비동기 처리로 성능 최적화하기"
 date: 2024-12-15T13:00:00.000Z
 categories: [Project, 시대팅5]
 tags: [spring-boot]
+mermaid: true
 ---
 
 
 ## 배경
 
-기존 이메일 인증 기능에서는 동기 처리 방식으로 인해 응답 시간이 길어지는 문제가 있었다. 이로 인해 사용자 경험이 저하되고 서버 성능에 부담이 가중되었다. AWS SES를 사용하여 인증 이메일을 전송하는 동안 API 요청이 차단되었고, 인증 코드 생성 및 Redis 저장 작업도 동기적으로 처리되어 전반적인 성능에 부정적인 영향을 미쳤다.
+기존 이메일 인증 기능에서는 동기 처리 방식으로 인해 응답 시간이 길어지는 문제가 있었다. 이로 인해 사용자 경험이 저하되고 서버의 부담이 가중될 우려가 있었다. AWS SES를 사용하여 인증 이메일을 전송하는 동안 API 요청이 차단되었고, 인증 코드 생성 및 Redis 저장 작업도 동기적으로 처리되어 전반적인 성능에 부정적인 영향을 미쳤다.
 
 ![image.png](/assets/img/project/sidaeting5/02-email-verification/before-async.png)
 
@@ -60,7 +61,45 @@ tags: [spring-boot]
       }
   }
   ```
+
+**메일 전송 플로우차트**
+
+```mermaid
+sequenceDiagram
+    participant client as Client
+    participant server as Server
+    participant redis as Redis
+    participant ses as SES
+
+    client->>server: 인증 메일 전송 요청
     
+    Note over server: 이메일 형식 검사
+    
+    server->>redis: 일일 발송 횟수 조회
+    redis-->>server: 발송 횟수 반환
+    Note over server: 발송 제한 확인
+    
+    server->>client: 인증 만료시간 반환
+    
+    Note over server: 비동기 처리 시작
+    
+    activate server
+    Note over server: 인증코드 생성
+    
+    server->>redis: 인증코드 저장
+    
+    server->>redis: 발송 횟수 증가
+    
+    server->>ses: 인증 메일 발송
+    ses-->>server: 발송 결과 전달
+    
+    alt 발송 성공
+        Note over server: 성공 이력 기록
+    else 발송 실패
+        Note over server: 실패 이력 기록
+    end
+    deactivate server
+```
 
 **관련 코드**
 

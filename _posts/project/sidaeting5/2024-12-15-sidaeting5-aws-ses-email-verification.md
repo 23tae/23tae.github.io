@@ -16,7 +16,7 @@ mermaid: true
 
 ## 요구사항 분석
 
-**이메일 인증 기능의 주요 요구사항**은 다음과 같다:
+**이메일 인증 기능의 주요 요구사항**은 다음과 같다.
 
 - 사용자가 입력한 이메일로 인증코드를 발송한다.
 - 사용자가 인증코드를 입력해 유효성을 검증한다.
@@ -51,7 +51,9 @@ mermaid: true
 - `email_send_count:{email}:{date}`: 일일 발송 횟수 관리.
 - `verification_attempts:{email}:{date}`: 일일 인증 시도 횟수 관리.
 
-### 인증 프로세스
+### 플로우차트
+
+**인증 메일 전송**
 
 ```mermaid
 sequenceDiagram
@@ -62,14 +64,29 @@ sequenceDiagram
 
     C->>S: 인증 메일 요청
     S->>R: 발송 제한 확인
-    R-->>S: 제한 없음
     S->>SES: 인증 메일 발송
-    SES-->>S: 메일 발송 완료
-    C->>S: 인증 코드 검증 요청
-    S->>R: 코드 일치 여부 확인
-    R-->>S: 코드 일치
-    S->>C: 토큰 반환
+    SES-->>S: 발송 결과 전달
+    Note over S: 발송 이력 기록
+    S->>C: 인증 만료시간 반환
+```
 
+**인증 코드 검증**
+
+```mermaid
+sequenceDiagram
+    participant C as Client
+    participant S as Server
+    participant R as Redis
+
+    C->>S: 인증 코드 검증 요청
+    S->>R: 코드 검증
+    alt 검증 성공
+        S->>C: 토큰 반환
+        Note over S: 성공 이력 기록
+    else 검증 실패
+        S->>C: 에러코드 반환
+        Note over S: 실패 이력 기록
+    end
 ```
 
 ## 주요 기능 구현
@@ -184,6 +201,28 @@ class RedisConfig(
           expirationTime = expirationTime,
           validDuration = codeExpiry
       )
+  }
+  ```
+
+  ```kotlin
+  private fun sendEmail(email: String, verificationCode: String) {
+      val codeExpiryMinutes = codeExpiry / 60
+      val context = Context()
+      context.setVariable("expiryMinutes", codeExpiryMinutes)
+      context.setVariable("verificationCode", verificationCode)
+
+      val emailBody = templateEngine.process("email-template", context)
+
+      val request =
+          SendEmailRequest()
+              .withDestination(Destination().withToAddresses(email))
+              .withMessage(
+                  Message()
+                      .withSubject(Content(emailTitle))
+                      .withBody(Body().withHtml(Content(emailBody)))
+              )
+              .withSource(emailFrom)
+      sesClient.sendEmail(request)
   }
   ```
     
@@ -320,7 +359,7 @@ fun verifyEmail(email: String, code: String) {
 
 ### 추가 개선 방향
 
-지금의 시스템은 보안성에 있어 강화의 여지가 있다. 우선 인증코드의 복잡성을 높이고 암호화하여 저장하는 방식을 도입할 수 있다. 또한 인증코드를 직접 입력하는 대신 인증 링크를 통해 이메일을 확인하는 방식도 고려해볼 만하다.
+현재의 시스템은 보안성에 있어 개선의 필요성이 있다. 우선 인증코드의 복잡성을 높이고 암호화하여 저장하는 방식을 도입할 수 있다. 또한 인증코드를 직접 입력하는 대신 인증 링크를 통해 이메일을 확인하는 방식도 고려해볼 만하다.
 
 더불어 **악성 유저에 대한 대응책**도 강화할 필요가 있다. 현재는 **이메일 주소**별로 발송 횟수를 제한하고 있어 동일한 이메일로의 과도한 요청은 차단할 수 있다. 하지만 악의적인 사용자가 타인의(혹은 존재하지 않는) 이메일로 인증 요청을 보내는 경우는 차단하지 못한다.
 

@@ -42,15 +42,14 @@ sequenceDiagram
     Server->>Redis: 기존 refresh token 무효화
     Note over Server, Redis: 해당 유저의 토큰 정보를 업데이트
 
-    Server-->>Client: 새로운 access token 발급
-    Server-->>Client: 새로운 refresh token 발급
+    Server-->>Client: 새로운 토큰 발급 (access, refresh)
 
     Client->Client: 토큰 업데이트
 ```
 
 ### 리프레시 토큰 관리: PostgreSQL vs Redis
 
-리프레시 토큰이 재사용되었는지를 확인하기 위해 최신 리프레시 토큰을 관리해야 했다. 우선 기존에 사용 중인 PostgreSQL의 `meeting_user` 테이블에 `refresh_token` 컬럼을 추가하는 방안을 검토했다. 이는 새로운 인프라 구축 없이 기존 시스템을 활용할 수 있다는 장점이 있었다.
+리프레시 토큰이 재사용되었는지를 확인하기 위해 최신 리프레시 토큰을 관리해야 했다. 우선 기존에 사용 중인 PostgreSQL의 `meeting_user` 테이블에 `refresh_token` 컬럼을 추가하는 방안을 검토했다. 이 방법은 새로운 인프라 구축 없이 기존 시스템을 활용할 수 있다는 장점이 있었다.
 
 **PostgreSQL 사용시 문제점**
 
@@ -214,7 +213,7 @@ class JwtTokenStore(
 
 **책임 분리**
 
-토큰 관련 로직의 복잡도가 증가함에 따라 다음과 같이 책임을 분리했다:
+토큰 관련 로직의 복잡도가 증가함에 따라 다음과 같이 책임을 분리했다.
 
 - `JwtTokenGenerator`: 토큰 생성 담당
 - `JwtTokenParser`: 토큰 검증 및 파싱
