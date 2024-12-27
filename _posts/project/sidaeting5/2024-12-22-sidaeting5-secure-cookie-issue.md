@@ -5,7 +5,7 @@ categories: [Project, 시대팅5]
 tags: [spring-boot, cookie, issue]
 ---
 
-## 개요
+## 배경
 
 백엔드를 배포한 이후, 프론트엔드가 로컬 환경에서 리프레시 토큰이 담긴 쿠키를 설정하지 못하는 문제가 발생했다. 이 문제는 쿠키의 `Secure`와 `SameSite` 설정과 관련이 있었다. 이를 해결한 과정을 정리한다.
 
@@ -13,6 +13,8 @@ tags: [spring-boot, cookie, issue]
 _프론트엔드 팀원이 슬랙에 남긴 이슈_
 
 ## 접근 과정
+
+프론트엔드는 개발 환경에서 `localhost`를, 백엔드는 운영 환경에서 `uosmeeting.uoslife.net`을 사용하고 있었다.
 
 1. **최초 설정**
     
@@ -35,7 +37,11 @@ _프론트엔드 팀원이 슬랙에 남긴 이슈_
     
 4. **Secure 설정과 HTTPS**
     
-    위 에러는 Chrome에서 `Secure=false` 설정과 `SameSite=None`이 함께 사용될 때 발생하는 제약(2020년부터 적용된 것으로 보인다) 때문이었다. 이를 해결하기 위해 `Secure=true`를 다시 설정했다. 그러나 **localhost**는 **HTTP**를 사용하고 있었기 때문에 쿠키를 설정할 수 없었다.
+    위 에러는 Chrome에서 `SameSite=None`이 설정된 경우, `Secure=true` 설정도 함께 사용해야 하는 제약 때문에 발생한 것이었다.
+    ![google notice](/assets/img/project/sidaeting5/secure-cookie-issue/google-blog-notice.png)
+    > When the SameSite=None attribute is present, an additional Secure attribute must be used so cross-site cookies can only be accessed over HTTPS connections.
+
+    이를 해결하기 위해 `Secure=true`를 다시 설정했다. 그러나 **localhost**는 **HTTP**를 사용하고 있었기 때문에 쿠키를 설정할 수 없었다.
     
 
 ## 해결 방법
@@ -46,19 +52,56 @@ _프론트엔드 팀원이 슬랙에 남긴 이슈_
 
 - `vite.config.ts`
 
-```typescript
-import fs from 'fs';
+  ```typescript
+  import fs from 'fs';
 
-export default defineConfig({
-  plugins: [react()],
-  server: {
-    https: {
-      key: fs.readFileSync('./localhost-key.pem'),
-      cert: fs.readFileSync('./localhost.pem'),
+  export default defineConfig({
+    plugins: [react()],
+    server: {
+      https: {
+        key: fs.readFileSync('./localhost-key.pem'),
+        cert: fs.readFileSync('./localhost.pem'),
+      },
     },
-  },
-});
-```
+  });
+  ```
+
+### 최종 쿠키 설정
+
+- `.env`
+
+  ```
+  COOKIE_DOMAIN=.uoslife.net
+  COOKIE_SECURE=true
+  ```
+
+- `CookieUtils.kt`
+
+  ```kotlin
+  @Component
+  class CookieUtils(
+      @Value("\${app.cookie.domain}") private val domain: String,
+      @Value("\${app.cookie.secure}") private val secure: Boolean
+  ) {
+      fun addRefreshTokenCookie(
+          response: HttpServletResponse,
+          refreshToken: String,
+          maxAgeMillisecond: Long
+      ) {
+          val encodedRefreshToken = URLEncoder.encode(refreshToken, StandardCharsets.UTF_8)
+          val cookie =
+              ResponseCookie.from("refresh_token", encodedRefreshToken)
+                  .domain(domain)
+                  .httpOnly(true)
+                  .secure(secure)
+                  .path("/")
+                  .maxAge(maxAgeMillisecond / 1000)
+                  .sameSite("None")
+                  .build()
+          response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString())
+      }
+  }
+  ```
 
 ## 참고자료
 

@@ -6,7 +6,7 @@ order: 4
 
 ## 백엔드 개발자 김태훈입니다
 
-안녕하세요. 백엔드 개발자 김태훈입니다. 개발 과정에서 마주치는 다양한 기술적 문제에 대해 고민하는 것을 즐기며 사용자 경험과 협업을 중요한 가치로 여깁니다. 이 블로그는 저의 경험과 인사이트를 공유하고 배운 내용을 기록하는 공간입니다.
+안녕하세요. 백엔드 개발자 김태훈입니다. 개발 과정에서 마주치는 다양한 기술적 문제에 대해 고민하는 것을 즐기며 사용자 경험과 협업을 중요한 가치로 여깁니다. 이 블로그는 제가 배운 내용을 기록하고 경험과 인사이트를 공유하는 공간입니다.
 
 ### Education
 
@@ -19,12 +19,11 @@ order: 4
 
 ### Skills
 
-- Language: Kotlin, Python, TypeScript
-- Framework: Spring Boot, NestJS, FastAPI
-- ORM: JPA, QueryDSL, TypeORM
-- Database: PostgreSQL, Redis
-- Cloud: AWS
-- Tools: Git, Docker
+- Kotlin, Python, TypeScript
+- Spring Boot, NestJS, FastAPI
+- PostgreSQL, Redis
+- JPA, QueryDSL, TypeORM
+- Git, Docker, AWS
 
 ### Projects
 

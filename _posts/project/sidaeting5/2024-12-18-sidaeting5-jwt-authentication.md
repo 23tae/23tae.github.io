@@ -247,14 +247,12 @@ HttpOnly 쿠키는 자바스크립트를 통해 접근할 수 없기 때문에 *
 3. 새로운 액세스 토큰 생성
 
 ```kotlin
-fun reissueTokens(request: HttpServletRequest, response: HttpServletResponse): JwtResponse {
+fun reissueTokens(request: HttpServletRequest): JwtResponse {
     val refreshToken = cookieUtils.getRefreshTokenFromCookie(request)
 
     val userId = jwtTokenProvider.getUserIdFromRefreshToken(refreshToken)
 
     val newAccessToken = jwtTokenProvider.createAccessToken(userId)
-
-    cookieUtils.addRefreshTokenCookie(response, newRefreshToken, refreshTokenExpiration)
 
     return JwtResponse(newAccessToken)
 }
