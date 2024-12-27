@@ -18,19 +18,20 @@ _프론트엔드 팀원이 슬랙에 남긴 이슈_
 
 1. **최초 설정**
     
-    처음에는 쿠키를 `Secure=true`와 `Domain=.uoslife.net`으로 설정했다. 그러나 프론트엔드가 **localhost**에서 실행되었을 때, 쿠키를 사용할 수 없는 문제가 발생했다.
+    처음에는 쿠키를 `Secure=true`와 `Domain=.uoslife.net`으로 설정했다. 그러나 프론트엔드가 **localhost**에서 실행된 경우에는 쿠키가 설정되지 않았다.
     
     ![image.png](/assets/img/project/sidaeting5/localhost-cookie-issue/dev-tools-1.png)
     _개발자 도구에서 확인한 응답 헤더의 Set-Cookie_
     > This Set-Cookie didn't specify a "SameSite" attribute and was default to "SameSite=Lax," and was blocked because it came from a cross-site response which was not the response to a top-level navigation. The Set-Cookie had to have been set with "SameSite=None" to enable cross-site usage.
     
-2. **쿠키 도메인 변경**
+2. **쿠키 도메인 설정 변경**
     
-    이를 해결하기 위해 **쿠키 도메인**을 `localhost`로 변경했으나, 이번에는 서버 도메인(`uosmeeting.uoslife.net`)과 쿠키 도메인이 달라져서 쿠키가 설정되지 않았다.
-    
+    이를 해결하기 위해 쿠키의 도메인 값을 `localhost`로 변경했으나, 이번에는 서버의 도메인(`uosmeeting.uoslife.net`)과 쿠키의 도메인 설정이 달라서 쿠키가 설정되지 않았다.
+    > This attemps to set a cookie via a Set-Cookie header was blocked because its Domain attribute was invalid with regards to the current host url.
+
 3. **SameSite=None 설정**
     
-    그 후 **쿠키 도메인**을 다시 `.uoslife.net`으로 되돌리고, `SameSite=None`을 설정했다. 하지만 이번에는 "`SameSite=None`은 `Secure` 속성과 함께 사용해야 한다"는 에러가 발생했다.
+    그래서 쿠키의 도메인 값을 다시 `.uoslife.net`으로 되돌리고, `SameSite=None`을 설정했다. 하지만 이번에는 "`SameSite=None`은 `Secure` 속성과 함께 사용해야 한다"는 에러가 발생했다.
     
     ![image.png](/assets/img/project/sidaeting5/localhost-cookie-issue/dev-tools-2.png)
     > This attempt to set a cookie via a Set-Cookie header was blocked because it had the "SameSite=None" attribute but did not have the "Secure" attibute, which is required in order to use "SameSite=None".

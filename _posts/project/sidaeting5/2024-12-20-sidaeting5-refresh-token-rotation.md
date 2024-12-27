@@ -11,7 +11,7 @@ mermaid: true
 ![image.png](/assets/img/project/sidaeting5/03-jwt/refresh-token-rotation-example.png)
 _출처: https://auth0.com/blog/refresh-tokens-what-are-they-and-when-to-use-them_
 
-JWT 인증 기능을 개발할 당시에는 토큰 재발급시 **액세스 토큰만 재발급**하도록 구현했었다. 시대팅의 운영 기간은 짧았기 때문에 리프레시 토큰의 유효 기간을 7일로 설정하고, 재발급 없이 액세스 토큰만 갱신하는 방식을 선택했었다. 그러나 이 방식은 **리프레시 토큰이 탈취**될 경우, 공격자가 해당 토큰을 이용해 액세스 토큰을 재발급받을 수 있는 보안 취약점이 있었다. 이를 해결하기 위해, 리프레시 토큰이 탈취되더라도 재발급된 **새로운 리프레시 토큰**을 통해 보안을 강화할 수 있는 **Refresh Token Rotation** 방식을 도입하게 되었다.
+JWT 인증 기능을 개발할 당시에는 토큰 재발급시 **액세스 토큰만 재발급**하도록 구현했었다. 시대팅의 운영 기간은 짧았기 때문에 리프레시 토큰의 유효 기간을 7일로 설정하고, 재발급 없이 액세스 토큰만 갱신하는 방식을 선택했었다. 그러나 이 방식은 **리프레시 토큰이 탈취**될 경우, 공격자가 해당 토큰을 이용해 액세스 토큰을 재발급받을 수 있다는 보안 취약점이 존재했다. 이 문제를 해결하기 위해, 리프레시 토큰이 탈취되더라도 **새로운 리프레시 토큰**이 발급되는 **Refresh Token Rotation** 방식을 도입하였다.
 
 ### Refresh Token Rotation이란?
 
@@ -21,8 +21,8 @@ Refresh Token Rotation은 보안성을 높이기 위해 **리프레시 토큰을
 
 1. 클라이언트는 서버로부터 **액세스 토큰**과 **리프레시 토큰**을 발급받는다.
 2. 액세스 토큰이 만료되면 리프레시 토큰을 사용해 **새 액세스 토큰을 요청**한다.
-3. 서버는 **새 액세스 토큰**과 **새 리프레시 토큰**을 발급하며, **기존 리프레시 토큰은 폐기**한다.
-4. 클라이언트는 이후 새로 발급된 리프레시 토큰만 사용할 수 있다.
+3. 서버는 **새 액세스 토큰**과 **새 리프레시 토큰**을 발급하며, 저장된 **기존 리프레시 토큰을 무효화**한다.
+4. 클라이언트는 이후 새롭게 발급받은 리프레시 토큰을 사용해서 재발급 요청을 한다.
 
 ## Refresh Token Rotation 구현
 
@@ -74,7 +74,7 @@ sequenceDiagram
 
 **토큰 재발급**
 
-토큰을 재발급 하기 전에 Redis에 저장된 리프레시 토큰을 통해 유효성을 검증하였고 생성된 토큰을 Redis에 저장하였다.
+토큰 재발급 과정에서 Redis에 저장된 리프레시 토큰을 통해 유효성을 검증하고, 새로운 토큰을 발급한다. 이 과정에서 기존 토큰은 무효화하고 새로운 토큰을 저장한다.
 
 - `AuthService.kt`
     
@@ -117,7 +117,7 @@ sequenceDiagram
 
 **로그아웃**
 
-유저가 로그아웃을 요청하면 Redis에 저장된 리프레시 토큰을 함께 삭제하였다.
+유저가 로그아웃을 요청하면 리프레시 토큰이 담긴 쿠키를 삭제하고 Redis에 저장된 리프레시 토큰을 함께 삭제한다.
 
 - `AuthService.kt`
     
@@ -147,68 +147,74 @@ sequenceDiagram
 
 - `JwtTokenStore.kt`
 
-```kotlin
-@Component
-class JwtTokenStore(
-    private val redisTemplate: RedisTemplate<String, Any>,
-    @Value("\${jwt.refresh.expiration}") private val refreshTokenExpiration: Long,
-) {
-  fun saveRefreshToken(userId: Long, refreshToken: String) {
-      val key = "${SecurityConstants.REFRESH_TOKEN_PREFIX}:$userId"
-      redisTemplate
-          .opsForValue()
-          .set(key, encryptedToken, refreshTokenExpiration, TimeUnit.MILLISECONDS)
+  ```kotlin
+  @Component
+  class JwtTokenStore(
+      private val redisTemplate: RedisTemplate<String, Any>,
+      @Value("\${jwt.refresh.expiration}") private val refreshTokenExpiration: Long,
+  ) {
+    fun saveRefreshToken(userId: Long, refreshToken: String) {
+        val key = "${SecurityConstants.REFRESH_TOKEN_PREFIX}:$userId"
+        redisTemplate
+            .opsForValue()
+            .set(key, encryptedToken, refreshTokenExpiration, TimeUnit.MILLISECONDS)
+    }
+    
+    fun getStoredRefreshToken(userId: Long): String? {
+        val key = "${SecurityConstants.REFRESH_TOKEN_PREFIX}:$userId"
+        val token = redisTemplate.opsForValue().get(key)?.toString() ?: return null
+        return token
+    }
+    
+    fun deleteRefreshToken(userId: Long) {
+        val key = "${SecurityConstants.REFRESH_TOKEN_PREFIX}:$userId"
+        redisTemplate.delete(key)
+    }
   }
-  
-  fun getStoredRefreshToken(userId: Long): String? {
-      val key = "${SecurityConstants.REFRESH_TOKEN_PREFIX}:$userId"
-      val token = redisTemplate.opsForValue().get(key)?.toString() ?: return null
-      return token
-  }
-  
-  fun deleteRefreshToken(userId: Long) {
-      val key = "${SecurityConstants.REFRESH_TOKEN_PREFIX}:$userId"
-      redisTemplate.delete(key)
-  }
-}
-```
+  ```
 
-```
-127.0.0.1:6379> get "refresh_token:1"
-"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaXNzIjoiVU9TTElGRSIsImF1ZCI6WyJVT1NMSUZFIFVTRVIiXSwiaWF0IjoxNzMyOTQ3NzY2LCJleHAiOjE3MzM1NTI1NjZ9.V7Cy4fbB2KrLGWo0I6hRZbyDifFmYDkwXMfyZ1er2Ys"
-127.0.0.1:6379> get "refresh_token:1"
-"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaXNzIjoiVU9TTElGRSIsImF1ZCI6WyJVT1NMSUZFIFVTRVIiXSwiaWF0IjoxNzMyOTQ4MDExLCJleHAiOjE3MzM1NTI4MTF9.W3y7Sd6o2Bmb5g2rDRBDA2sEL4aCHoilyMi9cK5uoZU"
-```
+- 토큰 조회 결과 예시
+
+  ```
+  127.0.0.1:6379> get "refresh_token:1"
+  "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaXNzIjoiVU9TTElGRSIsImF1ZCI6WyJVT1NMSUZFIFVTRVIiXSwiaWF0IjoxNzMyOTQ3NzY2LCJleHAiOjE3MzM1NTI1NjZ9.V7Cy4fbB2KrLGWo0I6hRZbyDifFmYDkwXMfyZ1er2Ys"
+  127.0.0.1:6379> get "refresh_token:1"
+  "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaXNzIjoiVU9TTElGRSIsImF1ZCI6WyJVT1NMSUZFIFVTRVIiXSwiaWF0IjoxNzMyOTQ4MDExLCJleHAiOjE3MzM1NTI4MTF9.W3y7Sd6o2Bmb5g2rDRBDA2sEL4aCHoilyMi9cK5uoZU"
+  ```
 
 **토큰 암호화 (AES)**
 
+토큰을 암호화하여 저장함으로써 유출을 방지할 수 있다. 이를 위해 AES 방식으로 토큰을 암호화하고 복호화하는 로직을 구현했다.
+
 - `JwtTokenStore.kt`
 
-```kotlin
-@Component
-class JwtTokenStore(
-    @Value("\${jwt.encryption.aes-secret-key}") private val aesSecretKey: String,
-) {
-    private val cipher: Cipher = Cipher.getInstance("AES")
-    private val encryptionKey: SecretKey = SecretKeySpec(aesSecretKey.toByteArray(), "AES")
+  ```kotlin
+  @Component
+  class JwtTokenStore(
+      @Value("\${jwt.encryption.aes-secret-key}") private val aesSecretKey: String,
+  ) {
+      private val cipher: Cipher = Cipher.getInstance("AES")
+      private val encryptionKey: SecretKey = SecretKeySpec(aesSecretKey.toByteArray(), "AES")
 
-    private fun encrypt(text: String): String {
-        cipher.init(Cipher.ENCRYPT_MODE, encryptionKey)
-        val encryptedBytes = cipher.doFinal(text.toByteArray())
-        return Base64.getEncoder().encodeToString(encryptedBytes)
-    }
+      private fun encrypt(text: String): String {
+          cipher.init(Cipher.ENCRYPT_MODE, encryptionKey)
+          val encryptedBytes = cipher.doFinal(text.toByteArray())
+          return Base64.getEncoder().encodeToString(encryptedBytes)
+      }
 
-    private fun decrypt(encryptedText: String): String {
-        cipher.init(Cipher.DECRYPT_MODE, encryptionKey)
-        val decryptedBytes = cipher.doFinal(Base64.getDecoder().decode(encryptedText))
-        return String(decryptedBytes)
-    }
-```
+      private fun decrypt(encryptedText: String): String {
+          cipher.init(Cipher.DECRYPT_MODE, encryptionKey)
+          val decryptedBytes = cipher.doFinal(Base64.getDecoder().decode(encryptedText))
+          return String(decryptedBytes)
+      }
+  ```
 
-```
-127.0.0.1:6379> get "refresh_token:1"
-"mFAqdvxjoD8GWb4EPsCKOMkkpPUCt14ryw/8sV32GebLCzyCwZPUt+08l+nYja/rwPJpR8XZw7AbN2KcnwVT3ZYr7Fphhf3S389DuVFpjePAgEThF6UsogL19f8zaZ8RnO7z9t9KXnmXsAgIOBrv4ckWqvXPtLmgb3PMFuO9T8RfOSC0QmNFXruY8RsfeiQacjTlJ0cbKjkBV4TgJYgvfGkrE38lIN9nTDZBA6u14V0CMuuuaiH1nnwk3JogJCJJ"
-```
+- 암호화된 토큰 예시
+
+  ```
+  127.0.0.1:6379> get "refresh_token:1"
+  "mFAqdvxjoD8GWb4EPsCKOMkkpPUCt14ryw/8sV32GebLCzyCwZPUt+08l+nYja/rwPJpR8XZw7AbN2KcnwVT3ZYr7Fphhf3S389DuVFpjePAgEThF6UsogL19f8zaZ8RnO7z9t9KXnmXsAgIOBrv4ckWqvXPtLmgb3PMFuO9T8RfOSC0QmNFXruY8RsfeiQacjTlJ0cbKjkBV4TgJYgvfGkrE38lIN9nTDZBA6u14V0CMuuuaiH1nnwk3JogJCJJ"
+  ```
 
 ### 구조 개선
 
@@ -220,34 +226,33 @@ class JwtTokenStore(
 - `JwtTokenParser`: 토큰 검증 및 파싱
 - `JwtTokenStore`: Redis 저장소 관리
 - `JwtTokenProvider`: Facade 패턴으로 전체 기능 통합
+  ```kotlin
+  @Component
+  class JwtTokenProvider(
+      private val tokenGenerator: JwtTokenGenerator,
+      private val tokenParser: JwtTokenParser,
+      private val tokenStore: JwtTokenStore,
+  ) {
+      // Token 생성 관련 메서드
+      fun createAccessToken(id: Long) = tokenGenerator.createAccessToken(id)
+      fun createRefreshToken(id: Long) = tokenGenerator.createRefreshToken(id)
 
-```kotlin
-@Component
-class JwtTokenProvider(
-    private val tokenGenerator: JwtTokenGenerator,
-    private val tokenParser: JwtTokenParser,
-    private val tokenStore: JwtTokenStore,
-) {
-    // Token 생성 관련 메서드
-    fun createAccessToken(id: Long) = tokenGenerator.createAccessToken(id)
-    fun createRefreshToken(id: Long) = tokenGenerator.createRefreshToken(id)
+      // Token 검증 및 파싱 관련 메서드
+      fun validateAccessToken(token: String) = tokenParser.validateAccessToken(token)
+      fun validateRefreshToken(token: String) = tokenParser.validateRefreshToken(token)
+      fun getUserIdFromAccessToken(token: String) = tokenParser.getUserIdFromAccessToken(token)
+      fun getUserIdFromRefreshToken(token: String) = tokenParser.getUserIdFromRefreshToken(token)
 
-    // Token 검증 및 파싱 관련 메서드
-    fun validateAccessToken(token: String) = tokenParser.validateAccessToken(token)
-    fun validateRefreshToken(token: String) = tokenParser.validateRefreshToken(token)
-    fun getUserIdFromAccessToken(token: String) = tokenParser.getUserIdFromAccessToken(token)
-    fun getUserIdFromRefreshToken(token: String) = tokenParser.getUserIdFromRefreshToken(token)
-
-    // Redis 저장소 관련 메서드
-    fun saveRefreshToken(userId: Long, refreshToken: String) = tokenStore.saveRefreshToken(userId, refreshToken)
-    fun getStoredRefreshToken(userId: Long) = tokenStore.getStoredRefreshToken(userId)
-    fun deleteRefreshToken(userId: Long) = tokenStore.deleteRefreshToken(userId)
-}
-```
+      // Redis 저장소 관련 메서드
+      fun saveRefreshToken(userId: Long, refreshToken: String) = tokenStore.saveRefreshToken(userId, refreshToken)
+      fun getStoredRefreshToken(userId: Long) = tokenStore.getStoredRefreshToken(userId)
+      fun deleteRefreshToken(userId: Long) = tokenStore.deleteRefreshToken(userId)
+  }
+  ```
 
 ## 결론
 
-Refresh Token Rotation의 도입으로 토큰 재사용으로 인한 보안 위험을 줄일 수 있었다. 또한 코드 구조 개선을 통해 유지보수성과 확장성도 함께 향상시켰다.
+Refresh Token Rotation 방식의 도입으로 리프레시 토큰의 재사용 위험을 차단하고, 보안을 강화할 수 있었다. 또한 Redis를 활용하여 리프레시 토큰을 효율적으로 관리하고, 코드 구조를 개선하여 시스템의 유지보수성과 확장성을 확보했다.
 
 ## 참고자료
 
