@@ -1,5 +1,5 @@
 ---
-title: "로컬 환경에서 Secure 쿠키 설정이 안되는 문제"
+title: "로컬 환경에서 쿠키 설정이 안되는 문제"
 date: 2024-12-22T11:00:00.000Z
 categories: [Project, 시대팅5]
 tags: [spring-boot, cookie, issue]
@@ -9,7 +9,7 @@ tags: [spring-boot, cookie, issue]
 
 백엔드를 배포한 이후, 프론트엔드가 로컬 환경에서 리프레시 토큰이 담긴 쿠키를 설정하지 못하는 문제가 발생했다. 이 문제는 쿠키의 `Secure`와 `SameSite` 설정과 관련이 있었다. 이를 해결한 과정을 정리한다.
 
-![slack frontend](/assets/img/project/sidaeting5/secure-cookie-issue/slack-frontend-issue.png)
+![slack frontend](/assets/img/project/sidaeting5/localhost-cookie-issue/slack-frontend-issue.png)
 _프론트엔드 팀원이 슬랙에 남긴 이슈_
 
 ## 접근 과정
@@ -20,7 +20,7 @@ _프론트엔드 팀원이 슬랙에 남긴 이슈_
     
     처음에는 쿠키를 `Secure=true`와 `Domain=.uoslife.net`으로 설정했다. 그러나 프론트엔드가 **localhost**에서 실행되었을 때, 쿠키를 사용할 수 없는 문제가 발생했다.
     
-    ![image.png](/assets/img/project/sidaeting5/secure-cookie-issue/dev-tools-1.png)
+    ![image.png](/assets/img/project/sidaeting5/localhost-cookie-issue/dev-tools-1.png)
     _개발자 도구에서 확인한 응답 헤더의 Set-Cookie_
     > This Set-Cookie didn't specify a "SameSite" attribute and was default to "SameSite=Lax," and was blocked because it came from a cross-site response which was not the response to a top-level navigation. The Set-Cookie had to have been set with "SameSite=None" to enable cross-site usage.
     
@@ -32,13 +32,13 @@ _프론트엔드 팀원이 슬랙에 남긴 이슈_
     
     그 후 **쿠키 도메인**을 다시 `.uoslife.net`으로 되돌리고, `SameSite=None`을 설정했다. 하지만 이번에는 "`SameSite=None`은 `Secure` 속성과 함께 사용해야 한다"는 에러가 발생했다.
     
-    ![image.png](/assets/img/project/sidaeting5/secure-cookie-issue/dev-tools-2.png)
+    ![image.png](/assets/img/project/sidaeting5/localhost-cookie-issue/dev-tools-2.png)
     > This attempt to set a cookie via a Set-Cookie header was blocked because it had the "SameSite=None" attribute but did not have the "Secure" attibute, which is required in order to use "SameSite=None".
     
 4. **Secure 설정과 HTTPS**
     
     위 에러는 Chrome에서 `SameSite=None`이 설정된 경우, `Secure=true` 설정도 함께 사용해야 하는 제약 때문에 발생한 것이었다.
-    ![google notice](/assets/img/project/sidaeting5/secure-cookie-issue/google-blog-notice.png)
+    ![google notice](/assets/img/project/sidaeting5/localhost-cookie-issue/google-blog-notice.png)
     > When the SameSite=None attribute is present, an additional Secure attribute must be used so cross-site cookies can only be accessed over HTTPS connections.
 
     이를 해결하기 위해 `Secure=true`를 다시 설정했다. 그러나 **localhost**는 **HTTP**를 사용하고 있었기 때문에 쿠키를 설정할 수 없었다.
