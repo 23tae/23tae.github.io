@@ -18,7 +18,7 @@ _프론트엔드 팀원이 슬랙에 남긴 이슈_
 
 1. **최초 설정**
     
-    처음에는 쿠키를 `Secure=true`와 `Domain=.uoslife.net`으로 설정했다. 그러나 프론트엔드가 **localhost**에서 실행된 경우에는 쿠키가 설정되지 않았다.
+    처음에는 쿠키에 `Domain=.uoslife.net`을 설정했다. 그러나 프론트엔드가 **localhost**에서 실행된 경우에는 쿠키가 설정되지 않았다.
     
     ![image.png](/assets/img/project/sidaeting5/localhost-cookie-issue/dev-tools-1.png)
     _개발자 도구에서 확인한 응답 헤더의 Set-Cookie_
@@ -42,7 +42,7 @@ _프론트엔드 팀원이 슬랙에 남긴 이슈_
     ![google notice](/assets/img/project/sidaeting5/localhost-cookie-issue/google-blog-notice.png)
     > When the SameSite=None attribute is present, an additional Secure attribute must be used so cross-site cookies can only be accessed over HTTPS connections.
 
-    이를 해결하기 위해 `Secure=true`를 다시 설정했다. 그러나 **localhost**는 **HTTP**를 사용하고 있었기 때문에 쿠키를 설정할 수 없었다.
+    이를 해결하기 위해 `Secure=true`를 설정했다. 그러나 **localhost**는 **HTTP**를 사용하고 있었기 때문에 쿠키를 설정할 수 없었다.
     
 
 ## 해결 방법

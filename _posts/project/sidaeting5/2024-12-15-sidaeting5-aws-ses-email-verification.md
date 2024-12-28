@@ -1,5 +1,5 @@
 ---
-title: "AWS SES를 사용하여 시대팅에 이메일 인증 기능 구현하기"
+title: "Amazon SES를 사용해서 시대팅에 이메일 인증 기능 구현하기"
 date: 2024-12-15T09:00:00.000Z
 categories: [Project, 시대팅5]
 tags: [spring-boot, aws, redis]
@@ -9,7 +9,7 @@ mermaid: true
 ![email-verification-page](/assets/img/project/sidaeting5/02-email-verification/email-verification-page.png)
 _이메일 인증 페이지_
 
-이 글에서는 AWS SES를 사용한 이메일 발송, Redis를 이용한 인증코드 저장 및 만료 관리, 일일 발송 및 인증 횟수 제한 구현 방법 등을 다룬다.
+이 글에서는 AWS SDK를 이용한 Amazon SES 이메일 발송, Redis를 이용한 인증코드 저장 및 만료 관리, 일일 발송 및 인증 횟수 제한 구현 방법 등을 다룬다.
 
 ## 배경
 
@@ -30,12 +30,12 @@ _이메일 인증 페이지_
 1. **사용자 요청 흐름**:
     - **인증 메일 발송**
         - 사용자가 이메일 인증을 요청하면 서버에서 인증코드를 생성해 Redis에 저장한다.
-        - 이후 AWS SES를 이용해 사용자가 입력한 이메일로 인증코드를 포함한 메일을 발송한다.
+        - 이후 Amazon SES를 이용해 사용자가 입력한 이메일로 인증코드를 포함한 메일을 발송한다.
     - **인증 코드 검증**
         - 사용자가 인증코드를 입력하면 서버가 Redis에서 저장된 인증코드를 조회해 유효성을 검증한다.
         - 인증에 성공하면 Redis에서 관련 데이터를 삭제한다.
 2. **주요 기술 스택**:
-    - **AWS SES**: 인증 메일 발송용 서비스.
+    - **Amazon SES**: 인증 메일 발송용 서비스.
     - **Redis**: 인증코드 및 사용량 데이터 관리.
 
 ### Redis 사용
@@ -78,10 +78,12 @@ sequenceDiagram
     participant C as Client
     participant S as Server
     participant R as Redis
+    participant P as PostgreSQL
 
     C->>S: 인증 코드 검증 요청
     S->>R: 코드 검증
     alt 검증 성공
+        S->>P: 유저 조회 및 생성
         S->>C: 토큰 반환
         Note over S: 성공 이력 기록
     else 검증 실패
@@ -92,79 +94,105 @@ sequenceDiagram
 
 ## 주요 기능 구현
 
-### AWS SES 설정
+### Amazon SES 설정
 
 ![aws-ses-configuration](/assets/img/project/sidaeting5/02-email-verification/aws-ses-configuration.png)
 _AWS 콘솔_
 
-AWS 콘솔에서 SES를 이용하는데 필요한 기본적인 설정은 이미 되어 있었기 때문에 IAM 사용자 생성 외에 추가적인 설정은 하지 않았다.
+AWS 콘솔에서 SES를 이용하는데 필요한 기본적인 설정은 이미 되어 있었기 때문에 콘솔 상에서는 IAM 사용자 생성 외에 추가적인 설정은 하지 않았다.
+
+- `build.gradle.kts`
+
+  ```kotlin
+  dependencies {
+      implementation("com.amazonaws:aws-java-sdk-ses:1.12.777")
+  }
+  ```
 
 - `application.yml`
 
-```yaml
-aws:
-    access-key-id: ${AWS_SES_ACCESS_KEY}
-    secret-access-key: ${AWS_SES_SECRET_KEY}
-    region: ap-northeast-2
-    ses:
-        email:
-            title: UOSLIFE 인증 메일입니다.
-            from: 시대생팀 <no-reply@uoslife.team>
-```
+  ```yaml
+  aws:
+      access-key-id: ${AWS_SES_ACCESS_KEY}
+      secret-access-key: ${AWS_SES_SECRET_KEY}
+      region: ap-northeast-2
+      ses:
+          email:
+              title: UOSLIFE 인증 메일입니다.
+              from: 시대생팀 <no-reply@uoslife.team>
+  ```
 
 - `AwsSesConfig.kt`
 
-```kotlin
-@Configuration
-class AwsSesConfig(
-    @Value("\${aws.access-key-id}") private val accessKeyId: String,
-    @Value("\${aws.secret-access-key}") private val secretAccessKey: String,
-    @Value("\${aws.region}") private val region: String
-) {
+  ```kotlin
+  import com.amazonaws.auth.AWSStaticCredentialsProvider
+  import com.amazonaws.auth.BasicAWSCredentials
+  import com.amazonaws.services.simpleemail.AmazonSimpleEmailService
+  import com.amazonaws.services.simpleemail.AmazonSimpleEmailServiceClientBuilder
 
-    @Bean
-    fun amazonSimpleEmailService(): AmazonSimpleEmailService {
-        val awsCredentials = createAwsCredentials()
-        return AmazonSimpleEmailServiceClientBuilder.standard()
-            .withCredentials(AWSStaticCredentialsProvider(awsCredentials))
-            .withRegion(region)
-            .build()
-    }
+  @Configuration
+  class AwsSesConfig(
+      @Value("\${aws.access-key-id}") private val accessKeyId: String,
+      @Value("\${aws.secret-access-key}") private val secretAccessKey: String,
+      @Value("\${aws.region}") private val region: String
+  ) {
 
-    private fun createAwsCredentials(): BasicAWSCredentials {
-        return BasicAWSCredentials(accessKeyId, secretAccessKey)
-    }
-}
-```
+      @Bean
+      fun amazonSimpleEmailService(): AmazonSimpleEmailService {
+          val awsCredentials = createAwsCredentials()
+          return AmazonSimpleEmailServiceClientBuilder.standard()
+              .withCredentials(AWSStaticCredentialsProvider(awsCredentials))
+              .withRegion(region)
+              .build()
+      }
+
+      private fun createAwsCredentials(): BasicAWSCredentials {
+          return BasicAWSCredentials(accessKeyId, secretAccessKey)
+      }
+  }
+  ```
 
 ### Redis 설정
 
+- `build.gradle.kts`
+
+  ```kotlin
+  dependencies {
+      implementation("org.springframework.boot:spring-boot-starter-data-redis")
+  }
+  ```
+
 - `RedisConfig.kt`
 
-```kotlin
-@Configuration
-class RedisConfig(
-    @Value("\${spring.data.redis.host}") private val redisHost: String,
-    @Value("\${spring.data.redis.port}") private val redisPort: Int,
-) {
+  ```kotlin
+  import org.springframework.data.redis.connection.RedisConnectionFactory
+  import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory
+  import org.springframework.data.redis.core.RedisTemplate
+  import org.springframework.data.redis.serializer.StringRedisSerializer
 
-    @Bean
-    fun redisConnectionFactory(): RedisConnectionFactory {
-        return LettuceConnectionFactory(redisHost, redisPort)
-    }
+  @Configuration
+  class RedisConfig(
+      @Value("\${spring.data.redis.host}") private val redisHost: String,
+      @Value("\${spring.data.redis.port}") private val redisPort: Int,
+  ) {
 
-    @Bean
-    fun redisTemplate(): RedisTemplate<String, Any> {
-        return RedisTemplate<String, Any>().apply {
-            setConnectionFactory(redisConnectionFactory())
-            keySerializer = StringRedisSerializer()
-            valueSerializer = StringRedisSerializer()
-            hashKeySerializer = StringRedisSerializer()
-            hashValueSerializer = StringRedisSerializer()
-        }
-    }
-}
-```
+      @Bean
+      fun redisConnectionFactory(): RedisConnectionFactory {
+          return LettuceConnectionFactory(redisHost, redisPort)
+      }
+
+      @Bean
+      fun redisTemplate(): RedisTemplate<String, Any> {
+          return RedisTemplate<String, Any>().apply {
+              setConnectionFactory(redisConnectionFactory())
+              keySerializer = StringRedisSerializer()
+              valueSerializer = StringRedisSerializer()
+              hashKeySerializer = StringRedisSerializer()
+              hashValueSerializer = StringRedisSerializer()
+          }
+      }
+  }
+  ```
 
 ### 인증 메일 발송
 
@@ -174,39 +202,35 @@ class RedisConfig(
 - **구현 내용**:
     - 사용자가 입력한 이메일의 형식을 검증하고 `@uos.ac.kr` 도메인 여부를 확인한다.
     - **인증코드를 생성**하여 Redis에 저장하고 만료 시간을 설정한다.
-    - AWS SES를 통해 사용자에게 인증코드가 포함된 **메일을 발송**한다.
+    - AWS SDK를 사용하여 사용자에게 인증코드가 포함된 **메일을 발송**한다.
     - **일일 발송 횟수**를 Redis를 통해 관리하고, 초과 시 에러를 반환한다.
-- 관련 코드
-    
-  ```kotlin
+
+**관련 코드**
+
+템플릿(`resources/templates/email-template.html`)을 활용해서 이메일을 전송하도록 하였다.
+
+```kotlin
+import com.amazonaws.services.simpleemail.AmazonSimpleEmailService
+import com.amazonaws.services.simpleemail.model.*
+
+@Service
+class EmailVerificationService(
+) {
   fun sendVerificationEmail(email: String): SendVerificationEmailResponse {
-      // 이메일 형식 검증
-      validateEmail(email)
-
-      // 발송 제한 확인
-      validateSendCount(email)
-
-      // 인증 코드 생성 및 저장
-      val verificationCode = generateVerificationCode()
-      saveVerificationCode(email, verificationCode)
-
-      // 발송 횟수 증가
-      incrementSendCount(email)
-
-      // 이메일 전송
-      sendEmail(email, verificationCode)
-
-      // 코드 만료 시각 계산
-      val expirationTime = calculateExpirationTime()
+      validateEmail(email) // 이메일 형식 검증
+      validateSendCount(email) // 발송 제한 확인
+      val verificationCode = generateVerificationCode() // 인증 코드 생성
+      saveVerificationCode(email, verificationCode) // 인증 코드 저장
+      incrementSendCount(email) // 발송 횟수 증가
+      sendEmail(email, verificationCode) // 이메일 전송
+      val expirationTime = calculateExpirationTime() // 코드 만료 시각 계산
 
       return SendVerificationEmailResponse(
           expirationTime = expirationTime,
           validDuration = codeExpiry
       )
   }
-  ```
 
-  ```kotlin
   private fun sendEmail(email: String, verificationCode: String) {
       val codeExpiryMinutes = codeExpiry / 60
       val context = Context()
@@ -226,7 +250,8 @@ class RedisConfig(
               .withSource(emailFrom)
       sesClient.sendEmail(request)
   }
-  ```
+}
+```
     
 - 응답 예시
     
@@ -324,7 +349,7 @@ fun verifyEmail(email: String, code: String) {
 ![email-verification-page-error](/assets/img/project/sidaeting5/02-email-verification/email-verification-page-error.png)
 _에러 예시_
 
-- **예외 상황**
+- 예외 케이스
     - **이메일 형식**이 잘못된 경우.
     - 이메일이 **대학 도메인**이 아닌 경우.
     - **일일 발송 한도**를 초과한 경우.
@@ -343,8 +368,8 @@ _에러 예시_
   EMAIL_VERIFICATION_CODE_EXPIRED("E06", "Verification code expired.", HttpStatus.BAD_REQUEST.value()),
   ```
     
-- **예외 클래스 설정**
-    
+- 예외 클래스 예시
+
   ```kotlin
   class DailyEmailSendLimitExceededException :
       EmailLimitExceededException(ErrorCode.EMAIL_DAILY_SEND_LIMIT_EXCEEDED)
@@ -357,6 +382,9 @@ _에러 예시_
 - 다양한 케이스의 예외를 구분하지 않음: 인증코드가 일치하지 않는 경우와 만료된 경우 등의 예외처리를 추가하였다.
 
 ## 마치며
+
+![email usage](/assets/img/project/sidaeting5/02-email-verification/email-usage.png)
+_서비스 기간 일일 이메일 사용량_
 
 이메일 인증 기능은 이번 시대팅 개발에서 제일 먼저 구현했던 기능이다. 이메일 전송 기능 자체는 SES API를 사용하여 간단하게 구현이 가능했지만 인증 코드 검증, 인증 제한 관리 등을 구현하는 과정에서 했던 다양한 고민이 의미있었던 것 같다.
 

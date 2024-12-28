@@ -10,9 +10,9 @@ tags: [spring-boot, jwt, cookie]
 ![account server](/assets/img/project/sidaeting5/03-jwt/slack-noti-account-server-down.png)
 _잦은 에러로 인해 사용할 수 없었던 어카운트 서버_
 
-기존 시대생의 서비스들은 정기관 온프레미스(On-premise) 환경의 **어카운트 서버**를 사용하여 인증을 처리했다. 하지만 이 서버는 알 수 없는 원인으로 **간헐적인 다운타임**이 발생했고, 이로 인해 시대생 앱에서 사용자들의 로그인이 예기치 않게 풀리는 등 **사용자 경험을 저하**시키는 문제가 빈번하게 발생했다.
+기존 시대생의 서비스들은 정보기술관 온프레미스(On-premise) 환경의 **어카운트 서버**를 사용하여 인증을 처리했다. 하지만 이 서버는 알 수 없는 원인으로 **간헐적인 다운타임**이 발생했고, 이로 인해 시대생 앱에서 사용자들의 로그인이 예기치 않게 풀리는 등 **사용자 경험을 저하**시키는 문제가 빈번하게 발생했다.
 
-시대팅은 결제 기능이 포함된 서비스이며, 짧은 기간 동안 안정적인 운영이 필수적이었다. 따라서 불안정한 기존 어카운트 서버를 계속 사용하는 것은 서비스 운영에 큰 위험요소가 될 것이라 판단했다. 이에 회의를 통해 시대팅 내에서 **자체적으로 JWT 기반 인증 시스템을 구축**하고, 기존 온프레미스 환경 대신 **AWS 환경**에서 서비스를 운영하기로 결정했다.
+시대팅은 결제 기능이 포함된 서비스이며, 짧은 기간 동안 안정적인 운영이 필수적이었다. 따라서 불안정한 기존 어카운트 서버를 계속 사용하는 것은 서비스 운영에 큰 위험요소가 될 것이라 판단했다. 이에 회의를 통해 시대팅은 기존 온프레미스 환경 대신 **AWS 환경**에서 운영하고, **자체적인 JWT 인증 시스템**을 구축하기로 결정했다.
 
 ### JWT란?
 
@@ -55,6 +55,20 @@ _소셜 로그인 제안_
 우선 **액세스 토큰**과 **리프레시 토큰**의 역할을 각각 **인증**과 **세션 관리**로 구분하였다. 또한 액세스 토큰이 만료되었을 경우 **리프레시 토큰**을 이용해 **새로운 액세스 토큰을 재발급**하도록 하였다. (이후 개선과정에서 리프레시 토큰도 함께 재발급하도록 수정하였음)
 
 ### 설정
+
+- `build.gradle.kts`
+
+  ```kotlin
+  dependencies {
+      // spring security
+      implementation("org.springframework.boot:spring-boot-starter-security")
+
+      // jwt
+      compileOnly("io.jsonwebtoken:jjwt-api:0.12.6")
+      runtimeOnly("io.jsonwebtoken:jjwt-impl:0.12.6")
+      runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.12.6")
+  }
+  ```
 
 - **시크릿 키** (`.env`)
     
@@ -277,7 +291,7 @@ fun reissueTokens(request: HttpServletRequest): JwtResponse {
 1. 리프레시 토큰의 유효성 검증
 2. 리프레시 토큰이 저장된 쿠키 삭제
 
-![image.png](/assets/img/project/sidaeting5/03-jwt/dev-tools-logout.png)
+![image.png](/assets/img/project/sidaeting5/03-jwt/dev-tools-after-logout.png)
 
 - `AuthService.kt`
     
