@@ -1,5 +1,5 @@
 ---
-title: "Amazon SES를 사용해서 시대팅에 이메일 인증 기능 구현하기"
+title: "시대팅에 이메일 인증 기능 구현하기 with Amazon SES"
 date: 2024-12-15T09:00:00.000Z
 categories: [Project, 시대팅5]
 tags: [spring-boot, aws, redis]
@@ -7,9 +7,9 @@ mermaid: true
 ---
 
 ![email-verification-page](/assets/img/project/sidaeting5/02-email-verification/email-verification-page.png)
-_이메일 인증 페이지_
+_시대팅 이메일 인증 페이지_
 
-이 글에서는 AWS SDK를 이용한 Amazon SES 이메일 발송, Redis를 이용한 인증코드 저장 및 만료 관리, 일일 발송 및 인증 횟수 제한 구현 방법 등을 다룬다.
+이 글에서는 시대팅을 개발하며 AWS SDK를 이용한 Amazon SES 이메일 발송, Redis를 이용한 인증코드 관리, 사용량 제한 등의 이메일 인증 기능을 구현한 과정을 다룬다.
 
 ## 배경
 
