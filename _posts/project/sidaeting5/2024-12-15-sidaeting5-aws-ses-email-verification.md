@@ -399,5 +399,6 @@ _서비스 기간 일일 이메일 사용량_
 ## 참고자료
 
 - [Sending email through Amazon SES using an AWS SDK - Amazon Simple Email Service](https://docs.aws.amazon.com/ses/latest/dg/send-an-email-using-sdk-programmatically.html)
+- [[Django] AWS SES로 이메일 보내기](https://velog.io/@hnnynh/AWS-SES로-django에서-이메일-인증-코드-보내기)
 - [Spring - Redis를 사용해보자 — 개발하는 콩](https://green-bin.tistory.com/69)
 - [Spring kotlin RedisTemplate 사용법 \| Yoon Sung's Blog](https://unluckyjung.github.io/spring/2023/03/11/spring-redisTemplate/)

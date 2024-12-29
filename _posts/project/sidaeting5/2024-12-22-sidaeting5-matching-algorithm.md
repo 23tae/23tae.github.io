@@ -20,7 +20,7 @@ _시대팅 매칭 절차_
 ## 요구사항 분석
 
 ![questions](/assets/img/project/sidaeting5/06-matching-algorithm/question-page.png)
-_선호 항목 질문 페이지_
+_선호 정보 질문 페이지_
 
 이번 시즌에는 신청자들로부터 아래의 일곱 가지 항목의 선호 정보를 받도록 하였다.
 
@@ -39,6 +39,7 @@ _선호 항목 질문 페이지_
 따라서 이번 시즌에는 유저가 응답한 항목들은 **점수 계산에만 반영**되도록 하였다. 또한 유저가 가장 중요하다고 선택한 한 가지 항목에 대해서는 점수 계산시 **가중치를 부여**하여 계산하도록 하였다.
 
 ![image.png](/assets/img/project/sidaeting5/06-matching-algorithm/core-preference.png)
+_핵심 항목 선택 페이지_
 
 ### 요구사항 변경
 
@@ -47,7 +48,7 @@ _선호 항목 질문 페이지_
 ![algorithm comparison](/assets/img/project/sidaeting5/06-matching-algorithm/algorithm-comparison.png)
 _알고리즘별 매칭 품질 분석_
 
-이에 요구사항의 변경이 필요하다고 판단하여 슬랙에 **요구사항 변경을 제안**하는 글을 게시하였다. 주된 내용은 **핵심 항목 필터링**과 **가중치 강화**의 필요성이었다. 팀원들은 요구사항 변경에 동의하였지만, 한편으로는 **매칭 성공률이 감소**하고 **핵심 항목 외의 항목이 적게 반영**될 것을 우려하였다. 따라서 가중치는 기존의 3에서 지나치게 높이지 않도록 4로 조정하였고, 첫 번째 매칭에서 실패한 인원들을 대상으로 한 **2차 매칭**을 추가하였다.
+이에 요구사항의 변경이 필요하다고 판단하여 슬랙에서 **요구사항 변경을 제안**하였다. 주된 내용은 **핵심 항목 필터링**과 **가중치 강화**의 필요성이었다. 팀원들은 요구사항 변경에 동의하였지만, 한편으로는 **매칭 성공률이 감소**하고 **핵심 항목 외의 항목이 적게 반영**될 것을 우려하였다. 따라서 가중치는 기존의 3에서 지나치게 높이지 않도록 4로 조정하였고, 첫 번째 매칭에서 실패한 인원들을 대상으로 한 **2차 매칭**을 추가하였다.
 
 ![image.png](/assets/img/project/sidaeting5/06-matching-algorithm/slack-requirement-suggest.png)
 _요구사항 변경 제안_
@@ -127,11 +128,11 @@ graph LR
         def scoring(pivot, other):
             score = 0
         
-            # 얼굴상 매칭
+            # 얼굴상 비교
             if other['appearance'] in pivot['prefer_appearance']:
                 score += 1
         
-            # 쌍꺼풀 매칭
+            # 쌍꺼풀 비교
             if other['eyelid'] in pivot['prefer_eyelid']:
                 score += 1
         ```
@@ -283,3 +284,7 @@ _구간별 매칭 성공률 (좌측 상단)_
 
 ![course_frequency_wc.png](/assets/img/project/sidaeting5/06-matching-algorithm/course_frequency_wc.png)
 _유저들이 작성한 데이트 코스를 워드클라우드로 분석한 결과_
+
+## 참고자료
+- [matching - Allocating university medics to hospital placements](https://daffidwilde.github.io/matching/docs/tutorials/hospital_resident.html)
+- [Import/Export options from CSV to database - Features \| DataGrip](https://www.jetbrains.com/datagrip/features/importexport.html)

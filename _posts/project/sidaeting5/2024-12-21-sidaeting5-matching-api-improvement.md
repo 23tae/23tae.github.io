@@ -8,7 +8,7 @@ tags: [spring-boot, caching, redis]
 ## 배경
 
 ![match-result-page](/assets/img/project/sidaeting5/04-matching-api/match-result-page.png)
-_매칭 결과 페이지_
+_시대팅 매칭 결과 페이지_
 
 이번 시즌은 매칭 신청 기간 동안 1:1과 3:3 미팅에 대해 참가 신청을 받은 뒤, 매칭 알고리즘으로 매칭한 결과를 주말동안 공개하는 방식으로 운영하였다. 특히 매칭 결과 조회는 발표 당일 대규모 트래픽이 몰릴 것으로 예상되었고, 이를 효율적으로 처리하기 위해 API를 지속적으로 개선해야 했다.
 
@@ -92,7 +92,7 @@ class MatchingService() {
 
     @Cacheable(value = ["match-result"], key = "#meetingTeamId", unless = "#result == null")
     fun getMatchResult(userId: Long, meetingTeamId: Long): MatchResultResponse {
-        // 미팅 참여 여부 확인
+        // 미팅 신청 여부 확인
         val participation = getUserMeetingParticipation(userId)
         ...
     }
@@ -257,20 +257,20 @@ _Pull Request에서 받은 피드백_
               logger.info("[캐시 웜업 시작]")
       
               try {
-                  logger.info("[미팅 참여 정보 캐시 웜업 시작]")
+                  logger.info("[미팅 신청 정보 캐시 웜업 시작]")
                   val allUsers = userRepository.findAll()
                   allUsers.forEach { user ->
                       user.id?.let { userId ->
                           try {
                               matchingService.getUserMeetingParticipation(userId, season)
                           } catch (e: Exception) {
-                              logger.info("[미팅 참여 정보 캐시 웜업 실패] userId: $userId message: ${e.message}")
+                              logger.info("[미팅 신청 정보 캐시 웜업 실패] userId: $userId message: ${e.message}")
                           }
                       }
                   }
-                  logger.info("[미팅 참여 정보 캐시 웜업 완료] 대상 인원: ${allUsers.size}")
+                  logger.info("[미팅 신청 정보 캐시 웜업 완료] 대상 인원: ${allUsers.size}")
               } catch (e: Exception) {
-                  logger.error("[미팅 참여 정보 캐시 웜업 전체 실패] message: ${e.message}")
+                  logger.error("[미팅 신청 정보 캐시 웜업 전체 실패] message: ${e.message}")
               }
       
               try {
@@ -318,6 +318,8 @@ _Pull Request에서 받은 피드백_
 
 ## 참고자료
 
+- [대규모 트래픽 처리를 위한 시스템 설계 전략](https://f-lab.kr/insight/system-design-for-large-scale-traffic)
+- [스프링 대용량 트래픽 처리](https://www.nextree.io/seupeuring-daeyongryang-teuraepig-ceori/)
 - [caching - Spring cache @Cacheable method ignored when called from within the same class - Stack Overflow](https://stackoverflow.com/questions/12115996/spring-cache-cacheable-method-ignored-when-called-from-within-the-same-class)
 - [Invoke Spring @Cacheable from Another Method of Same Bean \| Baeldung](https://www.baeldung.com/spring-invoke-cacheable-other-method-same-bean)
 - [What is Cache Warming? - GeeksforGeeks](https://www.geeksforgeeks.org/what-is-cache-warming/)
