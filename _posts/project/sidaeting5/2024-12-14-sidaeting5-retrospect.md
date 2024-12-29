@@ -5,14 +5,11 @@ categories: [Project, 시대팅5]
 tags: [spring-boot]
 ---
 
+![poster](/assets/img/project/sidaeting5/01-retrospect/poster.jpg)
+
 ## 배경
 
-![start_page](/assets/img/project/sidaeting5/01-retrospect/start_page.png)
-_시대팅 시작 페이지_
-
-[시대팅 사이트](https://meeting5.uoslife.net/)
-
-**시대팅**은 서울시립대학교의 재학생들을 대상으로 한 **교내 소개팅 서비스**다. 교내 IT 동아리인 **시대생**에서 매 학기 이벤트성으로 여는 서비스로, 동아리 운영비 마련과 홍보 및 앱 사용자 유치를 목적으로 한다. 이번 시즌5 프로젝트는 내가 속한 TF에서 기존에 개발중이던 **맛집 혼잡도 서비스**가 의견 충돌로 무산된 후, 새로운 방향성을 모색하던 과정에서 조금은 갑작스럽게 채택되어 시작하게 되었다.
+**[시대팅]((https://meeting5.uoslife.net/))**은 서울시립대학교의 재학생들을 대상으로 한 **교내 소개팅 서비스**다. 교내 IT 동아리인 **시대생**에서 매 학기 이벤트성으로 여는 서비스로, 동아리 운영비 마련과 홍보 및 앱 사용자 유치를 목적으로 한다. 이번 시즌5 프로젝트는 내가 속한 TF에서 기존에 개발중이던 **맛집 혼잡도 서비스**가 의견 충돌로 무산된 후, 새로운 방향성을 모색하던 과정에서 조금은 갑작스럽게 채택되어 시작하게 되었다.
 
 **프로젝트 진행 기간**은 9월 30일부터 12월 9일까지였으며, 그 중 백엔드 개발은 11월 1일부터 12월 1일까지 이루어졌다. 서비스는 12월 2일부터 9일까지 운영되었으며, 신청 기간은 12월 2일부터 4일간, 결과 발표는 12월 7일부터 3일간 진행됐다.
 
@@ -46,6 +43,8 @@ _ERD_
 백엔드 아키텍처는 **EC2**에 **Docker** 컨테이너로 **Spring Boot**를 실행하고, **Redis**를 설치해 스프링 애플리케이션과 연결하는 방식으로 구성하였다. 데이터베이스는 **RDS(PostgreSQL)**를 사용했으며, 이메일 전송은 **Simple Email Service(SES)**를 통해 처리했다.
 
 ## 서비스 프로세스
+
+|![start_page 1](/assets/img/project/sidaeting5/01-retrospect/start_page-1.webp)|![start_page 2](/assets/img/project/sidaeting5/01-retrospect/start_page-2.webp)|
 
 ### 주요 흐름
 

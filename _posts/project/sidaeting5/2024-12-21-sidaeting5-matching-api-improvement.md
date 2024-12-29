@@ -7,8 +7,7 @@ tags: [spring-boot, caching, redis]
 
 ## 배경
 
-![match-result-page](/assets/img/project/sidaeting5/04-matching-api/match-result-page.png)
-_시대팅 매칭 결과 페이지_
+|![match result 1](/assets/img/project/sidaeting5/04-matching-api/match-result-page-1.png)|![match result 2](/assets/img/project/sidaeting5/04-matching-api/match-result-page-2.png)|![match result 3](/assets/img/project/sidaeting5/04-matching-api/match-result-page-3.png)|
 
 이번 시즌은 매칭 신청 기간 동안 1:1과 3:3 미팅에 대해 참가 신청을 받은 뒤, 매칭 알고리즘으로 매칭한 결과를 주말동안 공개하는 방식으로 운영하였다. 특히 매칭 결과 조회는 발표 당일 대규모 트래픽이 몰릴 것으로 예상되었고, 이를 효율적으로 처리하기 위해 API를 지속적으로 개선해야 했다.
 
@@ -312,7 +311,7 @@ _Pull Request에서 받은 피드백_
     _개선된 API 호출 시간_
     
 
-## 결론
+## 마치며
 
 이번 개선 작업으로 매칭 결과 발표일에 다수의 트래픽이 발생했음에도 서버가 안정적으로 운영될 수 있었다. 특히 API 호출 수를 줄이고 캐싱을 활용함으로써 데이터베이스 부하를 크게 줄일 수 있었다.
 

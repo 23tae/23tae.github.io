@@ -6,14 +6,13 @@ tags: [spring-boot, aws, redis]
 mermaid: true
 ---
 
-![email-verification-page](/assets/img/project/sidaeting5/02-email-verification/email-verification-page.png)
-_시대팅 이메일 인증 페이지_
+|![email verification page 1](/assets/img/project/sidaeting5/02-email-verification/email-verification-page-1.png)|![email verification page 2](/assets/img/project/sidaeting5/02-email-verification/email-verification-page-2.png)|![email verification page 3](/assets/img/project/sidaeting5/02-email-verification/email-verification-page-3.png)|
 
 이 글에서는 시대팅을 개발하며 AWS SDK를 이용한 Amazon SES 이메일 발송, Redis를 이용한 인증코드 관리, 사용량 제한 등의 이메일 인증 기능을 구현한 과정을 다룬다.
 
 ## 배경
 
-기존 시대생 앱에서는 어카운트 서버를 사용한 포털 인증으로 유저가 재학생임을 확인하였다. 하지만 이번 프로젝트는 어카운트 서버를 사용하지 않기로 결정하였기 때문에 별도의 인증 기능을 구현해야 했다. 또한 올해 상반기에 포털이 개편되면서 SSO를 사용할 수 없게 되었다. 따라서 대학 웹메일 인증을 통해 재학생임을 확인하기로 했다.
+기존 시대생 앱에서는 어카운트 서버를 사용한 **포털 인증**으로 유저가 재학생임을 확인하였다. 하지만 이번 프로젝트는 **어카운트 서버를 사용하지 않기로 결정**하였기 때문에 **별도의 재학생 인증 기능을 구현**해야 했다. 또한 올해 상반기에 포털이 개편되면서 포털 인증을 할 수 없게 되었다. 따라서 교내 웹메일 인증을 통해 재학생임을 확인하기로 했다.
 
 ## 요구사항 분석
 
@@ -368,8 +367,8 @@ class EmailVerificationService(
 
 ### 에러 처리
 
-![email-verification-page-error](/assets/img/project/sidaeting5/02-email-verification/email-verification-page-error.png)
-_에러 예시_
+|![email error 1](/assets/img/project/sidaeting5/02-email-verification/email-error-1.png)|![email error 2](/assets/img/project/sidaeting5/02-email-verification/email-error-2.png)|![email error 3](/assets/img/project/sidaeting5/02-email-verification/email-error-3.png)|![email error 4](/assets/img/project/sidaeting5/02-email-verification/email-error-4.png)|
+
 
 - 예외 케이스
     - **이메일 형식**이 잘못된 경우.

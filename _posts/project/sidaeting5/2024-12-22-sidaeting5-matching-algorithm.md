@@ -6,9 +6,11 @@ tags: [python]
 mermaid: true
 ---
 
+![match announcement](/assets/img/project/sidaeting5/06-matching-algorithm/match-announcement.jpg)
+
 ## 들어가며
 
-이번 시대팅 서비스의 핵심적인 역할을 한 매칭 알고리즘의 개발 과정을 공유하고자 한다. 이번에는 1대1 매칭과 3대3 매칭으로 역할을 나누어 개발을 진행했으며, 나는 그중 **1대1 매칭 알고리즘** 개발을 담당했다. 특히 이번 개발은 이전 시즌(시즌4) 알고리즘을 리팩토링하고 새로운 요구사항을 반영하는 데 중점을 두었다. 이 글에서는 1대1 매칭 알고리즘의 개발 과정, 주요 변경 사항, 그리고 개선 방향을 다룰 것이다.
+이번 시대팅 서비스의 핵심적인 역할을 한 매칭 알고리즘의 개발 과정을 공유하고자 한다. 이번에는 1대1 매칭과 3대3 매칭으로 역할을 나누어 개발을 진행했으며, 나는 그중 **1대1 매칭 알고리즘** 개발을 담당했다. 특히 이번 개발은 이전 시즌(시즌4) 알고리즘을 **리팩토링**하고 **새로운 요구사항을 반영**하는 데 중점을 두었다. 이 글에서는 1대1 매칭 알고리즘의 개발 과정, 주요 변경 사항, 그리고 개선 방향을 다룰 것이다.
 
 ### 매칭 절차
 
@@ -19,8 +21,7 @@ _시대팅 매칭 절차_
 
 ## 요구사항 분석
 
-![questions](/assets/img/project/sidaeting5/06-matching-algorithm/question-page.png)
-_선호 정보 질문 페이지_
+|![question 1](/assets/img/project/sidaeting5/06-matching-algorithm/question-page-1.png)|![question 2](/assets/img/project/sidaeting5/06-matching-algorithm/question-page-2.png)|![question 3](/assets/img/project/sidaeting5/06-matching-algorithm/question-page-3.png)|![question 4](/assets/img/project/sidaeting5/06-matching-algorithm/question-page-4.png)|
 
 이번 시즌에는 신청자들로부터 아래의 일곱 가지 항목의 선호 정보를 받도록 하였다.
 
@@ -39,7 +40,7 @@ _선호 정보 질문 페이지_
 따라서 이번 시즌에는 유저가 응답한 항목들은 **점수 계산에만 반영**되도록 하였다. 또한 유저가 가장 중요하다고 선택한 한 가지 항목에 대해서는 점수 계산시 **가중치를 부여**하여 계산하도록 하였다.
 
 ![image.png](/assets/img/project/sidaeting5/06-matching-algorithm/core-preference.png)
-_핵심 항목 선택 페이지_
+_핵심 선호 항목 선택 페이지_
 
 ### 요구사항 변경
 
