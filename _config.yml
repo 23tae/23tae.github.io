@@ -86,21 +86,21 @@ avatar: "/assets/img/logo.png"
 toc: true
 
 comments:
-  active: 'utterances'        # The global switch for posts comments, e.g., 'disqus'.  Keep it empty means disable
+  active: 'giscus'        # The global switch for posts comments, e.g., 'disqus'.  Keep it empty means disable
   # The active options are as follows:
   disqus:
     shortname:    # fill with the Disqus shortname. › https://help.disqus.com/en/articles/1717111-what-s-a-shortname
   # utterances settings › https://utteranc.es/
   utterances:
-    repo: 23tae/comments        # <gh-username>/<repo> (repo must be public!)
-    issue_term: pathname  # < url | pathname | title | ...>
+    repo: '23tae/comments'        # <gh-username>/<repo> (repo must be public!)
+    issue_term: 'pathname'  # < url | pathname | title | ...>
   # Giscus options › https://giscus.app
   giscus:
-    repo:             # <gh-username>/<repo>
-    repo_id:
-    category:
-    category_id:
-    mapping:          # optional, default to 'pathname'
+    repo: '23tae/blog-comments'             # <gh-username>/<repo>
+    repo_id: 'R_kgDONjb5lQ'
+    category: 'Comments'
+    category_id: 'DIC_kwDONjb5lc4Clldm'
+    mapping: 'pathname'          # optional, default to 'pathname'
     input_position:   # optional, default to 'bottom'
     lang:             # optional, default to the value of `site.lang`
 
@@ -113,7 +113,7 @@ assets:
     env:          # [development|production]
 
 pwa:
-  enabled: true   # the option for PWA feature
+  enabled: false   # the option for PWA feature
 
 paginate: 10
 
