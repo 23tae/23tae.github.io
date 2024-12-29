@@ -92,8 +92,8 @@ comments:
     shortname:    # fill with the Disqus shortname. › https://help.disqus.com/en/articles/1717111-what-s-a-shortname
   # utterances settings › https://utteranc.es/
   utterances:
-    repo: '23tae/comments'        # <gh-username>/<repo> (repo must be public!)
-    issue_term: 'pathname'  # < url | pathname | title | ...>
+    repo:         # <gh-username>/<repo> (repo must be public!)
+    issue_term:   # < url | pathname | title | ...>
   # Giscus options › https://giscus.app
   giscus:
     repo: '23tae/blog-comments'             # <gh-username>/<repo>
