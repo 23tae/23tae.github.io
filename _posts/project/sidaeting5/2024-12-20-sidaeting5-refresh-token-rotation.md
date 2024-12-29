@@ -1,6 +1,6 @@
 ---
-title: "Refresh Token Rotation으로 보안 강화하기"
-date: 2024-12-20T08:00:00.000Z
+title: "Refresh Token Rotation으로 JWT 보안 강화하기"
+date: 2024-12-20T11:00:00.000Z
 categories: [Project, 시대팅5]
 tags: [spring-boot, jwt, cookie]
 mermaid: true
@@ -11,7 +11,7 @@ mermaid: true
 ![image.png](/assets/img/project/sidaeting5/03-jwt/refresh-token-rotation-example.png)
 _출처: https://auth0.com/blog/refresh-tokens-what-are-they-and-when-to-use-them_
 
-JWT 인증 기능을 개발할 당시에는 토큰 재발급시 **액세스 토큰만 재발급**하도록 구현했었다. 시대팅의 운영 기간은 짧았기 때문에 리프레시 토큰의 유효 기간을 7일로 설정하고, 재발급 없이 액세스 토큰만 갱신하는 방식을 선택했었다. 그러나 이 방식은 **리프레시 토큰이 탈취**될 경우, 공격자가 해당 토큰을 이용해 액세스 토큰을 재발급받을 수 있다는 보안 취약점이 존재했다. 이 문제를 해결할 방법을 찾던 중 **Refresh Token Rotation**을 알게 되었다.
+[JWT 인증 기능을 개발](../sidaeting5-jwt-authentication/)할 당시에는 토큰 재발급시 **액세스 토큰만 재발급**하도록 구현했었다. 시대팅의 운영 기간은 짧았기 때문에 리프레시 토큰의 유효 기간을 7일로 설정하고, 재발급 없이 액세스 토큰만 갱신하는 방식을 선택했었다. 그러나 이 방식은 **리프레시 토큰이 탈취**될 경우, 공격자가 해당 토큰을 이용해 액세스 토큰을 재발급받을 수 있다는 보안 취약점이 존재했다. 이 문제를 해결할 방법을 찾던 중 **Refresh Token Rotation**을 알게 되었다.
 
 ### Refresh Token Rotation이란?
 
@@ -74,7 +74,7 @@ sequenceDiagram
 
 **토큰 재발급**
 
-토큰 재발급 과정에서 Redis에 저장된 리프레시 토큰을 통해 유효성을 검증하고, 새로운 토큰을 발급한다. 이 과정에서 기존 토큰은 무효화하고 새로운 토큰을 저장한다.
+Redis에 저장된 리프레시 토큰을 통해 유효성을 검증하고, 새로운 토큰을 발급한다. 이 과정에서 기존 토큰을 무효화하고 새로 발급한 토큰을 저장한다.
 
 - `AuthService.kt`
     

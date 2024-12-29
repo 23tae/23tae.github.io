@@ -85,14 +85,17 @@ giscus는 **Public 저장소**에서만 작동한다. 내 블로그 저장소는
 위에서 생성한 스크립트를 바탕으로 `_config.yml` 파일을 설정한다.
 
 ```yaml
-giscus:
-  repo: 'your-github-username/blog-comments'
-  repo_id: 'your-data-repo-id'
-  category: 'Comments'
-  category_id: 'your-data-category-id'
-  mapping: 'pathname'
-  input_position:   # optional, default to 'bottom'
-  lang:             # optional, default to the value of `site.lang`
+comments:
+  active: 'giscus'
+
+  giscus:
+    repo: 'your-github-username/blog-comments'
+    repo_id: 'your-data-repo-id'
+    category: 'Comments'
+    category_id: 'your-data-category-id'
+    mapping: 'pathname'
+    input_position:   # optional, default to 'bottom'
+    lang:             # optional, default to the value of `site.lang`
 ```
 
 ## 결과

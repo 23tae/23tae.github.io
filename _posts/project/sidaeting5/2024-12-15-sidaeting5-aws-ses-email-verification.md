@@ -269,25 +269,47 @@ class EmailVerificationService(
 - **구현 내용**:
     - 사용자가 입력한 이메일과 인증코드를 검증한다.
     - Redis에서 해당 이메일의 인증코드를 조회하고 만료 여부를 확인한다.
-    - 검증 성공 시 Redis에서 인증코드를 삭제한다.
-    - 인증 시도 횟수를 관리하여, 초과 시 에러를 반환한다.
+    - 검증 성공 시 유저를 생성(등록되지 않은 유저인 경우)한 뒤 토큰을 반환한다.
+    - 검증 실패 시 에러를 반환한다.
 
 **관련 코드**
 
-```kotlin
-fun verifyEmail(email: String, code: String) {
-    // 인증 횟수 확인
-    validateVerificationAttempts(email)
-    incrementVerificationAttempts(email)
+- `VerificationApi.kt`
 
-    // 인증 코드 검증
-    val redisCode = getVerificationCode(email)
-    validateVerificationCode(redisCode, code)
+  ```kotlin
+  @PostMapping("/verify-email")
+  fun verifyEmail(
+      @Valid @RequestBody body: VerifyEmailRequest,
+      request: HttpServletRequest,
+      response: HttpServletResponse
+  ): ResponseEntity<JwtResponse> {
+      val requestInfo = requestUtils.toRequestInfoDto(request)
+      emailVerificationService.verifyEmail(body.email, body.code, requestInfo)
 
-    // 인증 성공한 코드 삭제
-    clearVerificationData(email)
-}
-```
+      val user = userService.getOrCreateUser(body.email)
+
+      val accessToken = authService.issueTokens(user.id!!, response)
+
+      return ResponseEntity.ok(accessToken)
+  }
+  ```
+
+- `VerificationService.kt`
+
+  ```kotlin
+  fun verifyEmail(email: String, code: String) {
+      // 인증 횟수 확인
+      validateVerificationAttempts(email)
+      incrementVerificationAttempts(email)
+
+      // 인증 코드 검증
+      val redisCode = getVerificationCode(email)
+      validateVerificationCode(redisCode, code)
+
+      // 인증 성공한 코드 삭제
+      clearVerificationData(email)
+  }
+  ```
 
 ### 사용량 제한 구현
 

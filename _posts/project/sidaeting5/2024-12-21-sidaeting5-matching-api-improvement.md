@@ -48,7 +48,7 @@ _ERD_
 
 기존 API 엔드포인트는 아래와 같았다.
 
-1. `GET /api/match/me/participations` : 유저의 시대팅 신청 여부를 조회
+1. `GET /api/match/me/participations` : 유저의 미팅 신청 내역을 조회
 2. `GET /api/match/teams/{meetingTeamId}/result` : 유저의 매칭 결과를 조회
 3. `GET /api/match/{matchId}/partner` : 유저의 매칭 상대 정보를 조회
 
@@ -212,8 +212,8 @@ _Pull Request에서 받은 피드백_
 
 우선 API 엔드포인트 구조를 다음과 같이 변경했다.
 
-1. `GET /api/match/me/participations` (기존과 동일)
-2. `GET /api/match/{teamType}/info` : 유저의 매칭 정보를 조회
+1. 신청 내역 조회: `GET /api/match/me/participations` (기존과 동일)
+2. 매칭 결과 조회: `GET /api/match/{teamType}/info`
 
 이렇게 하여 API 호출 간의 의존성을 제거하고 클라이언트 데이터 흐름을 간소화하였고 API 호출 횟수를 줄였다. 또 경로 파라미터로 미팅 유형(`teamType`)을 받아 리소스를 명확하게 구분하였으며 추후 시즌이 거듭될 경우를 고려하여 쿼리 파라미터로 시즌 정보(`season`)을 받도록 하였다.
 
@@ -236,6 +236,8 @@ _Pull Request에서 받은 피드백_
 - **캐시 워밍(Cache Warming) 도입**
     - 매칭 데이터를 **미리 캐시에 적재**하여 발표 시점에 대규모 트래픽의 캐시 미스(cache miss)로 인한 서버 과부하를 방지했다.
     - 이를 위해 Admin API에 **캐시 초기화**를 수행하는 API를 구현하였다.
+
+      API 엔드포인트: `POST /api/admin/cache/warmup`
         
       ```kotlin
       class AdminApi() {
