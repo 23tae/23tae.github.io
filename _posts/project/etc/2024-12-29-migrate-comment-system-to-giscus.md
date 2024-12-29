@@ -19,7 +19,7 @@ _utterances에서 댓글을 관리하던 방식_
 - **설치와 사용이 간단함**: 간단한 스크립트 삽입만으로 적용 가능.
 - **데이터베이스 관리 불필요**: 별도 서버 없이 GitHub Issues로 댓글 저장.
 - **GitHub 인증 지원**: GitHub 계정으로 로그인 가능.
-- **광고 없음:** 깔끔한 사용자 경험 제공.
+- **광고 없음:** 더 나은 사용자 경험 제공.
 
 그 이후로 별다른 문제 없이 계속 **utterances**를 사용해왔다.
 
@@ -50,7 +50,7 @@ giscus는 **Public 저장소**에서만 작동한다. 내 블로그 저장소는
             
             ![create category](/assets/img/project/etc/migrate-comment-system-to-giscus/github-discussions-create-category.png)
             
-        2. 기본 카테고리는 삭제
+        2. 기존 카테고리 삭제
             
             ![manage category](/assets/img/project/etc/migrate-comment-system-to-giscus/github-discussion-manage-category.png)
             

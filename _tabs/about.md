@@ -13,9 +13,9 @@ order: 4
 - 서울시립대학교 (2017 ~ )
 - 42 Seoul (2022 ~ )
 
-### Activities
+### Career
 
-- IT 동아리 [시대생](https://www.uoslife.team/) (2024 ~ )
+- **시립대 IT 동아리 [시대생](https://www.uoslife.team/)** 백엔드 개발자 (2024.04.01 ~ )
 
 ### Skills
 
