@@ -163,17 +163,6 @@ class AsyncEmailService(
 }
 ```
 
-**성능 개선 결과**
-
-비동기 처리를 적용한 결과, API 응답 시간이 90% 이상 단축되었다.
-
-- **기존 방식:** 1417ms
-- **개선된 방식:** 136ms
-
-![image.png](/assets/img/project/sidaeting5/02-email-verification/after-async.png)
-_개선된 API 호출 시간_
-
-
 ### 기타 개선 사항
 
 **로직 분리**
@@ -203,7 +192,11 @@ object VerificationConstants {
 
 ## 결론
 
-1. **성능 개선:** 이메일 전송 비동기 처리를 통해 API 응답 시간을 단축시켰다.
+1. **성능 개선:** 이메일 전송 비동기 처리를 통해 API 응답 시간을 90% 이상 단축시켰다.
+  - **기존 방식:** 1417ms
+  - **개선된 방식:** 136ms
+  ![image.png](/assets/img/project/sidaeting5/02-email-verification/after-async.png)
+  _개선된 API 호출 시간_
 2. **안정성 향상:** 비동기 작업 실패 시 로깅 및 재처리 기능을 추가하여 신뢰성을 확보하였다.
 3. **코드 구조 개선:** 로직 분리와 유틸리티화를 통해 코드 유지보수가 용이하도록 하였다.
 
