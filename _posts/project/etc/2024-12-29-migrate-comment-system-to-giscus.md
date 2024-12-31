@@ -108,6 +108,6 @@ _답글과 이모지 모두 확인할 수 있다_
 
 ## 참고 자료
 
-- [Giscus 공식 설정 가이드](https://giscus.app/ko)
+- [giscus](https://giscus.app/ko)
 - [GitHub 블로그에 댓글 기능 추가하기 (giscus) \| 아무튼 워라밸](https://hleecaster.github.io/posts/github_blog_giscus/)
 - [[Blog] GitHub Blog Giscus 댓글 설정 방법 \| 찬스의 개발 블로그 : Chance Devlog](https://blog.false.kr/posts/Personal/Blog/GitHub-Blog-Giscus-Setting.html)
