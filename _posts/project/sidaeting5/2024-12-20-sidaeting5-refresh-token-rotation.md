@@ -40,12 +40,15 @@ sequenceDiagram
     Server->>Redis: refresh token 검증
     Note over Server, Redis: 토큰 재사용 여부 확인
 
+    Server->>Server: 토큰 생성 (access, refresh)
+
     Server->>Redis: 기존 refresh token 무효화
-    Note over Server, Redis: 해당 유저의 토큰 정보를 업데이트
+    Note over Server, Redis: 해당 유저의 토큰 현황을 업데이트
 
-    Server-->>Client: 새로운 토큰 발급 (access, refresh)
+    Server-->>Client: 새로운 토큰 반환
+    Note over Server, Client: access, refresh
 
-    Client->Client: 토큰 업데이트
+    Client->>Client: 토큰 업데이트
 ```
 
 ### 리프레시 토큰 관리: PostgreSQL vs Redis

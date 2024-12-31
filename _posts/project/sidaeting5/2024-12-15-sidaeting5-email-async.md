@@ -67,39 +67,39 @@ _기존 API 호출 시간_
 
 ```mermaid
 sequenceDiagram
-    participant client as Client
-    participant server as Server
-    participant redis as Redis
+    participant C as Client
+    participant S as Server
+    participant R as Redis
     participant ses as SES
 
-    client->>server: 인증 메일 전송 요청
+    C->>S: 인증 메일 전송 요청
     
-    Note over server: 이메일 형식 검사
+    S->>S: 이메일 형식 검사
     
-    server->>redis: 일일 발송 횟수 조회
-    redis-->>server: 발송 횟수 반환
-    Note over server: 발송 제한 확인
+    S->>R: 일일 발송 횟수 조회
+    R-->>S: 발송 횟수 반환
+    S->>S: 발송 제한 확인
     
-    server->>client: 인증 만료시간 반환
+    S-->>C: 인증 만료시간 반환
     
-    Note over server: 비동기 처리 시작
+    Note over S: 비동기 처리 시작
     
-    activate server
-    Note over server: 인증코드 생성
+    activate S
+    S->>S: 인증코드 생성
     
-    server->>redis: 인증코드 저장
+    S->>R: 인증코드 저장
     
-    server->>redis: 발송 횟수 증가
+    S->>R: 발송 횟수 증가
     
-    server->>ses: 인증 메일 발송
-    ses-->>server: 발송 결과 전달
+    S->>ses: 인증 메일 발송
+    ses-->>S: 발송 결과 전달
     
     alt 발송 성공
-        Note over server: 성공 이력 기록
+        S->S: 성공 이력 기록
     else 발송 실패
-        Note over server: 실패 이력 기록
+        S->S: 실패 이력 기록
     end
-    deactivate server
+    deactivate S
 ```
 
 **관련 코드**
