@@ -5,7 +5,8 @@ categories: [Project, 시대팅5]
 tags: [회고]
 ---
 
-![poster](/assets/img/project/sidaeting5/01-retrospect/poster.jpg)
+![poster](/assets/img/project/sidaeting5/01-retrospect/poster.jpg){: width="70%" style="display: block; margin: auto; "}
+_시대팅 포스터_
 
 ## 배경
 

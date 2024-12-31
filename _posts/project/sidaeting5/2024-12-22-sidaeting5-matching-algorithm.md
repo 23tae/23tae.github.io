@@ -35,12 +35,13 @@ _시대팅 매칭 절차_
 
 ### 이전 시즌과의 차이점
 
-시즌4에서는 유저가 응답한 모든 항목들에 대해 100% 만족하는 상대를 매칭시켜주도록 **모든 항목에 대해 필터링**을 적용했다. 즉, 모든 항목을 만족하지 않는다면 매칭 상대에서 제외되는 방식이었다. 하지만 이러한 방식은 매칭 성공률을 낮출 가능성이 존재한다.
+시즌4에서는 유저가 응답한 모든 항목들에 대해 100% 만족하는 상대를 매칭시켜주도록 **모든 항목에 대해 필터링**을 적용했다. 즉, 모든 항목을 만족하지 않는다면 매칭 상대에서 제외되는 방식이었다. 하지만 이러한 방식은 매칭 성공률을 낮출 가능성이 존재한다. 따라서 이번 시즌에는 유저가 응답한 항목들은 **점수 계산에만 반영**되도록 하였다.
 
-따라서 이번 시즌에는 유저가 응답한 항목들은 **점수 계산에만 반영**되도록 하였다. 또한 유저가 가장 중요하다고 선택한 한 가지 항목에 대해서는 점수 계산시 **가중치를 부여**하여 계산하도록 하였다.
-
-![image.png](/assets/img/project/sidaeting5/06-matching-algorithm/core-preference.png)
+![image.png](/assets/img/project/sidaeting5/06-matching-algorithm/core-preference.png){: width="40%" style="display: block; margin: auto; "}
 _핵심 선호 항목 선택 페이지_
+
+또한 유저가 가장 중요하다고 선택한 한 가지 항목에 대해서는 점수 계산시 **가중치를 부여**하여 계산하도록 하였다.
+
 
 ### 요구사항 변경
 
@@ -268,7 +269,7 @@ graph LR
 <남성>
 평균 나이: 23.8세
 평균 키: 175.4cm
-주요 MBTI: INTP, INTP, ENTP
+주요 MBTI: INTP, ISTP, ENTP
 선호 얼굴상: 중간
 선호 쌍꺼풀: 유쌍
 선호 MBTI: ENFJ
@@ -279,7 +280,7 @@ graph LR
 <여성>
 평균 나이: 22.5세
 평균 키: 162.5cm
-주요 MBTI: ISTP, ISTP, ISFP
+주요 MBTI: ISTP, INTP, ISFP
 선호 얼굴상: 중간
 선호 쌍꺼풀: 속쌍
 선호 MBTI: ENFJ
@@ -287,7 +288,7 @@ graph LR
 본인 학과 기피 비율: 58.0%
 ```
 
-![course_frequency_wc.png](/assets/img/project/sidaeting5/06-matching-algorithm/course_frequency_wc.png)
+![course_frequency_wc.png](/assets/img/project/sidaeting5/06-matching-algorithm/course_frequency_wc.png){: width="70%" style="display: block; margin: auto; "}
 _유저들이 작성한 데이트 코스를 워드클라우드로 분석한 결과_
 
 ## 참고자료
