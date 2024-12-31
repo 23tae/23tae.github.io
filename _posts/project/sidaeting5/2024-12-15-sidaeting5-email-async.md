@@ -94,11 +94,7 @@ sequenceDiagram
     S->>ses: 인증 메일 발송
     ses-->>S: 발송 결과 전달
     
-    alt 발송 성공
-        S->S: 성공 이력 기록
-    else 발송 실패
-        S->S: 실패 이력 기록
-    end
+    S->S: 발송 이력 기록
     deactivate S
 ```
 
