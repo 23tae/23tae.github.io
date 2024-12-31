@@ -35,7 +35,7 @@ order: 4
   - 월별 일정 조회, 내 일정 조회, 일정 검색 기능 담당
 
 - [시대팅 시즌5](https://meeting5.uoslife.net/) (2024.09 ~ 12)
-  - Spring Boot (Kotlin), JPA, Redis, Python
+  - Spring Boot (Kotlin), JPA, Redis, Python, AWS
   - 이메일 인증, JWT 인증, 매칭 결과 조회 기능, 매칭 알고리즘 담당
   - 비동기 처리를 통해 API 성능 90% 개선
   - 캐싱 전략 도입으로 대규모 트래픽 처리 및 API 성능 97% 개선
