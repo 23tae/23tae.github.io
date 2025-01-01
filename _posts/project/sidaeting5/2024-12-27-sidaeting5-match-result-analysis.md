@@ -46,34 +46,81 @@ _이진 분류 예시_
 
 ### 분석 데이터 소개
 
-분석에 사용한 데이터는 **1대1 미팅을 신청한 남성** 유저들의 정보이다(여성은 전원 매칭되어 제외). 이 데이터에서 매칭이 성공했는지 여부(`is_matched`)는 타겟 변수로, 팀 ID(`team_id`), 나이(`age`), 키(`height`)는 독립 변수로 설정하였다.
+**데이터 예시**
+
+|team_id|is_matched|age|height|prefer_age_min|prefer_age_max|prefer_height_min|prefer_height_max|prefer_appearance|prefer_eyelid|prefer_smoking|prefer_mbti|
+|-------|----------|---|------|--------------|--------------|-----------------|-----------------|-----------------|-------------|--------------|-----------|
+|1    |false     |23 |176   |21            |30            |150              |190              |ARAB,NORMAL,TOFU |DOUBLE       |FALSE         |ESNFJP     |
+|2    |true      |27 |181   |23            |30            |165              |190              |NORMAL,TOFU      |DOUBLE,INNER|FALSE         |ISNFJP     |
+
+> 참고: 원본 데이터에 마스킹을 적용한 가명 데이터임.
+
+분석에 사용한 데이터는 **1대1 미팅을 신청한 남성** 유저들의 정보이다(여성은 전원 매칭되어 제외). 이 데이터에서 매칭이 성공했는지 여부(`is_matched`)는 타겟 변수로, 팀 ID(`team_id`), 나이(`age`), 키(`height`), 선호 설정 범위 점수(`preference_range_score`)는 독립 변수로 설정하였다.
+
+**선호 설정 범위 점수**: 유저가 설정한 선호 항목들의 범위가 얼마나 넓거나 좁은지를 나타내는 값이다. 이 점수는 유저가 각 항목(나이, 키, 얼굴상, 눈꺼풀, 흡연 여부, mbti)에 대해 설정한 선호 범위를 계산한 결과로, 유저가 범위를 넓게 설정할수록 더 높은 점수가 부여된다. 즉, 유저의 선호 항목 설정이 얼마나 유연하게 이루어졌는지를 나타낸다.
 
 ### 분석 과정
 
-먼저, 데이터를 불러온 뒤 확인하고자 하는 변수를 선택했다. 이후 데이터를 훈련용 데이터와 테스트용 데이터로 나누고, `statsmodels`의 `Logit` 함수를 사용하여 로지스틱 회귀 모델을 학습시켰다. 마지막으로 회귀 분석 결과를 출력하여 변수들의 영향도를 확인했다.
+먼저, 데이터를 불러온 뒤 선호 설정 범위 점수를 계산하였다. 이후 확인하고자 하는 변수를 선택하고 데이터를 훈련용과 테스트용으로 나누었다. 마지막으로 `statsmodels`의 `Logit` 함수를 사용하여 로지스틱 회귀 모델을 학습시키고 그 결과를 출력했다.
 
 ```python
 import pandas as pd
 import statsmodels.api as sm
 from sklearn.model_selection import train_test_split
 
+# 데이터 로드
 df = pd.read_csv('./data/single_male.csv')
 
+APPEARANCE_TYPE = ["ARAB", "NORMAL", "TOFU"]
+EYELID_TYPE = ["DOUBLE", "SINGLE", "INNER"]
+SMOKING_TYPE = ["CIGARETTE", "E_CIGARETTE", "FALSE"]
+
+# 선호 비율 계산
+def calculate_age_ratio(prefer_age_min, prefer_age_max):
+    return (prefer_age_max - prefer_age_min + 1) / 11  # 20~30세
+
+def calculate_height_ratio(prefer_height_min, prefer_height_max):
+    return (prefer_height_max - prefer_height_min + 1) / 41  # 150~190cm
+
+def calculate_mbti_ratio(prefer_mbti):
+    return len(prefer_mbti) / 8
+
+def calculate_preference_ratio(preference_column, options):
+    selected_preferences = preference_column.split(",")
+    return len(selected_preferences) / len(options)
+
+df['appearance_ratio'] = df['prefer_appearance'].apply(lambda x: calculate_preference_ratio(x, APPEARANCE_TYPE))
+df['eyelid_ratio'] = df['prefer_eyelid'].apply(lambda x: calculate_preference_ratio(x, EYELID_TYPE))
+df['smoking_ratio'] = df['prefer_smoking'].apply(lambda x: calculate_preference_ratio(x, SMOKING_TYPE))
+df['age_ratio'] = df.apply(lambda x: calculate_age_ratio(x['prefer_age_min'], x['prefer_age_max']), axis=1)
+df['height_ratio'] = df.apply(lambda x: calculate_height_ratio(x['prefer_height_min'], x['prefer_height_max']), axis=1)
+df['mbti_ratio'] = df['prefer_mbti'].apply(calculate_mbti_ratio)
+
+# 선호 설정 범위 점수 계산
+df['preference_range_score'] = (
+    df['appearance_ratio'] *
+    df['eyelid_ratio'] *
+    df['smoking_ratio'] *
+    df['age_ratio'] *
+    df['height_ratio'] *
+    df['mbti_ratio']
+)
+
 # 주요 변수 선택
-features = ['team_id', 'age', 'height']
+features = ['team_id', 'age', 'height', 'preference_range_score']
 target = 'is_matched'
 
 X = df[features]
 y = df[target]
 
-# 모델 학습을 위한 데이터 준비
+# 훈련, 테스트 데이터 분리
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-# statsmodels 로지스틱 회귀
+# 상수항 추가
 X_train_transformed = sm.add_constant(X_train)
 X_test_transformed = sm.add_constant(X_test)
 
-# 로지스틱 회귀 모델 학습
+# 모델 학습
 logit_model = sm.Logit(y_train, X_train_transformed)
 result = logit_model.fit()
 
@@ -87,36 +134,38 @@ print(result.summary())
 
 ```
 Optimization terminated successfully.
-         Current function value: 0.318716
+         Current function value: 0.317971
          Iterations 8
                            Logit Regression Results                           
 ==============================================================================
 Dep. Variable:             is_matched   No. Observations:                  432
-Model:                          Logit   Df Residuals:                      428
-Method:                           MLE   Df Model:                            3
-Date:                Tue, 10 Dec 2024   Pseudo R-squ.:                  0.4980
-Time:                        09:06:03   Log-Likelihood:                -137.69
+Model:                          Logit   Df Residuals:                      427
+Method:                           MLE   Df Model:                            4
+Date:                Mon, 09 Dec 2024   Pseudo R-squ.:                  0.4992
+Time:                        14:57:24   Log-Likelihood:                -137.36
 converged:                       True   LL-Null:                       -274.28
-Covariance Type:            nonrobust   LLR p-value:                 6.329e-59
-==============================================================================
-                 coef    std err          z      P>|z|      [0.025      0.975]
-------------------------------------------------------------------------------
-const        -55.4298      7.937     -6.984      0.000     -70.986     -39.874
-team_id        0.0090      0.001      9.981      0.000       0.007       0.011
-age            0.0484      0.064      0.752      0.452      -0.078       0.174
-height         0.2587      0.040      6.401      0.000       0.179       0.338
-==============================================================================
+Covariance Type:            nonrobust   LLR p-value:                 4.780e-58
+==========================================================================================
+                             coef    std err          z      P>|z|      [0.025      0.975]
+------------------------------------------------------------------------------------------
+const                    -55.6472      7.975     -6.977      0.000     -71.279     -40.016
+team_id                    0.0090      0.001      9.983      0.000       0.007       0.011
+age                        0.0493      0.064      0.768      0.443      -0.077       0.175
+height                     0.2602      0.041      6.401      0.000       0.181       0.340
+preference_range_score    -0.5935      0.741     -0.801      0.423      -2.046       0.859
+==========================================================================================
 ```
 
 **주요 변수 해석**
 
-- **팀 ID (`team_id`)**: 팀 ID는 매칭 성공률에 중요한 영향을 미쳤다. 회귀 계수(coef)는 0.009로, 팀 ID가 증가할수록 매칭 성공 확률이 증가한다는 것을 의미한다. p-value는 0.000으로 매우 유의미한 변수이다.
-- **키 (`height`)**: 키는 매칭 성공률에 큰 영향을 미쳤다. 회귀 계수(coef)는 0.2587로, 키가 증가할수록 매칭 성공 확률이 높아진다. p-value는 0.000으로 매우 유의미한 변수이다.
-- **나이 (`age`)**: 나이는 매칭 성공률에 유의미한 영향을 미치지 않았다. 회귀 계수(coef)는 0.0484로 미미한 영향을 주지만, p-value가 0.452로 통계적으로 유의미하지 않다.
+- **팀 ID (`team_id`)**: 팀 ID는 매칭 성공률에 중요한 영향을 미쳤다. 회귀 계수(coef)는 0.009로, 팀 ID가 증가할수록 매칭 성공 확률이 증가한다는 것을 의미한다. p-value는 0.000으로 매우 유의미한 변수로 확인되었다.
+- **나이 (`age`)**: 나이는 매칭 성공률에 유의미한 영향을 미치지 않았다. 회귀 계수(coef)는 0.0.0493로 미미한 영향을 주지만, p-value가 0.443로 통계적으로 유의미하지 않았다.
+- **키 (`height`)**: 키는 매칭 성공률에 중요한 영향을 미쳤다. 회귀 계수(coef)는 0.2602로, 키가 증가할수록 매칭 성공 확률이 높아진다는 것을 의미한다. p-value는 0.000으로 매우 유의미한 변수이다.
+- **선호 설정 범위 점수(`preference_range_score`)**: 선호 설정 범위 점수는 매칭 성공률에 부정적인 영향을 미쳤다. 회귀 계수(coef)는 -0.5935로, 점수가 높을수록 매칭 성공 확률이 낮아지는 경향이 있었다. 그러나 p-value가 0.423으로 유의미하지 않은 변수로 확인되었다.
 
 **결과 해석**
 
-로지스틱 회귀 분석을 통해, **팀 ID와 키가 매칭 성공률에 중요한 영향**을 미친다는 결과를 얻을 수 있었다. 특히 팀 ID는 매칭 성공률과의 상관관계가 강하게 나타났는데, 이는 신청 시점이 성공률에 영향을 미쳤음을 시사한다. 키 또한 매칭 성공률에 중요한 요소로 작용했는데, 여성 참가자가 핵심 선호 항목으로 키를 선택한 것이 원인으로 보인다.
+로지스틱 회귀 분석을 통해, **팀 ID와 키가 매칭 성공률에 중요한 영향**을 미친다는 결과를 얻을 수 있었다. 특히 팀 ID는 매칭 성공률과의 상관관계가 강하게 나타났는데, 이는 신청 시점이 성공률에 영향을 미쳤음을 시사한다. 키 또한 중요한 변수로, 키가 높은 사람일수록 매칭 성공 확률이 높아진다는 결과가 나왔다. 이는 여성 참가자들이 키를 핵심 선호 항목으로 선택한 경향성 때문인 것으로 보인다. 반면, 나이와 선호 설정 범위 점수는 매칭 성공률에 유의미한 영향을 미치지 않았다.
 
 ## 매칭 성공률 시각화
 
