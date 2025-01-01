@@ -22,7 +22,7 @@ order: 4
 
 ## Skills
 
-- Kotlin, Python, TypeScript
+- Python, Kotlin, TypeScript
 - Spring Boot, NestJS, FastAPI
 - PostgreSQL, Redis
 - JPA, QueryDSL, TypeORM
@@ -30,7 +30,7 @@ order: 4
 
 ## Projects
 
-- 시대생 학사일정 서비스 (2024.05 ~ 07)
+- [시대생](https://apps.apple.com/kr/app/시대생-내-손안의-서울시립대학교/id1514073192) 학사일정 서비스 (2024.05 ~ 07)
   - Spring Boot (Kotlin), JPA
   - 월별 일정 조회, 내 일정 조회, 일정 검색 기능 담당
 
