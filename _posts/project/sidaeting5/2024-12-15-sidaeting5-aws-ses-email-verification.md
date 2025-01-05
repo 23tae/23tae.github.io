@@ -37,13 +37,68 @@ mermaid: true
     - **Amazon SES**: 인증 메일 발송용 서비스.
     - **Redis**: 인증코드 및 사용량 데이터 관리.
 
-### Redis 사용
+### Amazon SES (Simple Email Service)
+
+![ses logo](/assets/img/project/sidaeting5/02-email-verification/amazon-ses-logo.png){: width="70%" style="display: block; margin: auto; "}
+
+**주요 기능**
+
+1. 이메일 발송
+- HTML/텍스트 형식 지원
+- 템플릿 기반 발송
+- 첨부 파일 지원
+
+2. 보안 및 모니터링
+- SPF, DKIM, DMARC 인증 프로토콜 지원
+- 발송 지표 실시간 추적
+- CloudWatch 통합 모니터링
+
+**인터페이스**
+
+  1. API 인터페이스
+  - HTTPS 프로토콜로 RESTful API 호출
+  - AWS SDK나 IAM 인증 사용
+  - JSON 형식의 데이터 교환
+
+  2. SMTP 인터페이스
+  - SMTP 프로토콜 사용
+  - 기존 메일 시스템과 호환성이 높음
+  - 표준 메일 전송 프로토콜로 구현이 단순함
 
 **선택한 이유**
 
-- **속도와 효율성**: Redis는 인메모리 데이터 저장소로, 인증코드와 같은 **휘발성 데이터**를 빠르게 읽고 쓰기에 적합하다.
-- **TTL 지원**: Redis의 TTL 기능을 통해 **인증코드 만료 시간**을 손쉽게 설정하고 관리할 수 있다.
-- **단순한 키-값 구조**: 이메일 인증에서 필요한 **발송 횟수** 및 **인증 시도 횟수**를 관리하기에 적합하다.
+- **안정성과 확장성**: AWS 인프라를 기반으로 대규모 이메일 발송에도 안정적으로 대응할 수 있다.
+- **저비용 구조**: 이메일 발송 비용이 1000건당 0.1USD로 저렴하며 하루 최대 5만건까지 발송이 가능하다.
+- **코드 통합**: AWS SDK로 코드에 쉽게 통합할 수 있어 개발 생산성을 높일 수 있다.
+- **관리 기능**: AWS 콘솔 및 CloudWatch를 활용하여 상세한 모니터링과 관리가 가능하다.
+
+### Redis
+
+![redis logo](/assets/img/project/sidaeting5/02-email-verification/redis-logo.jpg){: width="70%" style="display: block; margin: auto; "}
+
+**특징**
+
+  1. 주요 기능
+  - TTL 기반의 데이터 만료 처리
+  - RDB/AOF 방식의 영속성 지원
+  - Pub/Sub 메시징 시스템
+  - 클러스터 모드 지원
+
+  2. 데이터 구조
+  - String, List, Hash 등 다양한 데이터 타입 지원
+  - 각 데이터 타입별 최적화된 연산 제공
+  - 원자적 작업 처리 가능
+
+  3. 성능
+  - 인메모리 기반의 고속 데이터 처리
+  - 단일 스레드 작업으로 데이터 일관성 보장
+  - 데이터 복제를 통한 가용성 확보
+
+**선택한 이유**
+
+- **속도와 효율성**: 인증코드와 같은 **휘발성 데이터**를 빠르게 읽고 쓸 수 있다.
+- **TTL 지원**: **인증코드 만료 시간**을 손쉽게 설정하고 관리할 수 있다.
+- **단순한 키-값 구조**: 이메일 **발송 횟수**와 **인증 시도 횟수**를 관리하기에 적합하다.
 
 **키 설계**
 
@@ -421,6 +476,9 @@ _서비스 기간 일일 이메일 사용량_
 
 ## 참고자료
 
+- [Using the Amazon SES API to send email - Amazon Simple Email Service](https://docs.aws.amazon.com/ses/latest/dg/send-email-api.html)
+- [Using the Amazon SES SMTP interface to send email - Amazon Simple Email Service](https://docs.aws.amazon.com/ses/latest/dg/send-email-smtp.html)
+- [Redis - Wikipedia](https://en.wikipedia.org/wiki/Redis)
 - [Sending email through Amazon SES using an AWS SDK - Amazon Simple Email Service](https://docs.aws.amazon.com/ses/latest/dg/send-an-email-using-sdk-programmatically.html)
 - [[Django] AWS SES로 이메일 보내기](https://velog.io/@hnnynh/AWS-SES로-django에서-이메일-인증-코드-보내기)
 - [Spring - Redis를 사용해보자 — 개발하는 콩](https://green-bin.tistory.com/69)
