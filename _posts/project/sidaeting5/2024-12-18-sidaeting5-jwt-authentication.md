@@ -208,7 +208,7 @@ fun getAuthenticatedUserId(token: String): Long {
 ### Refresh Token
 
 ![httponly cookie slack](/assets/img/project/sidaeting5/03-jwt/slack-httponly-cookie.png)
-_프론트엔드 팀원과의 논의_
+_프론트엔드 팀원과의 토큰 관리 방법 논의 과정_
 
 기존 어카운트 서버는 액세스 토큰과 리프레시 토큰을 모두 응답 DTO에 담아서 반환했다. 하지만 이러한 방식이 토큰 탈취의 위험성이 있다는 의견이 있어 이번 프로젝트에는 **HttpOnly 쿠키**를 사용하여 리프레시 토큰을 관리하기로 결정했다.
 
