@@ -112,7 +112,7 @@ _ERD_
 
 프론트엔드는 **TypeScript+React**를, 백엔드는 **Kotlin+Spring Boot**를 사용했다.
 
-배포는 프론트엔드의 경우 **Amazon CloudFront**를, 백엔드의 경우 **Amazon EC2**를 기반으로 이루어졌다. CI/CD는 **GitHub Actions**를 통해 자동화했으며, Gradle 빌드부터 Docker 이미지 생성 및 배포까지의 과정을 효율적으로 관리했다.
+백엔드 배포는 **Amazon EC2**를 사용했다. CI/CD는 **GitHub Actions**를 통해 자동화했으며, Gradle 빌드부터 Docker 이미지 생성 및 배포까지의 과정을 효율적으로 관리했다.
 
 백엔드 아키텍처는 **EC2**에 **Docker** 컨테이너로 **Spring Boot**를 실행하고, **Redis**를 설치해 스프링 애플리케이션과 연결하는 방식으로 구성하였다. 데이터베이스는 **RDS(PostgreSQL)**를 사용했으며, 이메일 전송은 **Simple Email Service(SES)**를 통해 처리했다.
 

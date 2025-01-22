@@ -37,6 +37,7 @@ order: 4
   - 비동기 처리를 통해 API 성능 90% 개선
   - 캐싱 전략 도입으로 대규모 트래픽 처리 및 API 성능 97% 개선
   - [관련 포스팅](https://23tae.github.io/categories/시대팅5/)
+  - [GitHub Repository](https://github.com/uoslife/server-meeting)
 
 - [**시대생**](https://apps.apple.com/kr/app/시대생-내-손안의-서울시립대학교/id1514073192) 학사일정 서비스 (2024.05 ~ 07)
   - Spring Boot (Kotlin), JPA
