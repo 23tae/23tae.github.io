@@ -11,7 +11,7 @@ tags: [spring-boot, caching, redis]
 
 이번 시즌은 매칭 신청 기간 동안 1:1과 3:3 미팅에 대해 참가 신청을 받은 뒤, 매칭 알고리즘으로 매칭한 결과를 주말동안 공개하는 방식으로 운영하였다. 특히 매칭 결과 조회는 발표 당일 대규모 트래픽이 몰릴 것으로 예상되었고, 이를 효율적으로 처리하기 위해 API를 지속적으로 개선해야 했다.
 
-### 새로운 요구사항
+### 요구사항 변경
 
 시즌5에서는 사용자 경험 개선을 위해 매칭 결과 공개 방식이 변경되었다. 기존에는 매칭 결과를 하나의 페이지에서 한번에 보여줬지만, 이번 시즌에는 세 페이지에 걸쳐서 단계적으로 공개하는 방식으로 변경됐다. 이에 따라 매칭 결과 조회는 아래의 절차로 진행되었다.
 
@@ -41,9 +41,9 @@ _ERD_
 
 매칭 결과가 발표되는 시점에는 수백명에서 천명 사이의 사용자가 **한꺼번에 매칭 결과를 조회**할 것으로 예상되었다. 하지만 API 구조나 데이터베이스 쿼리를 비효율적으로 설계할 경우 서버에 문제가 생기고 유저에게 안좋은 경험을 줄 수 있었다.
 
-## 초기 설계
+## 초기 구현
 
-### 대규모 트래픽 관련 전략
+### 설계 전략
 
 시즌5에서는 대규모 트래픽을 대응하기 위해 다음과 같은 전략을 수립했다.
 
@@ -60,9 +60,9 @@ _ERD_
   - 불필요한 JOIN 제거
   - 쿼리 개선
 
-### API 설계
+### API 구조 설계
 
-기존 시즌4의 단일 엔드포인트 구조에서 벗어나, 각 단계별로 독립적인 API를 설계했다. 이는 약 1,000명의 사용자가 동시에 매칭 결과를 조회할 것으로 예상되는 상황에서, 서버의 부하를 분산시키기 위한 전략이었다.
+기존 시즌4의 단일 엔드포인트 구조에서 벗어나, 각 단계별로 독립적인 API를 설계했다. 이는 약 1,000명의 사용자가 동시에 매칭 결과를 조회할 것으로 예상되는 상황에서, 서버의 부하를 분산시키기 위함이었다.
 
 - 기존 API 구조 (시즌4)
 
@@ -84,37 +84,9 @@ _ERD_
   2. `GET /api/match/teams/{meetingTeamId}/result`: 매칭 결과 조회
   3. `GET /api/match/{matchId}/partner`: 매칭 상대 정보 조회
 
-## 문제점
+### 캐싱 적용
 
-### API 설계상의 문제
-
-처음 설계한 3단계 API 구조에서는 각 단계가 이전 단계의 응답값에 의존하는 문제가 있었다. 예를 들어, 상대방 정보를 조회하기 위해서는 먼저 신청 내역을 조회하고, 그 결과로 받은 meetingTeamId로 매칭 결과를 조회한 뒤, 다시 그 결과로 받은 matchId로 상대방 정보를 조회하는 식으로 총 세 번의 API 호출이 필요했다.
-
-```
-1. GET /api/match/me/participations
-   → meetingTeamId 획득
-
-2. GET /api/match/teams/{meetingTeamId}/result
-   → matchId 획득
-
-3. GET /api/match/{matchId}/partner
-   → 최종적인 상대방 정보 획득
-```
-
-이러한 구조는 다음과 같은 문제를 야기했다.
-
-- 불필요한 API 호출 증가
-- 프론트엔드에서의 복잡한 상태 관리
-- API 의존성으로 인한 에러 처리 복잡성
-
-![pr comment](/assets/img/project/sidaeting5/04-matching-api/pr-comment.png)
-_Pull Request에서 받은 피드백_
-
-또한 위 피드백에서와 같이 각 API가 필요한 데이터를 개별적으로 조회하다 보니 동일한 테이블을 반복해서 조회하는 문제가 있었다. 여러 테이블을 JOIN하는 복잡한 쿼리도 API마다 중복 실행됐다. 이는 수백 명의 사용자가 동시에 매칭 결과를 조회할 것으로 예상되는 상황에서 데이터베이스에 심각한 부하를 줄 수 있었다.
-
-### 캐싱 구현의 문제
-
-초기에는 아래처럼 서비스 내부에서 `@Cacheable`을 적용한 메소드를 다른 메소드가 호출하는 구조로 설계하였다. 하지만 API 호출 시 캐싱이 제대로 동작하지 않는 문제가 발견됐다. `@Cacheable`의 동작 원리에 대해 충분히 이해하지 못한 채로 사용한 것이 원인이었다.
+각 API 호출시 서비스 계층에서 다른 메소드를 재사용하여 기존에 캐시된 데이터를 활용하고자 하였다.
 
 ```kotlin
 @Service
@@ -146,6 +118,38 @@ class MatchingService() {
     }
 }
 ```
+
+## 문제점
+
+### API 설계상의 문제
+
+처음 설계한 3단계 API 구조에서는 각 단계가 이전 단계의 응답값에 의존하는 문제가 있었다. 예를 들어, 상대방 정보를 조회하기 위해서는 먼저 신청 내역을 조회하고, 그 결과로 받은 meetingTeamId로 매칭 결과를 조회한 뒤, 다시 그 결과로 받은 matchId로 상대방 정보를 조회하는 식으로 총 세 번의 API 호출이 필요했다.
+
+```
+1. GET /api/match/me/participations
+   → meetingTeamId 획득
+
+2. GET /api/match/teams/{meetingTeamId}/result
+   → matchId 획득
+
+3. GET /api/match/{matchId}/partner
+   → 최종적인 상대방 정보 획득
+```
+
+이러한 구조는 다음과 같은 문제를 야기했다.
+
+- 불필요한 API 호출 증가
+- 프론트엔드에서의 복잡한 상태 관리
+- API 의존성으로 인한 에러 처리 복잡성
+
+![pr comment](/assets/img/project/sidaeting5/04-matching-api/pr-comment.png)
+_Pull Request에서 받은 피드백_
+
+또한 위 피드백에서와 같이 각 API가 필요한 데이터를 개별적으로 조회하다 보니 동일한 테이블을 반복해서 조회하는 문제가 있었다. 여러 테이블을 JOIN하는 복잡한 쿼리도 API마다 중복 실행됐다. 이는 수백 명의 사용자가 동시에 매칭 결과를 조회할 것으로 예상되는 상황에서 데이터베이스에 심각한 부하를 줄 수 있었다.
+
+### 캐싱 구현의 문제
+
+초기에는 위에서처럼 서비스 계층에서 `@Cacheable`을 적용한 메소드를 다른 메소드가 호출하는 구조로 설계하였다. 하지만 API 호출 시 캐싱이 제대로 동작하지 않는 문제가 발견됐다. `@Cacheable`의 동작 원리에 대해 충분히 이해하지 못한 채로 사용한 것이 원인이었다.
 
 **Spring AOP와 프록시**
 
@@ -245,28 +249,95 @@ class MatchingService(
 
 이렇게 하여 API 호출 간의 의존성을 제거하고 클라이언트 데이터 흐름을 간소화하였고 API 호출 횟수를 줄였다. 또 경로 파라미터로 미팅 유형(`teamType`)을 받아 리소스를 명확하게 구분하였으며 추후 시즌이 거듭될 경우를 고려하여 쿼리 파라미터로 시즌 정보(`season`)을 받도록 하였다.
 
+```kotlin
+@RestController
+@RequestMapping("/api/match")
+class MatchApi(
+    private val matchingService: MatchingService,
+) {
+    @GetMapping("/me/participations")
+    fun getUserMeetingParticipation(
+        @AuthenticationPrincipal userDetails: UserDetails,
+        @RequestParam season: Int,
+    ): ResponseEntity<MeetingParticipationResponse> {
+        val result =
+            matchingService.getUserMeetingParticipation(userDetails.username.toLong(), season)
+        return ResponseEntity.ok(result)
+    }
+
+    @GetMapping("/{teamType}/info")
+    fun getMatchInformation(
+        @AuthenticationPrincipal userDetails: UserDetails,
+        @PathVariable teamType: TeamType,
+        @RequestParam season: Int,
+    ): ResponseEntity<MatchInfoResponse> {
+        return ResponseEntity.ok(
+            matchingService.getMatchInfo(userDetails.username.toLong(), teamType, season)
+        )
+    }
+}
+```
+
 ### 캐싱 전략 개선
 
 캐싱 문제를 해결하기 위해 다음과 같은 방식을 도입했다.
 
 - **`@Cacheable` 적용 방식 수정**
-    - 캐싱 메소드를 다른 메소드에서 내부 호출하지 않고, **API 레벨에서 직접 호출**하도록 변경했다.
-    - **캐시 키 형식**
-        - `meeting-participation::{season}:{userId}` : 시대팅 신청 여부
-        - `match-info::{season}:{userId}` : 매칭 정보
+  - 캐싱 메소드를 다른 메소드에서 내부 호출하지 않고, **API 레벨에서 직접 호출**하도록 변경했다.
 
-      ```
-      127.0.0.1:6379> keys *
-        1) "meeting-participation::5:23"
-        2) "match-info::5:SINGLE:35"
-      ```
+  ```kotlin
+  @Cacheable(
+      value = ["meeting-participation"],
+      key = "#season + ':' + #userId",
+  )
+  fun getUserMeetingParticipation(userId: Long, season: Int): MeetingParticipationResponse {
+      return matchedDao.findUserParticipation(userId, season)
+  }
+
+  @Cacheable(
+      value = ["match-info"],
+      key = "#season + ':' + #teamType + ':' + #userId",
+  )
+  fun getMatchInfo(userId: Long, teamType: TeamType, season: Int): MatchInfoResponse {
+      val userTeam =
+          userTeamDao.findUserWithTeamTypeAndSeason(userId, teamType, season)
+              ?: throw MeetingTeamNotFoundException()
+      val meetingTeam = userTeam.team
+
+      val hasValidPayment =
+          meetingTeam.payments?.any { payment -> payment.status == PaymentStatus.SUCCESS }
+              ?: false
+      if (!hasValidPayment) {
+          throw PaymentNotFoundException()
+      }
+
+      try {
+          val match = getMatchByGender(userTeam.user, meetingTeam)
+          val opponentTeam = getOpponentTeamByGender(userTeam.user, match)
+          val opponentUser = getOpponentLeaderUser(opponentTeam)
+          return MatchInfoResponse.toMatchInfoResponse(
+              getOpponentUserInformationByTeamType(meetingTeam, opponentUser)
+          )
+      } catch (e: MatchNotFoundException) {
+          return MatchInfoResponse(false, null)
+      }
+  }
+  ```
+
+  - **캐시 키 형식**
+      - `meeting-participation::{season}:{userId}` : 시대팅 신청 여부
+      - `match-info::{season}:{userId}` : 매칭 정보
+
+    ```
+    127.0.0.1:6379> keys *
+      1) "meeting-participation::5:23"
+      2) "match-info::5:SINGLE:35"
+    ```
         
 - **캐시 워밍(Cache Warming) 도입**
     - 매칭 데이터를 **미리 캐시에 적재**하여 발표 시점에 대규모 트래픽의 캐시 미스(cache miss)로 인한 서버 과부하를 방지했다.
-    - 이를 위해 Admin API에 **캐시 초기화**를 수행하는 API를 구현하였다.
+    - 이를 위해 Admin API에 **캐시 초기화**를 수행하는 API를 구현하였다. (`POST /api/admin/cache/warmup`)
 
-      API 엔드포인트: `POST /api/admin/cache/warmup`
-        
       ```kotlin
       class AdminApi() {
         @PostMapping("/cache/warmup")
@@ -329,7 +400,7 @@ class MatchingService(
 
 위 개선사항을 적용한 결과, 아래와 같은 개선 효과를 확인할 수 있었다.
 
-- API 응답 시간 단축 (97%)
+- API 응답 시간 단축 (약 97%)
 
   ![image.png](/assets/img/project/sidaeting5/04-matching-api/before-cache.png)
   _기존 API 호출 시간_
@@ -341,9 +412,9 @@ class MatchingService(
 
 ## 마치며
 
-이번 개선 작업으로 매칭 결과 발표일에 다수의 트래픽이 발생했음에도 서버가 안정적으로 운영될 수 있었다. 특히 API 호출 수를 줄이고 캐싱을 활용함으로써 데이터베이스 부하를 크게 줄일 수 있었다.
+이번 개선 작업 덕에 매칭 결과 발표 기간동안 다수의 트래픽이 발생했음에도 서버를 안정적으로 운영할 수 있었다. 특히 API 호출 수를 줄이고 캐싱을 활용한 전략이 데이터베이스 부하를 줄이는데 큰 도움이 되었다.
 
-이번 매칭 API 개선 작업은 복잡한 테이블 구조를 고려하여 쿼리를 최적화하고, 대규모 트래픽을 효과적으로 처리하기 위한 설계를 고민할 수 있었던 좋은 경험이었다. 특히 캐싱을 통해 성능을 최적화하는 과정에서 캐시의 역할과 동작 방식을 명확히 이해할 수 있었다.
+이번 작업은 복잡한 테이블 구조를 고려하여 쿼리를 최적화하고, 대규모 트래픽을 효과적으로 처리하기 위한 설계를 고민할 수 있었던 좋은 경험이었다. 특히 캐싱을 통해 성능을 최적화하는 과정에서 기존에 모호하게 알고 있던 캐시의 역할과 동작 방식을 명확히 이해할 수 있었다.
 
 ## 참고자료
 
