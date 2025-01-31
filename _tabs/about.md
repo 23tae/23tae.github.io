@@ -32,7 +32,7 @@ order: 4
 ## Projects
 
 - **시대팅 시즌5** (2024.09 ~ 12)
-  - Spring Boot (Kotlin), JPA, Redis, Python, AWS
+  - Spring Boot (Kotlin), JPA, Redis, PostgreSQL, Python, AWS
   - 이메일 인증, JWT 인증, 매칭 결과 조회 기능, 매칭 알고리즘 담당
   - 비동기 처리를 통해 API 성능 90% 개선
   - 캐싱 전략 도입으로 대규모 트래픽 처리 및 API 성능 97% 개선
@@ -40,5 +40,11 @@ order: 4
   - [GitHub Repository](https://github.com/uoslife/server-meeting)
 
 - [**시대생**](https://apps.apple.com/kr/app/시대생-내-손안의-서울시립대학교/id1514073192) 학사일정 서비스 (2024.05 ~ 07)
-  - Spring Boot (Kotlin), JPA
+  - Spring Boot (Kotlin), JPA, PostgreSQL
   - 월별 일정 조회, 내 일정 조회, 일정 검색 기능 담당
+
+- ft_transcendence (2023.06 ~ 08)
+  - NestJS, Socket.IO, PostgreSQL, TypeORM, Docker
+  - ERD 설계, 게임 기능
+  - [GitHub Repository](https://github.com/naengmyeon-pong/ft_transcendence)
+  
