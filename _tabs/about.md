@@ -11,12 +11,12 @@ order: 4
 
 ## Education
 
-- 서울시립대학교 (2017 ~ )
-- 42 Seoul (2022 ~ )
+- 서울시립대학교 (2017.3 ~ 2025.8)
+- 42 Seoul (2022.3 ~ 2024.2)
 
 ## Career
 
-- 교내 IT 동아리 **시대생** (2024.04.01 ~ )
+- 교내 IT 동아리 **시대생** (2024.4 ~ 12)
   - Server Engineer
   - Spring Boot (Kotlin), PostgreSQL, AWS
   - [Instagram](https://www.instagram.com/uoslife_official/) \| [GitHub](https://github.com/uoslife/) \| [Blog](https://www.uoslife.team/)
@@ -31,7 +31,7 @@ order: 4
 
 ## Projects
 
-- **시대팅 시즌5** (2024.09 ~ 12)
+- **시대팅 시즌5** (2024.9 ~ 12)
   - Spring Boot (Kotlin), JPA, Redis, PostgreSQL, Python, AWS
   - 이메일 인증, JWT 인증, 매칭 결과 조회 기능, 매칭 알고리즘 담당
   - 비동기 처리를 통해 API 성능 90% 개선
@@ -39,11 +39,11 @@ order: 4
   - [관련 포스팅](https://23tae.github.io/categories/시대팅5/)
   - [GitHub Repository](https://github.com/uoslife/server-meeting)
 
-- [**시대생**](https://apps.apple.com/kr/app/시대생-내-손안의-서울시립대학교/id1514073192) 학사일정 서비스 (2024.05 ~ 07)
+- [**시대생**](https://apps.apple.com/kr/app/시대생-내-손안의-서울시립대학교/id1514073192) 학사일정 서비스 (2024.5 ~ 7)
   - Spring Boot (Kotlin), JPA, PostgreSQL
   - 월별 일정 조회, 내 일정 조회, 일정 검색 기능 담당
 
-- ft_transcendence (2023.06 ~ 08)
+- Naengmyeon Pong (2023.6 ~ 8)
   - NestJS, Socket.IO, PostgreSQL, TypeORM, Docker
   - ERD 설계, 게임 기능
   - [GitHub Repository](https://github.com/naengmyeon-pong/ft_transcendence)
