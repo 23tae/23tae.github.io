@@ -2,6 +2,7 @@
 title: About
 icon: fas fa-info-circle
 order: 4
+published: false
 ---
 
 안녕하세요. **서버 개발자 김태훈**입니다.
