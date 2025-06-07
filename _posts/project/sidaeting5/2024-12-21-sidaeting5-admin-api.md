@@ -7,7 +7,7 @@ tags: [spring-boot]
 
 ## 배경
 
-![email cs](/assets/img/project/sidaeting5/05-admin-api/email-cs.png)
+![email cs](/assets/img/project/sidaeting5/05-admin-api/email-cs.jpg)
 _인증 횟수 초기화 요청_
 
 이메일 인증 시스템에서는 악의적인 사용자를 막기 위해 일일 인증 횟수를 5회로 제한하고 있다. 하지만 이러한 제한은 정상적인 사용자에게도 영향을 미칠 수 있기에 필요한 경우 CS팀이 사용자의 인증 횟수를 초기화할 수 있는 기능이 필요했다.
