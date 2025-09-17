@@ -5,9 +5,11 @@ categories: [Project, 어디GO]
 tags: [회고]
 ---
 
+![표지](/assets/img/project/eodigo/introduction/eodigo_cover.jpg)
+
 ## 배경
 
-![dnd acceptance](/assets/img/project/eodigo/introduction/dnd_acceptance.jpg)
+![dnd acceptance email](/assets/img/project/eodigo/introduction/dnd_acceptance.jpg)
 
 최근 IT 연합 동아리 [DND](https://dnd.ac/) 13기에 참여했다. 우리 팀은 디자이너, 안드로이드 개발자, 백엔드 개발자 각각 2명씩, 총 6명으로 구성되었고, 나는 그중 백엔드 개발을 맡았다. 8주간의 활동 기간 동안 하나의 프로덕트를 완성하는 것이 목표였다. 
 
@@ -22,20 +24,18 @@ tags: [회고]
 
 ## 핵심 기능
 
-![표지](/assets/img/project/eodigo/introduction/eodigo_cover.jpg)
+|![전국팔도](/assets/img/project/eodigo/introduction/전국팔도.png)|![가격추이](/assets/img/project/eodigo/introduction/가격추이.png)|![가격랭킹](/assets/img/project/eodigo/introduction/가격랭킹.png)|
 
 서비스의 주요 기능은 외식 가격 비교와 식료품 가격 탐색, 두 가지로 나뉜다.
 
 1. **외식 가격 비교:** 특정 메뉴(e.g., 치킨)를 기준으로 주변 상점의 가격 정보를 비교하여 제공한다.
-2. **식료품 가격 탐색:** 내가 담당한 파트로, 공공데이터(KAMIS)를 활용한다.
+2. **식료품 가격 탐색:** 내가 담당한 파트로, 공공데이터(KAMIS)를 활용해 식료품의 최신 가격을 제공한다.
     - **가격 랭킹:** 특정 품목(e.g., 수박)의 최신 데이터를 기준으로 지역별 가격 순위를 제공한다.
     - **가격 추이:** 특정 품목의 지난 10년간 전국 평균 가격과 물가 상승률을 제공한다.
 
-|![전국팔도.png](/assets/img/project/eodigo/introduction/전국팔도.png)|![가격추이.png](/assets/img/project/eodigo/introduction/가격추이.png)|![가격랭킹.png](/assets/img/project/eodigo/introduction/가격랭킹.png)|
-
 ## 주요 기술 스택
 
-안정적인 서비스 운영과 효율적인 개발을 목표로 기술 스택을 선정했다. 모든 기술 선택의 배경에는 '왜?'라는 질문을 던지고자 노력했다.
+안정적인 서비스 운영과 효율적인 개발을 목표로 기술 스택을 선정했다.
 
 - **언어: `Kotlin` (1.9.25)**
     
@@ -56,8 +56,7 @@ tags: [회고]
     
     - **선택 이유:**
         - **개발 생산성:** 팀원 모두에게 가장 익숙한 프레임워크로, 내장 WAS와 강력한 자동 설정(Auto-Configuration) 덕분에 복잡한 초기 설정 없이 비즈니스 로직 개발에 즉시 집중할 수 있었다.
-        - **버전 선택 과정:** 처음엔 최신인 Kotlin 2.x를 사용하자고 논의를 했다. 하지만 이를 위해서는 Spring Boot 4.0.0 버전을 사용해야 했는데, 해당 버전은 정식 출시되지 않은 마일스톤(Milestone) 버전이라 단기 프로젝트의 안정성을 담보하기 어렵다고 판단했다. 따라서, 정식 출시된 버전 중 최신인 **Spring Boot 3.5.4**와 이에 맞는 **Kotlin 1.9.25** 버전을 최종적으로 선택했다. 이는 풍부한 레퍼런스를 확보하고 예측 불가능한 이슈를 최소화하기 위한 결정이었다.
-        - **통합 생태계:** Spring Data, Spring Batch 등 필요한 대부분의 기술들을 'Spring-way'로 손쉽게 통합할 수 있어 프로젝트 전체의 아키텍처 일관성을 유지하기에 용이했다.
+        - **버전 선택 과정:** 처음엔 최신인 Kotlin 2.x를 사용하자고 논의를 했다. 하지만 이를 위해서는 Spring Boot 4.0.0 버전을 사용해야 했는데, 해당 버전은 정식 출시되지 않은 마일스톤(Milestone) 버전이라 단기 프로젝트의 안정성을 담보하기 어렵다고 판단했다. 따라서, 정식 출시된 버전 중 최신인 **Spring Boot 3.5.4**와 이에 맞는 **Kotlin 1.9.25** 버전을 최종적으로 선택했다. 이는 레퍼런스를 확보하고 예측 불가능한 이슈를 최소화하기 위한 결정이었다.
 - **데이터베이스 & ORM: `MySQL` & `Spring Data JPA`**
     
     ![mysql](/assets/img/project/eodigo/introduction/mysql.png)
