@@ -1,17 +1,17 @@
 ---
-title: "오프라인 가격 비교 서비스 '어디GO' 개발기"
+title: "오프라인 가격 비교 서비스 '어디GO' 소개"
 date: 2025-09-04T09:00:00.000Z
 categories: [Project, 어디GO]
-tags: [회고]
+# tags: [회고]
 ---
 
 ![표지](/assets/img/project/eodigo/introduction/eodigo_cover.jpg)
 
 ## 배경
 
-![dnd acceptance email](/assets/img/project/eodigo/introduction/dnd_acceptance.jpg)
-
 최근 IT 연합 동아리 [DND](https://dnd.ac/) 13기에 참여했다. 우리 팀은 디자이너, 안드로이드 개발자, 백엔드 개발자 각각 2명씩, 총 6명으로 구성되었고, 나는 그중 백엔드 개발을 맡았다. 8주간의 활동 기간 동안 하나의 프로덕트를 완성하는 것이 목표였다. 
+
+![dnd acceptance email](/assets/img/project/eodigo/introduction/dnd_acceptance.jpg)
 
 우리 팀의 초기 아이디어는 '물가 상승 체감 서비스'였다. 하지만 논의 과정에서 '이 서비스가 사용자의 어떤 문제를 해결하는가?'라는 근본적인 질문에 부딪혔고, 팀원들과의 논의 끝에 프로젝트 방향을 수정했다. 최종적으로 오프라인 매장의 외식 가격과 공공데이터 기반의 식료품 물가를 비교하는 서비스, **'어디GO'**를 개발하기로 결정했다.
 
@@ -24,7 +24,8 @@ tags: [회고]
 
 ## 핵심 기능
 
-|![전국팔도](/assets/img/project/eodigo/introduction/전국팔도.png)|![가격추이](/assets/img/project/eodigo/introduction/가격추이.png)|![가격랭킹](/assets/img/project/eodigo/introduction/가격랭킹.png)|
+|![외식가격비교](/assets/img/project/eodigo/introduction/외식가격비교_필터.png)|![전국팔도](/assets/img/project/eodigo/introduction/전국팔도.png)|![가격랭킹](/assets/img/project/eodigo/introduction/가격랭킹.png)|![가격추이](/assets/img/project/eodigo/introduction/가격추이.png)|
+|1|2-1|2-2|2-3|
 
 서비스의 주요 기능은 외식 가격 비교와 식료품 가격 탐색, 두 가지로 나뉜다.
 
