@@ -1,5 +1,5 @@
 ---
-title: "어디GO AWS 인프라 구축 과정(feat. Private Subnet)"
+title: "어디GO AWS 인프라 구축 과정 (feat. Private Subnet)"
 date: 2025-09-08T09:00:00.000Z
 categories: [Project, 어디GO]
 tags: [aws]
@@ -47,6 +47,7 @@ tags: [aws]
 모든 준비를 마친 뒤, `t4g.small` 사양의 EC2 인스턴스와 RDS for MySQL 인스턴스를 모두 **Private Subnet**에 생성했다. 이로써 외부 인터넷에서는 우리의 애플리케이션 서버와 데이터베이스에 직접 접근할 수 없는, 이론적으로는 안전한 구조가 완성되었다.
 
 ![aws_architecture_v1.png](/assets/img/project/eodigo/aws-infra/aws_architecture_v1.png)
+_아키텍처 (v1)_
 
 ## 문제점: 고립된 EC2
 
@@ -57,7 +58,7 @@ tags: [aws]
     - Swagger API 문서를 프론트엔드 개발자들에게 공유하기 어려웠다. 개발자가 Swagger 문서를 보기 위해 SSH 터널링을 거쳐야 하는건 굉장히 번거로운 일이다.
     - Postman 등으로 간단한 API 테스트를 하는 것조차 불가능했다. 모든 확인 작업은 SSM으로 EC2에 접속해 `curl` 명령어를 사용하는 등 매우 비효율적인 방식으로 이루어져야 했다.
 
-이 문제를 제대로 해결하려면 ALB(Application Load Balancer)를 Public Subnet에 두거나, 별도의 Bastion Host(점프 서버)를 구축해야 했다. 하지만 이는 MVP 단계의 프로젝트에서 비용과 관리 복잡성을 크게 증가시키는 해결책이었다.
+이 문제를 제대로 해결하려면 ALB(Application Load Balancer)를 Public Subnet에 두거나, 별도의 점프 서버(Bastion Host)를 구축해야 했다. 하지만 이는 MVP 단계의 프로젝트에서 비용과 관리 복잡성을 크게 증가시키는 해결책이었다.
 
 ## 인프라 재구축 (v2): 접근성과 보안의 균형점
 
@@ -66,19 +67,23 @@ tags: [aws]
 1. **AMI를 이용한 서버 복제:** 가장 먼저 기존 EC2의 환경을 그대로 보존하기 위해 **AMI(Amazon Machine Image)로 스냅샷을 생성**했다. 그리고 이 AMI를 사용해 Public Subnet에 동일한 환경의 새 EC2 인스턴스를 복제했다.
     
     ![create_ami.png](/assets/img/project/eodigo/aws-infra/create_ami.png)
+    _AMI 생성_
+
+    ![create new instance](/assets/img/project/eodigo/aws-infra/create_new_ec2_instance.png)
+    _AMI를 사용해서 새 인스턴스 생성_
     
 2. **네트워크 구성 변경 및 비용 절감:** EC2가 Public Subnet으로 이동하면서 더 이상 **NAT 게이트웨이가 필요 없어졌다.** 시간당 비용이 부과되는 NAT 게이트웨이를 즉시 삭제하여 비용을 절감했다.
     
     ![delete_nat.png](/assets/img/project/eodigo/aws-infra/delete_nat.png)
     
-3. **고정 IP 할당 및 보안 강화:** 새로 생성된 Public EC2에는 재부팅 시에도 주소가 바뀌지 않도록 **탄력적 IP(Elastic IP)**를 할당했다. 그리고 보안 그룹 규칙을 수정하여 SSH(22번 포트)의 인바운드 소스를 `0.0.0.0/0`(Anywhere)가 아닌, **`내 IP`**로 지정하여** 허가된 사용자만 인스턴스에 접속할 수 있도록 제한했다.
+3. **고정 IP 할당 및 보안 강화:** 새로 생성된 Public EC2에는 재부팅 시에도 주소가 바뀌지 않도록 **탄력적 IP(Elastic IP)**를 할당했다. 그리고 보안 그룹 규칙을 수정하여 SSH(22번 포트)의 인바운드 소스를 `0.0.0.0/0`(Anywhere)가 아닌, **`내 IP`**로 지정하여 허가된 장소에서만 인스턴스에 접속할 수 있도록 제한했다.
     
     ![ec2_inbound_rules.jpg](/assets/img/project/eodigo/aws-infra/ec2_inbound_rules.jpg)
     
 
-## 로컬 DB 접속 환경 구축
+## 로컬 DB 접속 환경 구축 (SSH 터널링)
 
-EC2의 접근성 문제를 해결한 후, 로컬 PC에서 데이터베이스 내부 데이터를 확인할 일이 생겼다. 하지만 RDS는 여전히 Private Subnet에 있어 직접 접근이 불가능했다. 그 대신 이제 Public Subnet에 외부와 통신할 수 있는 EC2가 생겼다. 이 **Public EC2를 점프 서버(bastion host)로 활용하는 SSH 터널링**을 설정하여, 로컬 PC에서 Private RDS로 안전하게 접속하는 통로를 만들었다.
+EC2의 접근성 문제를 해결한 후, 로컬 PC에서 데이터베이스 내부 데이터를 확인할 일이 생겼다. 하지만 RDS는 여전히 Private Subnet에 있어 직접 접근이 불가능했다. 그 대신 이제 Public Subnet에 외부와 통신할 수 있는 EC2가 생겼다. 이 **Public EC2를 점프 서버로 활용하는 SSH 터널링**을 설정하여, 로컬 PC에서 Private RDS로 안전하게 접속하는 통로를 만들었다.
 
 - **DataGrip 설정**
 
@@ -94,6 +99,7 @@ EC2의 접근성 문제를 해결한 후, 로컬 PC에서 데이터베이스 내
 최종 아키텍처(v2)는 다음과 같다.
 
 ![aws_architecture_v2.png](/assets/img/project/eodigo/aws-infra/aws_architecture_v2.png)
+_아키텍처 (v2)_
 
 이번 인프라 구축을 통해 설계는 한 번에 완벽하게 하는 것이 아니라, **프로젝트의 진행 상황과 새로운 요구사항에 맞춰 점진적으로 개선해 나가는 것**임을 배웠다. 애플리케이션의 접근성은 높이면서도 데이터베이스의 보안은 유지하는 현실적인 트레이드오프를 통해, 이론과 현실 사이의 균형점을 찾는 경험을 할 수 있었다.
 
