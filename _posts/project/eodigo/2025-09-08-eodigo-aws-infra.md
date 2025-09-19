@@ -1,9 +1,11 @@
 ---
-title: "어디GO AWS 인프라 구축기 (feat. Private Subnet)"
+title: "어디GO 프로젝트 AWS 인프라 구축기 (feat. Private Subnet)"
 date: 2025-09-08T09:00:00.000Z
 categories: [Project, 어디GO]
 tags: [aws]
 ---
+
+![aws_logo](/assets/img/project/eodigo/aws-infra/aws_logo.png)
 
 ## 들어가며
 
@@ -55,10 +57,11 @@ _아키텍처 (v1)_
 
 - **주요 문제점:** Private Subnet에 위치한 EC2는 Public IP가 없어, **외부에서 애플리케이션 접근이 어려웠다.**
 - **현실적인 영향:**
-    - Swagger API 문서를 프론트엔드 개발자들에게 공유하기 어려웠다. 개발자가 Swagger 문서를 보기 위해 SSH 터널링을 거쳐야 하는건 굉장히 번거로운 일이다.
-    - Postman 등으로 간단한 API 테스트를 하는 것조차 불가능했다. 모든 확인 작업은 SSM으로 EC2에 접속해 `curl` 명령어를 사용하는 등 매우 비효율적인 방식으로 이루어져야 했다.
+    - 서버 상태를 확인하기 위해 AWS 콘솔에 로그인해 SSM을 통해 EC2에 접속하는 번거로운 과정이 필요했다.
+    - Swagger API 문서를 프론트엔드 개발자들에게 공유할 수 없었다.
+    - Postman으로 개발 서버의 API 테스트를 할 수 없었다.
 
-이 문제를 제대로 해결하려면 ALB(Application Load Balancer)를 Public Subnet에 두거나, 별도의 점프 서버(Bastion Host)를 구축해야 했다. 하지만 이는 MVP 단계의 프로젝트에서 비용과 관리 복잡성을 크게 증가시키는 해결책이었다.
+이 문제를 제대로 해결하려면 **ALB(Application Load Balancer)**를 Public Subnet에 두거나, 별도의 **점프 서버(Bastion Host)**를 구축해야 했다. 하지만 이는 MVP 단계의 프로젝트에서 **비용과 관리 복잡성**을 크게 증가시키는 해결책이었다.
 
 ## 인프라 재구축 (v2): 접근성과 보안의 균형점
 
@@ -70,7 +73,7 @@ _아키텍처 (v1)_
     _AMI 생성_
 
     ![create new instance](/assets/img/project/eodigo/aws-infra/create_new_ec2_instance.png)
-    _AMI를 사용해서 새 인스턴스 생성_
+    _새 인스턴스 생성_
     
 2. **네트워크 구성 변경 및 비용 절감:** EC2가 Public Subnet으로 이동하면서 더 이상 **NAT 게이트웨이가 필요 없어졌다.** 시간당 비용이 부과되는 NAT 게이트웨이를 즉시 삭제하여 비용을 절감했다.
     
