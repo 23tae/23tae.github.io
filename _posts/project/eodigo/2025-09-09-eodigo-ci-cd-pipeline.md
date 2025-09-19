@@ -33,7 +33,7 @@ _CI(초록색)와 CD(빨간색)_
 ### 기술 스택 선정 이유
 
 - **GitHub Actions:** 코드 저장소인 GitHub에 내장되어 있어 별도의 CI/CD 서버 구축 없이 즉시 사용할 수 있고, 다양한 오픈소스 Action들을 활용하여 워크플로우를 쉽게 구성할 수 있었다.
-- **Docker & AWS ECR:** 애플리케이션을 컨테이너화하여 개발 환경과 운영 환경의 차이를 없애고, 빌드된 이미지를 AWS ECR(Elastic Container Registry)에 안전하게 저장 및 관리하고자 했다.
+- **Docker & Amazon ECR:** 애플리케이션을 컨테이너화하여 개발 환경과 운영 환경의 차이를 없애고, 빌드된 이미지를 AWS ECR(Elastic Container Registry)에 안전하게 저장 및 관리하고자 했다.
 
 ### Github-hosted Runner와 Self-hosted Runner의 역할 분리
 
@@ -44,7 +44,13 @@ _CI(초록색)와 CD(빨간색)_
 
 ## 파이프라인 구축을 위한 사전 준비
 
-워크플로우(YAML) 파일을 작성하기에 앞서, GitHub Actions가 AWS 리소스에 접근하고 EC2 서버에 배포 명령을 내릴 수 있도록 두 가지 중요한 사전 준비가 필요했다.
+워크플로우(YAML) 파일을 작성하기에 앞서 몇 가지 사전 준비가 필요했다.
+
+### ECR(Elastic Container Registry) 리포지토리 생성
+
+![create ecr repository](/assets/img/project/eodigo/ci-cd-pipeline/create_ecr_repository.png)
+
+도커 이미지를 관리할 비공개 저장소를 ECR로 생성했다.
 
 ### AWS와 GitHub Actions 연동: IAM 사용자 생성
 
@@ -293,6 +299,32 @@ EC2에 접속하여 `sudo ./svc.sh status`로 상태를 확인하니 `inactive (
 
 `sudo ./svc.sh start`로 서비스를 재시작하자, 대기 중이던 워크플로우가 즉시 실행되며 최종적으로 배포에 성공할 수 있었다.
 
+### 문제 4: ECR 이미지 누적으로 인한 스토리지 비용 우려
+
+![ecr images 1](/assets/img/project/eodigo/ci-cd-pipeline/ecr_images.png)
+
+CI/CD 파이프라인이 안정적으로 동작한 지 3일째 되던 날, ECR 리포지토리를 확인해보니 이미지가 계속 쌓여 47개에 달했다. 일부 이미지의 크기는 1GB에 육박하여, 계속 방치될 경우 불필요한 스토리지 비용이 과금될 것이 우려되었다.
+
+> **요금 세부 정보(프리 티어 한도를 초과하는 경우)**  
+> 스토리지: 프라이빗 또는 퍼블릭 리포지토리에 저장된 데이터의 경우에 **GB/월당 USD 0.10**입니다.
+
+이 문제를 해결하기 위해 ECR의 **수명 주기 정책(Lifecycle Policy)**을 설정하여 오래되거나 불필요한 이미지를 자동으로 정리하도록 했다.
+
+설정한 규칙은 다음과 같다.
+
+1. **태그 없는 이미지 정리 (우선순위 1)**  
+태그가 지정되지 않은 이미지가 푸시된 지 3일이 지나면 자동으로 삭제되도록 설정했다. 이는 빌드 과정에서 발생할 수 있는 중간 이미지나 잘못된 이미지를 정리하는 역할을 한다.
+  ![ecr lifecycle policy 1](/assets/img/project/eodigo/ci-cd-pipeline/ecr_lifecyle_policy_1.png)
+
+2. **태그된 이미지 개수 제한 (우선순위 2)**  
+태그가 지정된 이미지의 경우, 최신순으로 최대 5개까지만 보관하도록 설정했다. 5개를 초과하는 가장 오래된 이미지는 자동으로 삭제된다. 이를 통해 롤백 등을 위한 최소한의 버전은 유지하면서도 이미지가 무한정 쌓이는 것을 방지했다.
+  ![ecr lifecycle policy 2](/assets/img/project/eodigo/ci-cd-pipeline/ecr_lifecyle_policy_2.png)
+
+정책을 적용하고 몇 시간 뒤 수명 주기 이벤트가 처음 실행되면서 이미지 개수가 47개에서 33개로 감소했다. 이를 통해 CI/CD 과정에서 생성되는 Docker 이미지를 자동으로 관리하고, ECR 스토리지 비용을 줄일 수 있게 되었다.
+
+![ecr images 2](/assets/img/project/eodigo/ci-cd-pipeline/ecr_images_after_event.png)
+_수명 주기 정책 적용 후_
+
 ## 결론
 
 파이프라인 도입으로 인해 우리 팀의 개발자들은 더 이상 배포에 신경 쓰지 않고 코드 작성에만 집중할 수 있게 되었다. 모든 배포는 **자동화된 프로세스**를 통해 일관성 있게 이루어졌고, PR 단계에서 빌드와 테스트를 거치며 `develop` 브랜치의 안정성이 크게 향상되었다.
@@ -306,3 +338,5 @@ CI/CD 파이프라인 구축은 단순히 YAML 파일을 작성하는 작업이 
 - [Managing a branch protection rule - GitHub Docs](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/managing-a-branch-protection-rule)
 - [효율적인 도커 이미지 만들기 #1 - 작은 도커 이미지](https://bcho.tistory.com/1356)
 - [Spring Boot의 헬스 체크 애플리케이션 상태를 모니터링하는 방법](https://positive-impactor.tistory.com/191)
+-[완전관리형 컨테이너 레지스트리 - Amazon Elastic Container Registry 요금 - Amazon Web Services](https://aws.amazon.com/ko/ecr/pricing/)
+- [Amazon ECR의 리포지토리에 대한 수명 주기 정책 생성 - Amazon ECR](https://docs.aws.amazon.com/ko_kr/AmazonECR/latest/userguide/lp_creation.html)

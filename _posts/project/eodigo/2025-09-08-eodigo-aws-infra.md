@@ -20,6 +20,7 @@ tags: [aws]
 ### 1. VPC와 서브넷
 
 ![create_vpc.jpg](/assets/img/project/eodigo/aws-infra/create_vpc.jpg)
+_VPC 생성_
 
 가장 먼저 VPC 생성 마법사를 이용해 격리된 네트워크를 구축했다.
 
@@ -33,7 +34,7 @@ tags: [aws]
 
 - **사용자 그룹 분리:** 인프라를 직접 생성하고 변경하는 `Administrators` 그룹과 애플리케이션 배포 및 로그 확인 등 제한된 권한만 필요한 `Developers` 그룹을 나누었다. 이를 통해 사람의 실수로 인한 리스크를 줄이고자 했다.
     
-    ![image.png](/assets/img/project/eodigo/aws-infra/image.png)
+    ![iam_user_group.png](/assets/img/project/eodigo/aws-infra/iam_user_group.png)
     
 - **EC2를 위한 IAM 역할:** EC2 인스턴스에 Access Key를 하드코딩하는 대신, IAM 역할을 부여했다. 이 역할 덕분에 EC2는 키 정보 없이도 ECR에서 Docker 이미지를 가져오는 등 필요한 권한을 안전하게 위임받을 수 있었다.
     
@@ -46,7 +47,18 @@ tags: [aws]
 
 ### 3. Private Subnet의 EC2와 RDS
 
-모든 준비를 마친 뒤, `t4g.small` 사양의 EC2 인스턴스와 RDS for MySQL 인스턴스를 모두 **Private Subnet**에 생성했다. 이로써 외부 인터넷에서는 우리의 애플리케이션 서버와 데이터베이스에 직접 접근할 수 없는, 이론적으로는 안전한 구조가 완성되었다.
+모든 준비를 마친 뒤, `t4g.small` 사양의 EC2 인스턴스와 RDS for MySQL 인스턴스를 모두 **Private Subnet**에 생성했다.
+
+![create ec2](/assets/img/project/eodigo/aws-infra/create_ec2_instance.png)
+_EC2 인스턴스 생성_
+
+![create rds](/assets/img/project/eodigo/aws-infra/create_rds_instance.png)
+_DB 인스턴스 생성_
+
+![create db subnet group](/assets/img/project/eodigo/aws-infra/create_db_subnet_group.png)
+_DB 서브넷 그룹 생성_
+
+이로써 외부 인터넷에서는 우리의 애플리케이션 서버와 데이터베이스에 직접 접근할 수 없는, 이론적으로는 안전한 구조가 완성되었다.
 
 ![aws_architecture_v1.png](/assets/img/project/eodigo/aws-infra/aws_architecture_v1.png)
 _아키텍처 (v1)_
