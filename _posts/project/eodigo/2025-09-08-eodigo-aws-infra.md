@@ -1,5 +1,5 @@
 ---
-title: "어디GO 프로젝트 AWS 인프라 구축기 (feat. Private Subnet)"
+title: "AWS 인프라 구축기 (feat. Private Subnet)"
 date: 2025-09-08T09:00:00.000Z
 categories: [Project, 어디GO]
 tags: [aws]
