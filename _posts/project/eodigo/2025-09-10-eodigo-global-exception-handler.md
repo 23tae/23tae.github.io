@@ -1,5 +1,5 @@
 ---
-title: "어디GO 전역 예외 처리 구축하기"
+title: "Spring Boot 전역 예외 처리 시스템 구축하기"
 date: 2025-09-10T09:00:00.000Z
 categories: [Project, 어디GO]
 tags: [spring-boot, kotlin, exception-handling]
@@ -180,7 +180,7 @@ tags: [spring-boot, kotlin, exception-handling]
 
 ## 마치며
 
-전역 예외 처리 시스템 덕분에 중복적인 `try-catch` 코드 없이 모든 예외 처리 로직을 한 곳에서 관리할 수 있게 되었다. 이는 코드의 유지보수성을 높이고, 클라이언트 팀과의 명확한 소통 기반을 마련하는 효과를 가져왔다.
+전역 예외 처리 시스템 덕분에 중복적인 `try-catch` 코드 없이 모든 예외 처리 로직을 한 곳에서 관리할 수 있게 되었다. 또한 코드의 유지보수성을 높이고 클라이언트 팀과의 명확한 소통 기반이 마련되었다.
 
 ## 참고자료
 
