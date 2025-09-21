@@ -85,7 +85,7 @@ tags: [spring-boot, kotlin, exception-handling]
     
     `GlobalExceptionHandler` 구현에 사용한 `@RestControllerAdvice`는 Spring MVC 내부에서 특정 흐름을 통해 동작한다. 요청 처리 중 컨트롤러에서 예외가 발생하면 `DispatcherServlet`은 등록된 `HandlerExceptionResolver`들에게 처리를 위임한다. 이 중 `ExceptionHandlerExceptionResolver`가 `@ControllerAdvice` 클래스 내부에 정의된 `@ExceptionHandler` 메서드를 찾아 실행하는 역할을 수행한다.
     
-    ![spring_exception_handling.png](/assets/img/project/eodigo/global-exception-handler/spring_exception_handling.png)
+    ![spring exception handling](/assets/img/project/eodigo/global-exception-handler/spring_exception_handling_flow.png)
     
 - **예외 종류에 따른 처리**
 
