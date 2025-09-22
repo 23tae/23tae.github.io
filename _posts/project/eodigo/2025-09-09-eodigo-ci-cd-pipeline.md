@@ -2,7 +2,7 @@
 title: "GitHub Actions 기반 CI/CD 파이프라인 구축기"
 date: 2025-09-09T09:00:00.000Z
 categories: [Project, 어디GO]
-tags: [배포, aws]
+tags: [배포, aws, ci-cd]
 ---
 
 ## 서론
