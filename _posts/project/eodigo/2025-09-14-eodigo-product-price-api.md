@@ -17,7 +17,7 @@ tags: [spring-boot, api]
 
 우선 내가 담당한 API는 다음과 같다.
 
-|![hierarchy-1](/assets/img/project/eodigo/product-price-api/product_hierarchy-1.png)|![hierarchy-2](/assets/img/project/eodigo/product-price-api/product_hierarchy-2.png)|![ranking-1](/assets/img/project/eodigo/product-price-api/product_ranking-1.png)|![ranking-2](/assets/img/project/eodigo/product-price-api/product_ranking-2.png)||![trends](/assets/img/project/eodigo/product-price-api/product_trends.png)
+|![hierarchy-1](/assets/img/project/eodigo/product-price-api/product_hierarchy-1.png)|![hierarchy-2](/assets/img/project/eodigo/product-price-api/product_hierarchy-2.png)|![ranking-1](/assets/img/project/eodigo/product-price-api/product_ranking-1.png)|![ranking-2](/assets/img/project/eodigo/product-price-api/product_ranking-2.png)|![trends](/assets/img/project/eodigo/product-price-api/product_trends.png)
 |1-1|1-2|2-1|2-2|3-1|
 
 - **1. 전체 상품 목록 조회 (`GET /api/v1/products/hierarchy`)**
@@ -219,8 +219,7 @@ java.util.NoSuchElementException: List is empty.
   at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:196) ~[spring-aop-6.2.9.jar:6.2.9]
 ```
 
-**원인**
-
+**원인**  
 DB 조회 결과가 빈 리스트(`emptyList`)일 경우를 고려하지 않고, `allAnnualPrices.first()`를 호출하여 첫 번째 원소에 접근하려고 시도했기 때문이었다. 예외 처리 로직에 도달하기 전에 프로그램이 비정상 종료된 것이다.
 
 ```kotlin
@@ -239,8 +238,7 @@ fun getProductTrend(productId: Long): ProductTrendResponse {
 }
 ```
 
-**해결 방안**
-
+**해결 방안**  
 DB를 조회한 직후, 리스트가 비어있는지(`isEmpty()`)를 가장 먼저 확인하는 방어 코드를 추가했다. 이 순서 변경만으로 코드는 훨씬 더 안정적으로 동작하게 되었다.
 
 ```kotlin
@@ -261,7 +259,10 @@ fun getProductTrend(productId: Long): ProductTrendResponse {
 
 ### 문제 3: 테스트 코드의 Null ID로 인한 NullPointerException
 
-상품 목록 계층 조회 로직을 테스트(`getProductHierarchy_Success`)하는 과정에서 `NullPointerException`이 발생했다. 테스트를 위해 생성한 Product 객체의 id는 null 상태였지만, DTO 변환 로직에서 `product.id!!` 와 같이 id가 null이 아님을 단정했기 때문이었다.
+상품 목록 계층 조회 로직을 테스트(`getProductHierarchy_Success`)하는 과정에서 `NullPointerException`이 발생했다.
+
+**원인**  
+테스트를 위해 생성한 Product 객체의 id는 null 상태였지만, DTO 변환 로직에서 `product.id!!` 와 같이 id가 null이 아님을 단정했기 때문이었다.
 
 ```kotlin
 // ProductService.kt
@@ -271,6 +272,7 @@ KindInfo(
 )
 ```
 
+**해결 방안**  
 이 문제를 해결하기 위해 서비스 로직을 다음과 같이 개선했다.
 
 ```kotlin
@@ -287,7 +289,7 @@ KindInfo(
 
 위험한 `!!` 연산자 대신 `requireNotNull`을 사용하여 "id는 null일 수 없다"는 비즈니스 규칙을 명시하고, 위반 시 `IllegalStateException`이 발생하도록 변경했다.
 
-## **긴급 요구사항: 상품 검색 API 개발**
+## 긴급 요구사항 - 상품 검색 API 개발
 
 |![product_search-1.png](/assets/img/project/eodigo/product-price-api/product_search-1.png)|![product_search-2.png](/assets/img/project/eodigo/product-price-api/product_search-2.png)|![product_search-3.png](/assets/img/project/eodigo/product-price-api/product_search-3.png)|
 
@@ -320,9 +322,9 @@ interface ProductRepository : JpaRepository<Product, Long> {
 }
 ```
 
-### Containing 쿼리로 인한 잠재적 문제
+### Containing 쿼리 관련 문제
 
-한 가지 문제가 있었다. 나는 Spring Data JPA의 `findByNameContaining`을 사용하여 검색 기능을 구현했는데, 만약 사용자가 아무것도 입력하지 않은 채(`keyword=""`)로 검색을 요청하면, `findByNameContaining`은 SQL의 `LIKE '%%'`와 동일하게 동작하여 **DB의 모든 상품을 반환**했다. 이는 불필요한 부하를 유발할 수 있었다.
+한 가지 문제가 있었다. 검색 기능은 Spring Data JPA의 `findByNameContaining`을 사용하여 구현되었는데, 만약 사용자가 아무것도 입력하지 않은 채(`keyword=""`)로 검색을 요청하면, `findByNameContaining`은 SQL의 `LIKE '%%'`와 동일하게 동작하여 **DB의 모든 상품을 반환**했다. 이는 불필요한 부하를 유발할 수 있었다.
 
 이 문제를 해결하기 위해, Service 계층에 검색어가 비어있거나 공백으로만 이루어진 경우 DB를 조회하지 않고 즉시 **빈 리스트를 반환**하는 방어 코드를 추가했다.
 
