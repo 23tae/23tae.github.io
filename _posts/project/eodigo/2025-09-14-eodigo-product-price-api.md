@@ -11,9 +11,8 @@ tags: [spring-boot, api]
 
 '어디GO'의 실질적인 개발 기간은 4주로, 짧은 기간동안 안드로이드 팀원과의 긴밀한 협업이 필수적이었다. 이러한 상황 속에서 'API-First' 개발 전략을 따르기로 했다. 이는 백엔드 개발자가 로직을 완성할 때까지 안드로이드 개발자가 기다리는 대신, 먼저 서버와 클라이언트 간의 API 명세를 정의하고, 해당 형식의 Mock 데이터를 반환하는 API를 우선적으로 제공하는 것이다. 이로 인해 안드로이드 개발자가 UI 개발과 네트워크 로직 구현을 즉시 시작할 수 있게 하여, 전체 개발 기간을 단축할 수 있다.
 
-## Mock API 구현
 
-### API 소개
+## API 설계
 
 우선 내가 담당한 API는 다음과 같다.
 
@@ -30,14 +29,15 @@ tags: [spring-boot, api]
 제일 먼저 Notion에 API 명세서를 정의하였다. 전체 상품 목록 조회(`/hierarchy`), 가격 추이 조회(`/trends`), 가격 랭킹 조회(`/rankings`) 세 가지 핵심 API의 요청/응답 형식을 구체적으로 명시하고 프론트엔드 팀원들에게 공유했다.
 
 ![notion_api_doc.png](/assets/img/project/eodigo/product-price-api/notion_api_doc.png)
+_API 명세서 공유_
 
-### API 구현
+## Mock API 구현
 
 그 후 실제 DB 연동이나 비즈니스 로직 없이, 오직 이 명세만을 기반으로 API의 뼈대를 구현했다. `ProductService` 클래스 내부에 하드코딩된 Mock 데이터를 생성하고, `ProductController`는 이 데이터를 받아 약속된 DTO 형식으로 반환하도록 했다.
 
-**주요 코드(**`ProductService.kt`)
-
+**주요 코드**  
 ```kotlin
+// ProductService.kt
 @Service
 class ProductService {
     // TODO: 실제 Repository를 주입받아 DB 조회 로직으로 변경
@@ -66,12 +66,14 @@ class ProductService {
 이렇게 해서 실제 동작하는 엔드포인트가 만들어졌다. 곧바로 Springdoc OpenAPI(Swagger UI)를 적용하여 안드로이드 팀에게 API 문서를 공유했다. 이제 안드로이드 팀은 이 Mock API를 호출하며 화면 개발을 진행하고, 나는 데이터 수집 파이프라인과 실제 비즈니스 로직 구현에 집중할 수 있게 되었다.
 
 ![slack_mock_api.png](/assets/img/project/eodigo/product-price-api/slack_mock_api.png)
+_Swagger UI 명세서 공유_
 
 ## API 재설계
 
 실제 로직 구현에 앞서 초기 API 명세를 검토하던 중, 클라이언트 입장에서 불필요하거나 비효율적인 필드가 존재함을 발견했다. 구현이 더 진행되기 전에 바로잡는 것이 옳다고 판단하여 팀 스레드를 통해 개선안을 제안했다.
 
 ![slack_api_discussion.png](/assets/img/project/eodigo/product-price-api/slack_api_discussion.png)
+_API 명세 변경 제안_
 
 이후 팀원들과 논의를 거쳐 아래와 같이 최종적으로 API 명세를 확정하게 되었다.
 
@@ -111,8 +113,7 @@ class ProductService {
 
 ![db_product_table.jpg](/assets/img/project/eodigo/product-price-api/db_product_table.jpg)
 
-**Product 엔티티**
-
+**Product 엔티티**  
 ```kotlin
 @Entity
 class Product(
@@ -164,9 +165,9 @@ JPA Repository에서 조회한 `List<Product>`를 API 명세에 맞는 계층형
 2. 그룹화된 각 카테고리 내에서, 다시 `itemCode` 기준으로 2차 그룹화한다.
 3. 최종적으로 각 품목 그룹 내의 상품 목록을 분석하여, 품종이 있는지(`kindName != null`) 여부에 따라 2단계/3단계 `ItemInfo` DTO를 생성한다.
 
-**주요 코드 (`ProductService.kt`)**
-
+**주요 코드**  
 ```kotlin
+// ProductService.kt
 fun getProductHierarchy(): List<CategoryInfo> {
     val allProducts = productRepository.findAllByOrderByIdAsc()
 
@@ -289,13 +290,19 @@ KindInfo(
 
 위험한 `!!` 연산자 대신 `requireNotNull`을 사용하여 "id는 null일 수 없다"는 비즈니스 규칙을 명시하고, 위반 시 `IllegalStateException`이 발생하도록 변경했다.
 
-## 긴급 요구사항 - 상품 검색 API 개발
+## 긴급 요구사항: 상품 검색 API 개발
 
 |![product_search-1.png](/assets/img/project/eodigo/product-price-api/product_search-1.png)|![product_search-2.png](/assets/img/project/eodigo/product-price-api/product_search-2.png)|![product_search-3.png](/assets/img/project/eodigo/product-price-api/product_search-3.png)|
 
-프로젝트 마감 직전에 예상치 못한 변수가 발생했다. 기존에 클라이언트 사이드에서 처리하기로 협의했던 '상품 검색' 기능을 담당하던 안드로이드 팀원으로부터 구현에 어려움이 있다는 연락을 받았다. 그때 당시에 백엔드는 주요 작업을 마무리해서 프론트엔드보다는 시간적인 여유가 있었기 때문에 검색 기능을 서버에서 API로 제공하는 것으로 변경하기로 했다.
+어디GO는 원하는 상품을 카테고리에서 선택하는 기능 외에도, 검색창에서 검색하는 기능도 제공한다. 당초 프론트엔드 팀원과 이 기능의 구현 방식에 대해 논의를 했을때 클라이언트 사이드에서 처리하는 것으로 결론이 났었다.
+
+![slack_search_feature_discussion](/assets/img/project/eodigo/product-price-api/slack_search_feature_discussion.jpg)
+_검색 기능 구현 방식 논의_
+
+하지만 프로젝트 마감 직전에 예상치 못한 변수가 발생했다. 마감을 4일 앞둔 날 안드로이드 팀원으로부터 기한내 구현이 어려울 것 같다는 연락을 받았다. 해당 시점에 나는 백엔드의 주요 작업을 마무리하여 시간적인 여유가 있었기에 검색 기능은 서버에서 API를 제공하는 방식으로 변경하였다.
 
 ![slack_issue_search_api.png](/assets/img/project/eodigo/product-price-api/slack_issue_search_api.png)
+_검색 기능 관련 이슈_
 
 즉시 `GET /api/v1/products/search` 엔드포인트를 설계하고 구현에 착수했다.
 
