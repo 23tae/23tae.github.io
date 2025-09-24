@@ -9,12 +9,12 @@ tags: [spring-boot, spring-batch]
 
 ## Spring Batch Job 구현
 
-Spring Batch는 대용량 데이터를 처리할 때, 지정된 개수(Chunk)만큼 데이터를 메모리에 읽어 한 번에 처리하고 저장하는 **Chunk 지향 처리** 모델을 사용한다. 이 모델은 `ItemReader`, `ItemProcessor`, `ItemWriter`라는 세 가지 컴포넌트로 구성되며, 각 컴포넌트의 역할을 명확히 분리하여 구현했다.
-
 ![chunk_oriented_processing-1.png](/assets/img/project/eodigo/spring-batch-etl-pipeline-2/chunk_oriented_processing-1.png)
-_Chunk 지향 처리_
+_Chunk 기반 처리_
 
-### `kamisDailyPriceSyncJob`: 일일 가격 데이터 수집
+Spring Batch는 대용량 데이터를 처리할 때, 지정된 개수(Chunk)만큼 데이터를 메모리에 읽어 한 번에 처리하고 저장하는 **Chunk 기반 처리** 모델을 사용한다. 이 모델은 `ItemReader`, `ItemProcessor`, `ItemWriter`라는 세 가지 컴포넌트로 구성되며, 각 컴포넌트의 역할을 명확히 분리하여 구현했다.
+
+### **`kamisDailyPriceSyncJob`: 일일 가격 데이터 수집**
 
 **매주 화~토요일 오전 3시**에 전날의 지역별 가격 데이터를 수집하여 `daily_regional_price` 테이블에 저장하는 Job이다.
 
@@ -40,7 +40,7 @@ fun kamisDailyPriceSyncStep(): Step {
 }
 ```
 
-### `kamisAnnualPriceSyncJob`: 연평균 가격 데이터 갱신
+### **`kamisAnnualPriceSyncJob`: 연평균 가격 데이터 갱신**
 
 **매주 일요일 오전 4시**에 상품별 당해 전국 평균 가격을 `annual_national_price` 테이블에 갱신하는 Job이다.
 
@@ -107,7 +107,8 @@ _Sentry 대시보드에 기록된 에러_
 
 - **현상**  
 
-  `WebClientRequestException`이 불규칙적으로 발생하며 배치가 실패했다.
+  Slack 알림을 통해 배치 작업이 실패했다는 사실을 인지했고 Sentry 대시보드에서 세부 에러 정보를 확인했다.
+
   ```
   WebClientRequestException: Connection prematurely closed BEFORE response
   ```
