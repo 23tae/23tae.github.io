@@ -98,16 +98,20 @@ class BatchJobController(...) {
 }
 ```
 
-## 주요 이슈 및 해결 방안
+## 주요 이슈
 
 ### 외부 API 호출 시 간헐적 네트워크 오류 발생
 
-![sentry error](/assets/img/project/eodigo/spring-batch-etl-pipeline-2/sentry_batch_error.png)
-_Sentry 대시보드에 기록된 에러_
-
 - **현상**  
+  ![slack sentry notification](/assets/img/project/eodigo/spring-batch-etl-pipeline-2/slack_sentry_notification.png)
+  _Slack Sentry 알림_
 
-  Slack 알림을 통해 배치 작업이 실패했다는 사실을 인지했고 Sentry 대시보드에서 세부 에러 정보를 확인했다.
+  [사전에 구축한 Sentry](../eodigo-sentry-error-monitoring/)에서 보낸 Slack 알림을 통해 배치 작업이 실패했음을 인지하였다.
+
+  ![sentry error](/assets/img/project/eodigo/spring-batch-etl-pipeline-2/sentry_batch_error.png)
+  _Sentry 대시보드에 기록된 에러_
+
+  이후 Sentry 대시보드에 접속하여 세부 에러 정보를 확인했다. 새벽 3시에 실행된 kamisDailyPriceSyncJob(일일 가격 배치)이 실패한 것이었다.
 
   ```
   WebClientRequestException: Connection prematurely closed BEFORE response
@@ -116,12 +120,12 @@ _Sentry 대시보드에 기록된 에러_
   ![batch_log 1](/assets/img/project/eodigo/spring-batch-etl-pipeline-2/batch_job_execution_log-1.png)
   _BATCH_JOB_EXECUTION (1)_
 
-  배치 실행 내역이 기록되는 Spring Batch 메타 테이블인 `BATCH_JOB_EXECUTION` 테이블을 통해 총 세 차례의 실패가 발생했으며,
+  Sentry를 구축 이전에도 유사한 에러가 발생했는지를 확인하기 위해 `BATCH_JOB_EXECUTION` 테이블(Batch Job 실행 정보가 저장된 Spring Batch 메타 테이블)을 확인하였고, 총 세 차례의 실패가 발생했다는 것을 확인했다.
 
   ![batch_log 2](/assets/img/project/eodigo/spring-batch-etl-pipeline-2/batch_job_execution_log-2.png)
   _BATCH_JOB_EXECUTION (2)_
 
-  그 중 두 번이 `WebClientRequestException`로 인한 실패라는 것을 발견했다.
+  또한 이중 두 차례가 `WebClientRequestException`로 인한 실패라는 것을 발견했다.
 
 - **원인 분석**
 
@@ -157,7 +161,7 @@ _Sentry 대시보드에 기록된 에러_
 ### 데이터 중복으로 인한 Unique Key 제약 조건 위반
 
 - **현상**  
-  `kamisDailyPriceSyncJob`을 처음 실행하자마자 `Duplicate entry ... for key 'uk_daily_price_product_region_date_market'` 예외가 발생하며 Step이 실패했다.
+  `kamisDailyPriceSyncJob`이 최초로 실행됐을때 `Duplicate entry ... for key 'uk_daily_price_product_region_date_market'` 예외가 발생하며 Step이 실패했다.
 
   ```
   org.hibernate.exception.ConstraintViolationException: could not execute statement [Duplicate entry '18-1-2025-08-22-RETAIL' for key 'daily_regional_price.uk_daily_price_product_region_date_market'] [insert into daily_regional_price (created_at,market_type,price,product_id,region_id,survey_date,updated_at) values (?,?,?,?,?,?,?)]

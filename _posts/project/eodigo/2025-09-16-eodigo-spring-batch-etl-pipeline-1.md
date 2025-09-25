@@ -156,5 +156,6 @@ _아키텍처_
 ## 참고 자료
 
 - [Spring Batch Introduction :: Spring Batch](https://docs.spring.io/spring-batch/reference/spring-batch-intro.html)
+- [The Domain Language of Batch :: Spring Batch](https://docs.spring.io/spring-batch/reference/domain.html)
 - [java - Spring Scheduling: @Scheduled vs Quartz - Stack Overflow](https://stackoverflow.com/questions/4385719/spring-scheduling-scheduled-vs-quartz)
 - [RestTemplate vs WebClient vs HttpClient: A Comparison \| by Sainath Ebitwar \| Medium](https://therealsainath.medium.com/resttemplate-vs-webclient-vs-httpclient-a-comprehensive-comparison-69a378c2695b)
