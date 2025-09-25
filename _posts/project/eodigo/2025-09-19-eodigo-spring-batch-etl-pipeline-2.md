@@ -120,12 +120,12 @@ class BatchJobController(...) {
   ![batch_log 1](/assets/img/project/eodigo/spring-batch-etl-pipeline-2/batch_job_execution_log-1.png)
   _BATCH_JOB_EXECUTION (1)_
 
-  Sentry를 구축 이전에도 유사한 에러가 발생했는지를 확인하기 위해 `BATCH_JOB_EXECUTION` 테이블(Batch Job 실행 정보가 저장된 Spring Batch 메타 테이블)을 확인하였고, 총 세 차례의 실패가 발생했다는 것을 확인했다.
+  Sentry 구축 이전에도 유사한 에러가 발생했는지를 확인하기 위해 `BATCH_JOB_EXECUTION` 테이블(Batch Job 실행 정보가 저장된 메타 테이블)을 확인하였고, 총 세 차례의 실패가 발생한 것을 확인했다.
 
   ![batch_log 2](/assets/img/project/eodigo/spring-batch-etl-pipeline-2/batch_job_execution_log-2.png)
   _BATCH_JOB_EXECUTION (2)_
 
-  또한 이중 두 차례가 `WebClientRequestException`로 인한 실패라는 것을 발견했다.
+  또한 그중 두 차례가 `WebClientRequestException`로 인한 실패라는 것을 발견했다.
 
 - **원인 분석**
 
