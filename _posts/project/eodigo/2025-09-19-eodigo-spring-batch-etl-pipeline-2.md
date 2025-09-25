@@ -76,7 +76,7 @@ class KamisAnnualPriceJpaItemWriter(...) : ItemWriter<List<AnnualNationalPrice>>
 
 ### 최종 ETL 파이프라인
 
-이렇게 해서 완성된 ETL 파이프라인은 다음과 같다.
+최종적인 ETL 파이프라인은 다음과 같다.
 
 ![etl pipeline](/assets/img/project/eodigo/spring-batch-etl-pipeline-2/etl_pipeline.png)
 

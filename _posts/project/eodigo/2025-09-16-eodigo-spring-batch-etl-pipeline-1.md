@@ -7,31 +7,31 @@ tags: [spring-boot, spring-batch]
 
 > 이 글은 Spring Batch를 프로젝트에 도입하게 된 배경과 아키텍처 설계 과정에 대해 다루고 있습니다.
 
-## 도입: 주기적인 데이터 동기화의 필요성
+## 배경
 
-어디GO '상품 가격 탐색' 기능에서의 핵심은 데이터의 **최신성**과 **정확성**이다. 가격 랭킹, 가격 추이 기능은 최신 상품 가격을 기반으로 제공되어야 한다. 이를 위해 [**농수산물 유통정보(KAMIS) Open API**](https://www.kamis.or.kr/customer/reference/openapi_list.do)를 사용, 매일 약 250여 개 상품의 가격 데이터를 데이터베이스로 동기화해야 했다.
+어디GO '상품 가격 탐색' 기능에서의 핵심은 데이터의 **최신성**과 **정확성**이다. 가격 랭킹, 가격 추이 기능은 최신 상품 가격을 기반으로 제공되어야 한다. 이를 위해 [**농수산물 유통정보(KAMIS) Open API**](https://www.kamis.or.kr/customer/reference/openapi_list.do)를 사용, **매일 상품의 가격 데이터를 데이터베이스로 동기화**해야 했다.
 
 ![kamis_open_api.png](/assets/img/project/eodigo/spring-batch-etl-pipeline-1/kamis_open_api.png)
 
-문제는 처리할 데이터의 규모가 크다는 것이었다. 일일 가격의 경우, **252개 상품 x 24개 지역**으로 매일 약 **6,000건**의 신규 데이터(INSERT)가 발생하며, 연평균 가격은 **252개 상품**에 대한 데이터 갱신(UPDATE)이 필요했다.
+문제는 처리할 **데이터의 규모**였다. 일일 가격의 경우, **252개 상품 x 24개 지역**으로 매일 약 **6,000건**의 신규 데이터(INSERT)가 발생하며, 연평균 가격은 **252개 상품**에 대한 데이터 갱신(UPDATE)이 필요했다.
 
-단순히 `@Scheduled` 어노테이션과 `WebClient`를 조합한 서비스 메서드만으로는 이 요구사항을 안정적으로 충족시키기 어렵다고 판단했다. 대량의 데이터를 처리하는 과정에서 부분적인 실패가 전체 작업을 중단시키거나, 네트워크 오류로 인해 작업을 처음부터 다시 시작해야 하는 문제가 발생할 수 있기 때문이다. 그래서 **Spring Batch**를 도입하기로 결정했다.
+단순히 `@Scheduled` 어노테이션과 `WebClient`를 조합한 서비스 메서드만으로는 이 요구사항을 안정적으로 충족시키기 어렵다고 판단했다. 대량의 데이터를 처리하는 과정에서 부분적인 실패가 전체 작업을 중단시키거나, 네트워크 오류로 인해 작업을 처음부터 다시 시작해야 하는 문제가 발생할 수 있기 때문이다. 따라서 **Spring Batch**를 도입하기로 결정했다.
 
-## Spring Batch란?
+### **Spring Batch란?**
 
 ![spring_batch.png](/assets/img/project/eodigo/spring-batch-etl-pipeline-1/spring_batch.png)
 
-### 주요 특징
+#### 주요 특징
 
 **Spring Batch**는 사용자의 개입 없이 대규모 데이터를 안정적으로 일괄 처리하는 데 특화된 경량 프레임워크이다. 주로 데이터 정산, 변환, 마이그레이션과 같이 주기적이고 대량의 데이터를 다루는 작업에 적합하다.
 
 핵심 기능으로는 **트랜잭션 관리**, **청크(Chunk) 기반 처리**, **재시도 기능** 등이 있다. Spring Batch는 스케줄링 기능을 포함하고 있지 않으므로, Quartz와 같은 별도의 스케줄링 프레임워크와 함께 사용되어야 한다.
 
-### 동작 방식
+#### 동작 방식
 
 ![batch_stereotypes.png](/assets/img/project/eodigo/spring-batch-etl-pipeline-1/batch_stereotypes.png)
 
-Spring Batch의 실행 과정은 다음과 같다.
+Spring Batch의 동작 방식은 다음과 같다.
 
 1. **JobLauncher가 Job 실행**  
   배치 프로세스는 JobLauncher에 의해 시작된다. JobLauncher는 실행할 Job과 필요한 파라미터(JobParameters)를 받는다.
@@ -149,7 +149,7 @@ class WebClientConfig(private val objectMapper: ObjectMapper) {
 위 설정 코드를 통해 우리는 `WebClient`라는 고수준의 API 클라이언트에, 타임아웃과 같은 세부 설정이 완료된 Netty `HttpClient` 엔진을 장착했다. 이를 통해 외부 API 통신 과정에서의 안정성과 효율성을 모두 확보할 수 있었다.
 
 ![architecture.png](/assets/img/project/eodigo/spring-batch-etl-pipeline-1/architecture.png)
-_아키텍처_
+_batch application 아키텍처_
 
 다음 글에서는 이러한 설계를 바탕으로 구현한 Spring Batch Job에 대해 이야기할 계획이다.
 
