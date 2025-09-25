@@ -9,7 +9,7 @@ tags: [spring-boot, spring-batch]
 
 ## 도입: 주기적인 데이터 동기화의 필요성
 
-어디GO '상품 가격 탐색' 기능에서의 핵심은 데이터의 **최신성**과 **정확성**이다. 가격 랭킹, 가격 추이 기능은 최신 상품 가격을 기반으로 제공되어야 한다. 이를 위해 농산물유통정보(KAMIS) Open API를 사용, 매일 약 250여 개 상품의 가격 데이터를 데이터베이스로 동기화해야 했다.
+어디GO '상품 가격 탐색' 기능에서의 핵심은 데이터의 **최신성**과 **정확성**이다. 가격 랭킹, 가격 추이 기능은 최신 상품 가격을 기반으로 제공되어야 한다. 이를 위해 [**농수산물 유통정보(KAMIS) Open API**](https://www.kamis.or.kr/customer/reference/openapi_list.do)를 사용, 매일 약 250여 개 상품의 가격 데이터를 데이터베이스로 동기화해야 했다.
 
 ![kamis_open_api.png](/assets/img/project/eodigo/spring-batch-etl-pipeline-1/kamis_open_api.png)
 
