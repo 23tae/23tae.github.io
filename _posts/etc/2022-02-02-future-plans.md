@@ -3,6 +3,7 @@ title: "앞으로의 계획"
 date: 2022-02-02
 categories: [etc]
 tags: [계획]
+published: false
 ---
 > 프로그래밍, 영어, 전공에 관한 계획
 
