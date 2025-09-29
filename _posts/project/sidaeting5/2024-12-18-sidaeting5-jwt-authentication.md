@@ -1,5 +1,5 @@
 ---
-title: "시대팅에 JWT 인증 시스템 구축하기"
+title: "시대팅5 JWT 인증 시스템 구축하기"
 date: 2024-12-18T08:00:00.000Z
 categories: [Project, 시대팅5]
 tags: [spring-boot, jwt, cookie]

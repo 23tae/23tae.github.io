@@ -1,5 +1,5 @@
 ---
-title: "시대팅 이메일 전송 횟수 초기화용 관리자 API 구현기"
+title: "시대팅5 이메일 전송 횟수 초기화용 관리자 API 구현기"
 date: 2024-12-21T08:00:00.000Z
 categories: [Project, 시대팅5]
 tags: [spring-boot]

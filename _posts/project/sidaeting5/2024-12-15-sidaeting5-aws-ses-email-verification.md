@@ -1,5 +1,5 @@
 ---
-title: "시대팅에 이메일 인증 기능 구현하기 with Amazon SES"
+title: "시대팅5 이메일 인증 기능 구현하기 with Amazon SES"
 date: 2024-12-15T09:00:00.000Z
 categories: [Project, 시대팅5]
 tags: [spring-boot, aws, redis]

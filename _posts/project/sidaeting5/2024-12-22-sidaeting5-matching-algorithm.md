@@ -1,5 +1,5 @@
 ---
-title: "시대팅 매칭 알고리즘: 설계부터 매칭까지"
+title: "시대팅5 매칭 알고리즘: 설계부터 매칭까지"
 date: 2024-12-22T08:00:00.000Z
 categories: [Project, 시대팅5]
 tags: [python]
