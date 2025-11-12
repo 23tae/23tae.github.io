@@ -153,9 +153,9 @@ curl http://10.0.4.145:9100/metrics
 |![eodigo-app_vpc_info.png](/assets/img/project/eodigo/monitoring-system-2/eodigo-app_vpc_info.png)|![monitoring-server_vpc_info.png](/assets/img/project/eodigo/monitoring-system-2/monitoring-server_vpc_info.png)|
 
 ![eodigo_vpc_architecture.png](/assets/img/project/eodigo/monitoring-system-2/eodigo_vpc_architecture.png)
-_당시 VPC 구성_
+_당시 VPC_
 
-### 해결: VPC의 논리적 격리
+### 해결: EC2 인스턴스 이전
 
 VPC(Virtual Private Cloud)는 AWS 클라우드 내에서 논리적으로 완전히 격리된 가상의 네트워크 공간이다. 서로 다른 VPC에 속한 인스턴스들은 기본적으로 사설 통신이 불가능하다. 내가 겪은 Connection Timeout 현상은 이 특성 때문에 발생한 것이었다. 아무리 보안 그룹에서 특정 IP나 보안 그룹을 허용해도, 두 서버는 애초에 서로 다른 네트워크에 존재하여 패킷이 도달할 수 없었던 것이다.
 
