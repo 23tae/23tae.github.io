@@ -288,8 +288,10 @@ graph LR
 본인 학과 기피 비율: 58.0%
 ```
 
+#### 번외
+
 ![course_frequency_wc.png](/assets/img/project/sidaeting5/06-matching-algorithm/course_frequency_wc.png){: width="80%" style="display: block; margin: auto; "}
-_유저들이 작성한 데이트 코스를 워드클라우드로 분석한 결과_
+_유저들이 응답한 데이트 코스를 워드클라우드로 시각화한 결과_
 
 ## 참고자료
 - [matching - Allocating university medics to hospital placements](https://daffidwilde.github.io/matching/docs/tutorials/hospital_resident.html)
