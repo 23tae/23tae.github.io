@@ -15,6 +15,9 @@ tags: [spring-boot, spring-batch]
 
 문제는 처리할 **데이터의 규모**였다. 일일 가격의 경우, **252개 상품 x 24개 지역**으로 매일 약 **6,000건**의 신규 데이터(INSERT)가 발생하며, 연평균 가격은 **252개 상품**에 대한 데이터 갱신(UPDATE)이 필요했다.
 
+![kamis product data](/assets/img/project/eodigo/spring-batch-etl-pipeline-1/kamis_product_data.png)
+_KAMIS 농축산물 품목 데이터_
+
 단순히 `@Scheduled` 어노테이션과 `WebClient`를 조합한 서비스 메서드만으로는 이 요구사항을 안정적으로 충족시키기 어렵다고 판단했다. 대량의 데이터를 처리하는 과정에서 부분적인 실패가 전체 작업을 중단시키거나, 네트워크 오류로 인해 작업을 처음부터 다시 시작해야 하는 문제가 발생할 수 있기 때문이다. 따라서 **Spring Batch**를 도입하기로 결정했다.
 
 ### **Spring Batch란?**
