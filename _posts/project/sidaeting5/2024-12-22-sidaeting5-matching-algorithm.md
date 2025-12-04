@@ -6,7 +6,7 @@ tags: [python]
 mermaid: true
 ---
 
-![match announcement](/assets/img/project/sidaeting5/06-matching-algorithm/match-announcement.jpg)
+![match announcement](/assets/img/project/sidaeting5/06-matching-algorithm/match_announcement.jpg)
 
 ## 들어가며
 
@@ -14,7 +14,7 @@ mermaid: true
 
 ### 매칭 절차
 
-![image.png](/assets/img/project/sidaeting5/06-matching-algorithm/matching-process.png)
+![image.png](/assets/img/project/sidaeting5/06-matching-algorithm/matching_process.png)
 _시대팅 매칭 절차_
 
 시대팅의 매칭은 신청기간동안 참가 신청을 한 사용자들의 데이터를 추출하여 로컬 환경에서 매칭 알고리즘을 실행한 뒤, 실행 결과를 다시 데이터베이스에 저장하는 방식으로 진행된다.

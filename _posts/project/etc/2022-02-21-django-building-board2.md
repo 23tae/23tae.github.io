@@ -1,7 +1,7 @@
 ---
 title: "Django 웹 개발 : 게시판 만들기 (2)"
 date: 2022-02-21T05:34:08.540Z
-categories: [Project]
+categories: [Project, etc_p]
 tags: [django]
 ---
 # 추가할 기능

@@ -1,10 +1,10 @@
 ---
 title: "Django 웹 개발 : 게시판 만들기 (1)"
 date: 2022-02-19T07:33:08.272Z
-categories: [Project]
+categories: [Project, etc_p]
 tags: [django]
 ---
-![django](/assets/img/project/django.png)
+![django](/assets/img/project/etc/django.png)
 
 # Django project 생성
 `mkdir "프로젝트 최상위 폴더"`

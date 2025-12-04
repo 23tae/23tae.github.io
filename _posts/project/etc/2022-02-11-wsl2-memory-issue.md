@@ -6,9 +6,9 @@ tags: [wsl2, issue]
 ---
 # Issue
 WSL2를 통해 우분투 환경에서 작업을 하고 난 뒤 프로그램을 종료했는데 윈도우 상에서 작업 관리자를 실행했을 때 다음과 같이 Vmmem이 상당한 메모리를 차지하는 경우가 발생했다.
-![config](/assets/img/project/wslconfig.jpeg)
+![config](/assets/img/project/etc/wslconfig.jpeg)  
 해당 프로그램을 종료하려고 시도해도 아래와 같이 에러창이 뜨면서 종료가 되지 않는다.
-![manager](/assets/img/project/task-manager.jpeg)
+![manager](/assets/img/project/etc/task-manager.jpeg)
 해당 이슈를 구글링 해보니 아직까지 해결되지 않은 문제인 듯 하다. 임시적인 해결방법은 윈도우 상에 wsl2가 차지하는 메모리의 양을 할당하는 것과 WSL2를 종료시키는 것 두 가지가 있는 것으로 보인다.
 # Solution
 **1. `.wslconfig` 파일 생성 (최초 1회만)**
