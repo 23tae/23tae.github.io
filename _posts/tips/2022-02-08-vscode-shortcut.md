@@ -1,7 +1,7 @@
 ---
 title: "VSCode (Visual Studio Code) 단축키 (macOS)"
 categories: [Tips]
-tags: [단축키, vscode]
+tags: [shortcut, vscode]
 date: 2022-02-08
 ---
 ![vscode](/assets/img/tips/vscode.png)

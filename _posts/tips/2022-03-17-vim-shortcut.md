@@ -1,7 +1,7 @@
 ---
 title:  "Vim 단축키 (Vim Cheat Sheet)"
 categories: [Tips]
-tags: [단축키, vim]
+tags: [shortcut, vim]
 date: 2022-03-17
 ---
 ![vim](/assets/img/tips/vim.png)

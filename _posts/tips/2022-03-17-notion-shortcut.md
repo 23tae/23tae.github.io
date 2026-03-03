@@ -1,7 +1,7 @@
 ---
 title:  "Notion 단축키 모음"
 categories: [Tips]
-tags: [단축키, notion]
+tags: [shortcut, notion]
 date: 2022-03-17
 ---
 

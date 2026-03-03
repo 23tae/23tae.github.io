@@ -2,7 +2,7 @@
 title: "시대팅 시즌5 개발을 마치며"
 date: 2024-12-14T09:00:00.000Z
 categories: [Project, 시대팅5]
-tags: [회고]
+tags: [retrospective]
 ---
 
 ![poster](/assets/img/project/sidaeting5/01-retrospect/poster.jpg){: width="70%" style="display: block; margin: auto; "}

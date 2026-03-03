@@ -2,7 +2,7 @@
 title: "어디GO 프로젝트 회고: 8주를 돌아보며"
 date: 2025-09-06T09:00:00.000Z
 categories: [Project, 어디GO]
-tags: [회고]
+tags: [retrospective]
 ---
 
 ![dnd_final_day_1.jpg](/assets/img/project/eodigo/retrospect/dnd_final_day_1.jpg)
