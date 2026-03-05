@@ -2,13 +2,17 @@
 title: "뉴스낵 데이터 파이프라인 구축기: 뉴스 수집부터 이슈 클러스터링까지"
 date: 2026-02-17T09:00:00.000Z
 categories: [Project, 뉴스낵]
-tags: [data-engineering, clustering, tf-idf, troubleshooting]
+tags: [data-engineering]
 mermaid: true
 ---
 
 ## 들어가며
 
-뉴스낵의 모든 AI 콘텐츠는 언론사의 최신 뉴스 기사로부터 시작된다. AI 생성 품질은 입력 데이터의 품질에 직접적으로 의존하므로, 수집 파이프라인의 안정성과 정확성은 서비스 전체의 신뢰도와 직결된다.
+| ![yna_rss](/assets/img/project/newsnack/data-pipeline/yna_rss.png) | ![newsis_rss](/assets/img/project/newsnack/data-pipeline/newsis_rss.png) |
+|:---:|:---:|
+| 연합뉴스 RSS | 뉴시스 RSS |
+
+뉴스낵의 모든 콘텐츠는 언론사의 최신 뉴스 기사로부터 시작된다. AI 생성 품질은 입력 데이터의 품질에 직접적으로 의존하므로, 수집 파이프라인의 안정성과 정확성은 서비스 전체의 신뢰도와 직결된다.
 
 이 글에서는 언론사 RSS 피드를 통해 기사를 주기적으로 수집하고, 이를 TF-IDF 기반 군집화로 이슈 단위로 압축하는 과정을 다룬다. 표면적으로는 URL에서 데이터를 꺼내오는 단순한 작업처럼 보이지만, 실제 운영 환경에서는 타임아웃 방어, 중복 방지, 포토뉴스 제거 등 다양한 방어 로직이 필요하다.
 
@@ -16,7 +20,7 @@ mermaid: true
 
 ## 1부: 뉴스 기사 수집
 
-### 1. 전체 수집 흐름
+### 전체 수집 흐름
 
 수집 파이프라인의 전체 흐름은 다음과 같다.
 
@@ -32,13 +36,13 @@ graph LR
     end
 ```
 
-핵심은 **세 가지 분리**다.
+핵심은 **세 가지 영역으로의 분리**다.
 
 1. **설정(`sources.yaml`)**: 언론사별 RSS 피드 URL 목록을 코드 밖으로 분리해 코드 수정 없이 언론사를 추가·제거할 수 있다.
 2. **파싱(`parse_rss_feed`)**: 단일 URL에서 기사를 추출하는 순수 로직. 타임아웃과 에러는 이 함수 밖에서 처리한다.
 3. **저장(`bulk_insert_or_ignore`)**: DB 저장은 리포지토리 계층에 위임해 중복 방지 로직이 파싱 코드를 오염시키지 않는다.
 
-### 2. 언론사 목록 관리
+### 언론사 목록 관리
 
 수집 대상은 `sources.yaml` 파일 한 곳에서 관리한다.
 
@@ -55,7 +59,7 @@ graph LR
 
 `load_sources()` 함수는 이 파일을 읽어 딕셔너리 리스트로 반환한다. `importlib.resources`를 사용해 패키지 내부 리소스로 묶어 배포 후에도 경로 문제 없이 접근할 수 있도록 처리했다.
 
-### 3. 핵심 설계 결정: `feedparser` 단독 사용의 한계
+### 핵심 설계 결정: `feedparser` 단독 사용의 한계
 
 초기에는 `feedparser.parse(url)`에 URL을 직접 넘기는 방식으로 구현했다. 이것이 `feedparser`의 가장 일반적인 사용법이다.
 
@@ -96,7 +100,7 @@ def parse_rss_feed(url: str, source: str, category_id: int) -> List[Dict]:
     return articles
 ```
 
-### 4. 중복 방지: `ON CONFLICT DO NOTHING`
+### 중복 방지: `ON CONFLICT DO NOTHING`
 
 RSS 피드는 30분마다 수집하는데, 언론사가 피드를 갱신하지 않으면 이전에 수집한 기사와 완전히 동일한 내용이 또 들어온다. 이를 DB 레벨에서 막기 위해 **`origin_url`에 Unique 제약**을 걸고, PostgreSQL의 `ON CONFLICT DO NOTHING`을 활용한다.
 
@@ -117,7 +121,9 @@ def bulk_insert_or_ignore(self, articles: List[Dict[str, Any]]) -> int:
 [INFO] Source: 뉴시스    | New: 0  | Skip: 20 | Total: 20
 ```
 
-### 5. 트러블슈팅 1: 15분의 늪 — 언론사 단위 서킷 브레이킹
+![news_collection_screenshot](/assets/img/project/newsnack/data-pipeline/news_collection_screenshot.png)
+
+### 트러블슈팅 1: 15분의 늪 — 언론사 단위 서킷 브레이킹
 
 어느 날 DAG 실행 기록을 확인해보니 로컬에서 1분이면 끝나던 `news_collection_dag`가 15분 넘게 실행되는 것을 확인했다.
 
@@ -172,7 +178,7 @@ for source, src_list in sources_by_source.items():
 
 두 방어막(타임아웃 + 서킷 브레이킹)을 배포한 뒤, **15분이었던 DAG 소요 시간이 다시 1분대로 정상화**되었다.
 
-### 6. 트러블슈팅 2: 포토뉴스 오염 — 제목 기반 필터링
+### 트러블슈팅 2: 포토뉴스 오염 — 제목 기반 필터링
 
 파이프라인을 운영하다 예상치 못한 문제가 발견됐다. **포토뉴스가 이슈로 뽑혀 AI 콘텐츠로 만들어진 것**이다.
 
@@ -212,7 +218,7 @@ def is_photo_article(title: str) -> bool:
 
 ## 2부: 이슈 클러스터링
 
-### 7. 왜 군집화가 필요한가
+### 왜 군집화가 필요한가
 
 수집 파이프라인이 매 30분마다 기사를 쌓는다면, 군집화 DAG(`issue_clustering_dag`)는 정해진 시간(조간·석간 직전)에 그 기사 풀을 소화하는 역할을 한다. 아무런 처리 없이 수집된 모든 기사를 AI에 넘기면 두 가지 문제가 생긴다.
 
@@ -221,7 +227,7 @@ def is_photo_article(title: str) -> bool:
 
 유사한 기사들을 하나의 **이슈**로 묶어 이슈 단위로 AI를 호출함으로써 이 두 문제를 동시에 해결한다.
 
-### 8. 전처리: 카테고리별 분할
+### 전처리: 카테고리별 분할
 
 바로 전체 기사를 유사도 연산에 넣으면 안 된다. '정치' 기사와 '연예' 기사에 우연히 같은 단어(예: "대통령")가 등장하면 엉뚱하게 묶일 수 있다.
 
@@ -235,7 +241,7 @@ for article in unissued_articles:
     articles_by_category[article.category_id].append(article)
 ```
 
-### 9. TF-IDF 벡터화
+### TF-IDF 벡터화
 
 텍스트 유사도를 컴퓨터가 비교하려면 기사 제목을 숫자 벡터로 변환해야 한다. `scikit-learn`의 `TfidfVectorizer`를 사용했다.
 
@@ -252,7 +258,7 @@ tfidf_matrix = vectorizer.fit_transform(titles)
 
 결과로 각 기사 제목이 `[0.0, 0.12, 0.0, 0.87, ...]` 형태의 실수 벡터로 변환된 `N × vocab_size` 행렬이 만들어진다.
 
-### 10. 코사인 유사도와 탐욕적 군집화
+### 코사인 유사도와 탐욕적 군집화
 
 벡터 간 거리는 **코사인 유사도**로 측정한다. 두 벡터가 이루는 각도의 코사인 값으로, 1에 가까울수록 의미가 유사하다. 벡터의 크기가 다르더라도 방향만 같으면 유사하다고 판단하므로, 기사 길이의 차이에 영향받지 않는다는 것이 장점이다.
 
@@ -309,7 +315,7 @@ def cluster_articles_by_similarity(
 
 `threshold=0.60`, `min_size=3`은 실제 수집 데이터를 보며 조정한 값이다. 유사 기사가 3개 미만인 사건은 사회적 화제성이 낮아 이슈 콘텐츠로 만들 필요가 없다고 판단했다.
 
-### 11. DB 반영: 이슈 등록과 기사 연결
+### DB 반영: 이슈 등록과 기사 연결
 
 군집화 결과는 두 단계로 DB에 반영된다.
 
@@ -330,6 +336,8 @@ for cluster in clusters:
 ```
 
 이로써 흩어져 있던 기사 풀이 소수의 이슈로 압축된다. 이후 파이프라인(`content_generation_dag`)은 이 이슈 단위로 AI 서버에 콘텐츠 생성을 요청한다.
+
+![issue_clustering_terminal](/assets/img/project/newsnack/data-pipeline/issue_clustering_terminal.png)
 
 ## 마치며
 
