@@ -85,6 +85,7 @@ async def image_gen_node(state: AiArticleState):
 이 구조를 채택한 덕분에, 기준점을 공유하여 그림체가 통일된 뉴스툰 컷을 보장하면서도, 총 소요 시간을 순차 생성 대비 절반 수준으로 단축할 수 있었다.
 
 |![image_after_reference-0](/assets/img/project/newsnack/image-parallel-generation/image_after_reference-0.jpg)|![image_after_reference-1](/assets/img/project/newsnack/image-parallel-generation/image_after_reference-1.jpg)|
+|---|---|
 |![image_after_reference-2](/assets/img/project/newsnack/image-parallel-generation/image_after_reference-2.jpg)|![image_after_reference-3](/assets/img/project/newsnack/image-parallel-generation/image_after_reference-3.jpg)|
 
 ## 동시성 제어: API 과부하 회피와 Semaphore

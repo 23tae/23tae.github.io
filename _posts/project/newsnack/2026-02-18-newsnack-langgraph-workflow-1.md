@@ -192,6 +192,7 @@ async def generate_images(state: AiArticleState):
 위와 같은 원본 기사에 대해 워크플로우를 거쳐 아래와 같은 결과물이 생성되었다.
 
 |![newsnack_card_news_result-1](/assets/img/project/newsnack/newsnack-langgraph-workflow-1/newsnack_card_news_result-1.png)|![newsnack_card_news_result-2](/assets/img/project/newsnack/newsnack-langgraph-workflow-1/newsnack_card_news_result-2.png)|
+|---|---|
 |![newsnack_card_news_result-3](/assets/img/project/newsnack/newsnack-langgraph-workflow-1/newsnack_card_news_result-3.png)|![newsnack_card_news_result-4](/assets/img/project/newsnack/newsnack-langgraph-workflow-1/newsnack_card_news_result-4.png)|
 
 ## 마치며
