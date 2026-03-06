@@ -22,8 +22,10 @@ _AI에게 4장을 요청했더니 만들어낸 1장의 4컷 만화_
 
 ## 문제 상황: 병렬과 순차 사이의 딜레마
 
-작화 불일치 문제를 막는 가장 단순한 방법은, 웹툰 이미지를 순차적으로 생성하며 앞선 이미지를 기반으로 다음 이미지를 그리게 하는 것이다. 최신 모델인 `gemini-3-pro-image-preview`가 최대 14개의 이미지를 컨텍스트(Reference)로 인식하고 스타일을 복제할 수 있다는 사실을 알고 이 방법을 사용하기로 했다.
-  ![gemini_api_docs_reference_images](/assets/img/project/newsnack/image-parallel-generation/gemini_api_docs_reference_images.png)
+작화 불일치 문제를 막는 가장 단순한 방법은, 웹툰 이미지를 순차적으로 생성하며 앞선 이미지를 기반으로 다음 이미지를 그리게 하는 것이다. 최신 모델인 `gemini-3-pro-image-preview`가 최대 14개의 이미지를 컨텍스트(Reference)로 사용해서 이미지를 생성할 수 있다는 사실을 알고 이 방법을 적용하기로 했다.
+
+![gemini_api_docs_reference_images](/assets/img/project/newsnack/image-parallel-generation/gemini_api_docs_reference_images.png)
+
 하지만 4장을 **순차적으로 생성**하면 장당 약 1분이 소요되어, 결과적으로 전체 4분 이상을 소모하는 병목이 발생했다. 대량의 뉴스를 처리해야 하는 데이터 파이프라인에서 단일 기사의 이미지 4장에 4분씩 소요되는 성능은 현실적으로 서비스에 적용하기 어려웠다.
 
 ## 해결 방법: 하이브리드 전략 (1장 선생성 + 3장 병렬 생성)

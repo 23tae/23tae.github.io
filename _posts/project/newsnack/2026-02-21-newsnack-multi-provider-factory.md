@@ -9,8 +9,10 @@ tags: [ai, troubleshooting]
 
 ![google_account_suspended_message](/assets/img/project/newsnack/multi-provider-factory/google_account_suspended_message.png)
 
-서비스를 운영하다 보면 애플리케이션 외부 요인으로 인한 서비스 장애를 마주하곤 한다. 1월 29일 오후 5시, 팀 계정으로 사용하던 구글 계정에 접속하자 로그아웃 상태와 함께 본인인증 화면이 나타났다. 인증을 시도하자 **계정이 보안 정책 위반으로 정지됐다**는 화면이 출력되었다. 이의신청만 해두고 명확한 복구 일정은 알 수 없는 상황이었다.
-    ![gemini_api_permission_error](/assets/img/project/newsnack/multi-provider-factory/gemini_api_permission_error.jpg)
+서비스를 운영하다 보면 외부 요인으로 인한 서비스 장애를 마주하곤 한다. 1월 29일 오후 5시, 팀 계정으로 사용하던 구글 계정에 접속하자 로그아웃 상태와 함께 본인인증 화면이 나타났다. 인증을 시도하자 **계정이 보안 정책 위반으로 정지됐다**는 화면이 출력되었다. 이의신청만 가능했고 명확한 복구 일정은 알 수 없는 상황이었다.
+
+![gemini_api_permission_error](/assets/img/project/newsnack/multi-provider-factory/gemini_api_permission_error.jpg)
+
 파이프라인은 텍스트 요약부터 웹툰 이미지 생성, 오디오 변환까지 100% Google Gemini API에 의존하고 있었기에, AI 서버 인프라 전체가 순식간에 중단됐다. 이는 특정 기업의 인프라에 완전히 종속되어 발생하는 전형적인 **벤더 종속(Vendor Lock-in)**의 부작용이었다.
 
 문제를 인지한 직후부터 대응책 탐색에 착수했다. 가장 단순한 선택지는 OpenAI로 전면 전환하는 것이었다. 그러나 이 방법은 문제의 본질을 해결하지 못한다. OpenAI에서도 동일한 계정 정지나 서버 장애가 발생하지 않는다는 보장이 없고, **특정 프로바이더에 대한 단일 의존 구조** 자체가 근본적인 문제이기 때문이다.
