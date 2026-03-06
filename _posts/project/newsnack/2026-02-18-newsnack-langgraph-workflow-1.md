@@ -64,6 +64,10 @@ stateDiagram-v2
 
 ### **0단계: 편향성 제거를 위한 컨텍스트 병합**
 
+|![political_news_khan](/assets/img/project/newsnack/newsnack-langgraph-workflow-1/political_news_khan.png)|![political_news_donga](/assets/img/project/newsnack/newsnack-langgraph-workflow-1/political_news_donga.png)|
+|:---:|:---:|
+|정치 기사 예시 1|정치 기사 예시 2|
+
 워크플로우 처리에 앞서 해결해야 할 도메인적인 고민이 있었다. AXZ와의 미팅과 멘토링 과정에서 "단일 기사 기반으로 콘텐츠를 생성하면, 특정 언론사와 기자의 견해로 인해 **콘텐츠에 편향성**이 짙어질 수 있다"는 우려사항이 여러 차례 제기되었다.
 
 우리 팀은 콘텐츠의 중립성을 확보하기 위해 로직을 변경했다. AI에 기사 1편을 주입하는 것이 아니라, 해당 '이슈'에 속한 다양한 언론사의 기사들을 모두 활용하도록 했다. 워크플로우를 시작하기 전, 조회된 여러 기사의 본문을 하나의 거대한 텍스트로 합치는 전략을 취했다.
@@ -183,9 +187,9 @@ async def generate_images(state: AiArticleState):
 
 |![newsnack_card_news_source-1](/assets/img/project/newsnack/newsnack-langgraph-workflow-1/newsnack_card_news_source-1.png)|![newsnack_card_news_source-2](/assets/img/project/newsnack/newsnack-langgraph-workflow-1/newsnack_card_news_source-2.png)|
 |:---:|:---:|
-|기사 1|기사 2|
+|원본기사 1|원본기사 2|
 
-위와 같은 원본 기사에 대해 워크플로우를 거쳐 아래의 결과물이 생성되었다.
+위와 같은 원본 기사에 대해 워크플로우를 거쳐 아래와 같은 결과물이 생성되었다.
 
 |![newsnack_card_news_result-1](/assets/img/project/newsnack/newsnack-langgraph-workflow-1/newsnack_card_news_result-1.png)|![newsnack_card_news_result-2](/assets/img/project/newsnack/newsnack-langgraph-workflow-1/newsnack_card_news_result-2.png)|
 |![newsnack_card_news_result-3](/assets/img/project/newsnack/newsnack-langgraph-workflow-1/newsnack_card_news_result-3.png)|![newsnack_card_news_result-4](/assets/img/project/newsnack/newsnack-langgraph-workflow-1/newsnack_card_news_result-4.png)|
