@@ -11,7 +11,7 @@ tags: [infra, devops, ci-cd, troubleshooting]
 
 ![aws_ec2_instances_before_migration](/assets/img/project/newsnack/arm64-migration/aws_ec2_instances_before_migration.png)
 
-이대로 운영할 경우 예상되는 월 서버 비용은 약 $45(`t3.small` 시간당 약 $0.0208 × 24시간 × 30일 × 3대)에 달했다. 실제로 AWS 콘솔로 확인한 결과 현재까지의 사용 금액만 이미 $38.54를 넘어가고 있었다.
+이대로 운영할 경우 예상되는 월 서버 비용은 약 $45(`t3.small` 시간당 약 $0.0208 × 24시간 × 30일 × 3대)에 달했다. 실제로 AWS 콘솔로 확인한 결과 현재까지의 사용 금액만 이미 $38를 넘어가고 있었다.
 
 ![aws_monthly_cost](/assets/img/project/newsnack/arm64-migration/aws_monthly_cost.png)
 
