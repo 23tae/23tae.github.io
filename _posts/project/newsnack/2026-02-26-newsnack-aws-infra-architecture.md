@@ -48,7 +48,7 @@ _최종 VPC 구조_
 |---|---|---|
 | **22 (SSH)** | 내 IP | 서버 관리 |
 | **80 (HTTP)** | `0.0.0.0/0` | API 관문 (Nginx). Cloudflare 프록시와 통신. |
-| **8000, 8081** | 내 IP | `FastAPI` Swagger Docs, `Airflow` Web UI 접속. |
+| **8000, 8081** | 내 IP | `FastAPI` Swagger UI, `Airflow` Web UI 접속. |
 | **8080** | - | 인바운드에서 개방 안 함 (도커 네트워크 내부 통신 전용) |
 
 특히 `HTTPS(443)` 통신의 경우 EC2에서 직접 인증서를 관리하지 않고 **Cloudflare 프록시를 통해 SSL Offloading**을 처리하므로, EC2 레벨에서는 Cloudflare와 통신할 `80` 포트 하나만 열어두면 충분했다. 

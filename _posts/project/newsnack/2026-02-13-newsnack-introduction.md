@@ -45,12 +45,13 @@ AXZ의 가장 큰 고민은 **'이용자의 고령화와 신규 이용자의 부
 
 이러한 과정을 거쳐 뉴스를 가볍게 소비할 수 있는 **뉴스낵**이라는 솔루션을 도출했다. 주요 기능은 다음과 같다.
 
-- **멀티모달 뉴스 큐레이션**:
-  단순한 텍스트 요약을 넘어, 2가지 포맷으로 뉴스를 제공한다.
+- **멀티모달 뉴스 큐레이션**: 단순한 텍스트 요약을 넘어, 2가지 포맷으로 뉴스를 제공한다.
+  - 가볍고 재미있게 볼 수 있는 **'AI 뉴스툰'** (이미지)
     ![ai_newstoon](/assets/img/project/newsnack/introduction/ai_newstoon.jpg)
-    _가볍고 재미있게 볼 수 있는 **'AI 뉴스툰'** (이미지)_
+    _AI 뉴스툰_
+  - 바쁜 출퇴근길에 들을 수 있는 **'오늘의 뉴스낵'** (오디오)
     ![today_newsnack](/assets/img/project/newsnack/introduction/today_newsnack.jpg)
-    _바쁜 출퇴근길에 들을 수 있는 **'오늘의 뉴스낵'** (오디오)_
+    _오늘의 뉴스낵_
 - **AI 에디터 페르소나**:
   딱딱하고 건조한 기자의 문체 대신, 각자의 독특한 말투와 관점을 가진 'AI 에디터'들이 뉴스를 큐레이션하고 재해석하여 훨씬 친근하게 전달한다.
   ![newsnack_editor](/assets/img/project/newsnack/introduction/newsnack_editor.png)
