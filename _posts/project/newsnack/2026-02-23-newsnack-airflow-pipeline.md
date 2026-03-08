@@ -1,7 +1,7 @@
 ---
 title: "단일 노드 환경에서 Airflow 기반 데이터 파이프라인 구축하기"
 date: 2026-02-23T09:00:00.000Z
-categories: [Project, Newsnack]
+categories: [Project, 뉴스낵]
 tags: [data-engineering, airflow, pipeline]
 mermaid: true
 ---

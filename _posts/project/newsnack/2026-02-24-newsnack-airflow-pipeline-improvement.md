@@ -1,7 +1,7 @@
 ---
 title: "뉴스낵 데이터 파이프라인 개선 과정 (feat. 장애 허용 시스템)"
 date: 2026-02-24T09:00:00.000Z
-categories: [Project, Newsnack]
+categories: [Project, 뉴스낵]
 tags: [data-engineering, airflow]
 mermaid: true
 ---

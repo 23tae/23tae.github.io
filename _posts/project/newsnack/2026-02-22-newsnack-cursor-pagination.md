@@ -1,7 +1,7 @@
 ---
 title: "무한 스크롤과 동적 조회: Cursor-based Pagination과 QueryDSL 적용 사례"
 date: 2026-02-22T09:00:00.000Z
-categories: [Project, Newsnack]
+categories: [Project, 뉴스낵]
 tags: [spring-boot, querydsl]
 ---
 

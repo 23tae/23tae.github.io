@@ -1,7 +1,7 @@
 ---
 title: "구글 계정 정지로 인한 벤더 종속 극복기: 멀티 프로바이더 팩토리 패턴 구현"
 date: 2026-02-21T09:00:00.000Z
-categories: [Project, Newsnack]
+categories: [Project, 뉴스낵]
 tags: [ai, troubleshooting]
 ---
 
