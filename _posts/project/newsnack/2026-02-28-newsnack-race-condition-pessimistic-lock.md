@@ -19,6 +19,7 @@ mermaid: true
 하지만 이 유연한 로직을 도입하는 과정에서 AI 서버 측에 심각한 **동시성 문제(경쟁 상태)**가 발견되었다. 밀리초 단위로 겹친 요청들을 제어하지 못해, 동일한 이슈 원본 데이터에 대해 AI가 중복된 콘텐츠를 여러 개 생성해 버리는 치명적인 데이터 무결성 훼손이 일어난 것이다.
 
 ![duplicated_ai_articles](/assets/img/project/newsnack/race-condition-pessimistic-lock/duplicated_ai_articles.png)
+_DB에 저장된 중복 기사들_
 
 이 글에서는 동일한 이슈에 대한 파이프라인의 중복 콘텐츠 생성을 방지하기 위해, 기존에 없었던 **DB 비관적 락(Pessimistic Lock)**을 새롭게 도입하고, 비동기 병목 최적화를 결합하여 동시성 문제를 해결한 과정을 다룬다.
 
@@ -37,6 +38,14 @@ mermaid: true
 
 이러한 **조회 후 액션** 흐름 사이에 밀리초 단위로 두 개의 요청이 동시에 인입될 경우 동시성 문제가 발생한다.
 두 요청 모두 1번 단계에서 `PENDING` 상태를 읽게 되며, 결과적으로 AI 서버가 동일한 원본 데이터에 대해 외부 API를 호출하여 2개의 중복된 기사를 생성하면서 **데이터 무결성**이 심각하게 훼손되는 문제가 발생한다.
+
+| ![duplicated_article-1-1](/assets/img/project/newsnack/race-condition-pessimistic-lock/duplicated_article-1-1.png) | ![duplicated_article-1-2](/assets/img/project/newsnack/race-condition-pessimistic-lock/duplicated_article-1-2.png) |
+|:---:|:---:|
+| 중복기사 1-1 | 중복기사 1-2 |
+
+| ![duplicated_article-2-1](/assets/img/project/newsnack/race-condition-pessimistic-lock/duplicated_article-2-1.png) | ![duplicated_article-2-2](/assets/img/project/newsnack/race-condition-pessimistic-lock/duplicated_article-2-2.png) |
+|:---:|:---:|
+| 중복기사 2-1 | 중복기사 2-2 |
 
 ## 해결 1: `SELECT FOR UPDATE`를 활용한 비관적 락 적용
 
