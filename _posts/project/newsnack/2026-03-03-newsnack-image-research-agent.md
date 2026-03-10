@@ -1,5 +1,5 @@
 ---
-title: "AI 이미지 환각 현상 해결 전략: ReAct 이미지 리서치 에이전트"
+title: "AI 이미지 환각 현상 방지: ReAct 이미지 리서치 에이전트"
 date: 2026-03-03T09:00:00.000Z
 categories: [Project, 뉴스낵]
 tags: [ai, langgraph, langchain, agent]

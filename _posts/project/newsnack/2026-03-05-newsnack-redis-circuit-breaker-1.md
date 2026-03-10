@@ -56,9 +56,10 @@ sequenceDiagram
 
 당시 사용할 수 있었던 하위 모델인 `Gemini 2.5 Flash Image`는 한글 처리 수준이 낮아 실제 서비스에 적용하기 어려웠다. 대안 모델이 부재한 상황에서는 `Tenacity`의 무한 재시도 방식에 의존하여 서버가 자동 복구되기만을 기다릴 수밖에 없었다.
 
-![nano_banana2_release](/assets/img/project/newsnack/redis-circuit-breaker-1/nano_banana2_release.png)
+![nano-banana2-release](/assets/img/project/newsnack/redis-circuit-breaker-1/nano_banana2_release.png)
+_Nano Banana 2 출시 소식_
 
-그러던 중 구글이 새로운 모델인 **Nano Banana 2(Gemini 3.1 Flash Image)**를 출시했다는 소식을 접했다. 테스트 결과 한글 렌더링 품질이 비약적으로 향상되어 서비스에 사용 가능한 수준이었다. 우회 모델로 활용할 수 있는 대안이 확보되자마자 파이프라인 과부하 문제의 해결 전략을 찾기 시작했다.
+그러던 중 구글이 **Nano Banana 2(Gemini 3.1 Flash Image)를 출시**했다는 소식을 접했다. 테스트 결과 한글 렌더링 품질이 비약적으로 향상되어 서비스에 사용 가능한 수준이었다. 우회 모델로 활용할 수 있는 대안이 확보되자마자 파이프라인 과부하 문제의 해결 전략을 찾기 시작했다.
 
 | ![nano_banana_image_example](/assets/img/project/newsnack/redis-circuit-breaker-1/nano_banana_image_example.png) | ![nano_banana2_image_example](/assets/img/project/newsnack/redis-circuit-breaker-1/nano_banana2_image_example.png) |
 | :--: | :--: |
@@ -70,8 +71,9 @@ sequenceDiagram
 
 우리는 각 모델별 스펙을 검토한 결과, 반대로 **두 모델의 역할을 교체하는 편이** 아키텍처적으로 더욱 합리적이라는 결론을 내렸다.
 
-![nano_banana2_pricing](/assets/img/project/newsnack/redis-circuit-breaker-1/nano_banana2_pricing.png)
+![nano-banana2-pricing](/assets/img/project/newsnack/redis-circuit-breaker-1/nano_banana2_pricing.png)
 _Gemini 3.1 Flash Image 가격 정보_
+
 
 | 모델명 | 역할 배치 | 장당 비용 | 특징 |
 | --- | --- | --- | --- |
@@ -186,4 +188,5 @@ async def lifespan(app: FastAPI):
 
 ## 참고 자료
 
+- [Google Blog - Nano Banana 2](https://blog.google/innovation-and-ai/technology/ai/nano-banana-2/)
 - [Circuit Breaker Design Pattern - Wikipedia](https://en.wikipedia.org/wiki/Circuit_breaker_design_pattern)
