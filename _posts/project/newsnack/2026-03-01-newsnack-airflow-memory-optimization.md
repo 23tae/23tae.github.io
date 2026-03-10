@@ -1,5 +1,5 @@
 ---
-title: "Airflow 메모리 과점유 문제 해결기: 웹서버 런타임 경량화와 모듈 격리"
+title: "Airflow 메모리 과점유 문제 해결: 웹서버 런타임 경량화와 모듈 격리"
 date: 2026-03-01T09:00:00.000Z
 categories: [Project, 뉴스낵]
 tags: [troubleshooting, airflow, docker]
