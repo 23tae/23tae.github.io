@@ -47,7 +47,7 @@ flowchart TD
 
 - **추론**: "이 기사는 카카오모빌리티에 관한 거니까 로고를 찾아야겠어."
 - **행동**: `get_company_logo("Kakao Mobility")` 도구 호출
-- **관찰**: 반환된 후보 목록 중 "[kakaomobility.com](http://kakaomobility.com/)" 도메인 확인
+- **관찰**: 반환된 후보 목록 중 `kakaomobility.com` 도메인 확인
 - **출력**: `logo_url`을 최종 이미지 URL로 반환
 
 ### LangGraph: 에이전트를 제어하는 상태 머신

@@ -1,5 +1,5 @@
 ---
-title: "구글 계정 정지로 인한 벤더 종속 극복기: 멀티 프로바이더 팩토리 패턴 구현"
+title: "Google 계정 정지로 인한 벤더 종속 극복기: 멀티 프로바이더 팩토리 패턴 구현"
 date: 2026-02-21T09:00:00.000Z
 categories: [Project, 뉴스낵]
 tags: [ai, troubleshooting]
@@ -9,7 +9,7 @@ tags: [ai, troubleshooting]
 
 ![google_account_suspended_message](/assets/img/project/newsnack/multi-provider-factory/google_account_suspended_message.png)
 
-서비스를 운영하다 보면 외부 요인으로 인한 서비스 장애를 마주하곤 한다. 1월 29일 오후 5시, 팀 계정으로 사용하던 구글 계정에 접속하자 로그아웃 상태와 함께 본인인증 화면이 나타났다. 인증을 시도하자 **계정이 보안 정책 위반으로 정지됐다**는 화면이 출력되었다. 이의신청만 가능했고 명확한 복구 일정은 알 수 없는 상황이었다.
+서비스를 운영하다 보면 외부 요인으로 인한 서비스 장애를 마주하곤 한다. 1월 29일 오후 5시, 팀 계정으로 사용하던 Google 계정에 접속하자 로그아웃 상태와 함께 본인인증 화면이 나타났다. 인증을 시도하자 **계정이 보안 정책 위반으로 정지됐다**는 화면이 출력되었다. 이의신청만 가능하고 계정 복구 가능성은 알 수 없는 상황이었다.
 
 ![gemini_api_permission_error](/assets/img/project/newsnack/multi-provider-factory/gemini_api_permission_error.jpg)
 
