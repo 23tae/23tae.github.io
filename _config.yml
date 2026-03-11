@@ -23,9 +23,9 @@ timezone: Asia/Seoul
 
 title: Justnote                         # the main title
 
-tagline: "배운 내용을 기록하는 공간"   # it will display as the sub-title
+tagline: "경험을 기록합니다"   # it will display as the sub-title
 
-description: 배운 내용을 기록하는 공간              # used by seo meta and the atom feed
+description: 경험을 기록하는 공간              # used by seo meta and the atom feed
 
 # fill in the protocol & hostname for your site, e.g., 'https://username.github.io'
 url: 'https://23tae.github.io'
@@ -41,7 +41,7 @@ social:
   email: taehoonkim.dev@gmail.com             # change to your email address
   links:
     # The first element serves as the copyright owner's link
-    - https://github.com/23tae       #sssss change to your github homepage
+    - https://github.com/23tae       # change to your github homepage
     # Uncomment below to add more social links
     # - https://twitter.com/username      # change to your twitter homepage
     # - https://www.facebook.com/username
