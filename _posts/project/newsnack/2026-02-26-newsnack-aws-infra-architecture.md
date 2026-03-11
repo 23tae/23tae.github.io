@@ -46,12 +46,14 @@ _최종 VPC 구조_
 
 | 포트 | 소스 | 목적 |
 |---|---|---|
-| **22 (SSH)** | 내 IP | 서버 관리 |
+| **22 (SSH)** | `0.0.0.0/0` | Github Actions 자동 배포 및 서버 관리 |
 | **80 (HTTP)** | `0.0.0.0/0` | API 관문 (Nginx). Cloudflare 프록시와 통신. |
 | **8000, 8081** | 내 IP | `FastAPI` Swagger UI, `Airflow` Web UI 접속. |
 | **8080** | - | 인바운드에서 개방 안 함 (도커 네트워크 내부 통신 전용) |
 
-특히 `HTTPS(443)` 통신의 경우 EC2에서 직접 인증서를 관리하지 않고 **Cloudflare 프록시를 통해 SSL Offloading**을 처리하므로, EC2 레벨에서는 Cloudflare와 통신할 `80` 포트 하나만 열어두면 충분했다. 
+특히 `HTTPS(443)` 통신의 경우 EC2에서 직접 인증서를 관리하지 않고 **Cloudflare 프록시를 통해 SSL Offloading**을 처리하므로, 외부 클라이언트와의 통신은 Cloudflare를 거쳐 `80` 포트로만 들어오게 된다.
+
+또한 `22 (SSH)` 포트의 경우 Github Actions를 사용한 자동 배포 과정에서 EC2 서버로 접근하기 위해 활용한다. Github 제공 runner의 IP 대역이 유동적으로 변하기 때문에 소스 IP를 `0.0.0.0/0`으로 전체 개방해 두었으며, 대신 인증키(PEM)를 통해 접근을 엄격히 제어하는 방식을 택했다.
 
 ### 2차 방화벽: RDS 전용 보안 그룹 (`newsnack-rds-sg`)
 
