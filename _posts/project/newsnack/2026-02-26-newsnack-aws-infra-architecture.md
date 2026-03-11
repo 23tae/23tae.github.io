@@ -160,7 +160,7 @@ Nginx는 구동 시점에 `nginx.conf`에 정의된 Upstream 호스트(`newsnack
 
 위와 같은 과정을 거쳐 뉴스낵의 인프라는 다음과 같이 구성되었다.
 
-![newsnack_system_architecture_20260222](/assets/img/project/newsnack/aws-infra-architecture/newsnack_system_architecture_v2.jpg)
+![newsnack_system_architecture_20260222](/assets/img/project/newsnack/aws-infra-architecture/newsnack_system_architecture_v2.webp)
 _뉴스낵 시스템 아키텍처 (v2)_
 
 인프라 아키텍처 수준에서의 엄격한 보안 설정은 상위 애플리케이션 레이어의 취약점을 보완하는 필수적인 요소다. 위와 같은 과정을 거치며 단일 인스턴스 위에서 4개의 서비스 컴포넌트가 강력하게 통제되면서 외부 노출은 단 하나의 관문(80 포트)으로 제한된 인프라를 완성할 수 있었다.

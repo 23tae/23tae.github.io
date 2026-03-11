@@ -63,7 +63,7 @@ AXZ의 가장 큰 고민은 **'이용자의 고령화와 신규 이용자의 부
 
 이러한 아이디어를 실현하기 위해서는 단순히 API 하나를 서빙하는 것을 넘어, 파편화된 기사들을 수집하고, 분석하고, AI를 통해 재생산하는 견고한 인프라가 필요했다. 1인 백엔드라는 부담감이 있었지만, 데이터의 일관성과 확장성을 담보하기 위해 **초기부터 각자의 역할이 분리된 분산 아키텍처**를 설계했다.
 
-![newsnack_system_architecture_20260212](/assets/img/project/newsnack/introduction/newsnack_system_architecture_v1.jpg)
+![newsnack_system_architecture_20260212](/assets/img/project/newsnack/introduction/newsnack_system_architecture_v1.webp)
 _뉴스낵 시스템 아키텍처 (v1)_
 
 ### 아키텍처 방향 결정

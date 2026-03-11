@@ -7,6 +7,9 @@ tags: [infra, devops, ci-cd, troubleshooting]
 
 ## 배경: 인프라 고정 비용 최적화의 필요성
 
+![newsnack_system_architecture_20260212](/assets/img/project/newsnack/introduction/newsnack_system_architecture_v1.webp)
+_뉴스낵 시스템 아키텍처 (v1)_
+
 뉴스낵의 MVP 개발을 마무리하고 운영이 시작되자 인프라 고정 비용에 대한 고려가 필요해졌다. 초기에는 안정성을 명목으로 메인 API 서버(Spring Boot), AI 서버(FastAPI), 오케스트레이터(Airflow)를 각각 서로 다른 3대의 분리된 EC2 `t3.small` (x86 아키텍처, 2GB RAM)에 구성했다.
 
 ![aws_ec2_instances_before_migration](/assets/img/project/newsnack/arm64-migration/aws_ec2_instances_before_migration.png)
