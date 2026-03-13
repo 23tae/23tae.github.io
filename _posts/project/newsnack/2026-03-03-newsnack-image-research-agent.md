@@ -92,7 +92,7 @@ flowchart TD
 
 ## 1. 이미지 검색: ReAct 에이전트와 도구 설계
 
-`image_researcher`는 LangChain의 `create_react_agent`를 사용하여 구성된 ReAct 기반 에이전트다. 에이전트는 세 가지 전용 검색 도구 중 기사 맥락에 일치하는 도구를 스스로 선택하여 호출한다.
+`image_researcher`는 LangChain의 `create_agent`를 사용하여 구성된 ReAct 기반 에이전트다. 에이전트는 세 가지 전용 검색 도구 중 기사 맥락에 일치하는 도구를 스스로 선택하여 호출한다.
 
 | ![logodev_logo](/assets/img/project/newsnack/image-research-agent/logodev_logo.png) | ![wikipedia_logo](/assets/img/project/newsnack/image-research-agent/wikipedia_logo.png) | ![daum_logo](/assets/img/project/newsnack/image-research-agent/daum_logo.png) |
 
