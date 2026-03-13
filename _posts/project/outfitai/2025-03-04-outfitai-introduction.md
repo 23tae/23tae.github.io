@@ -1,23 +1,27 @@
 ---
-title: "상용 SaaS를 대체한 의류 이미지 분류 라이브러리, OutfitAI 소개"
+title: "SaaS를 대체한 의류 이미지 분류 라이브러리, OutfitAI"
 date: 2025-03-04T09:00:00.000Z
 categories: [Project, OutfitAI]
-tags: [multimodal, ai, library]
+tags: [multimodal, ai]
 ---
 
 ![outfitai_thumbnail](/assets/img/project/outfitai/introduction/outfitai_thumbnail.png)
 
 ## 들어가며
 
-2025년 초, 패션 관련 사이드 프로젝트에 참여했다. 당시 프로젝트의 핵심 기능 중 하나는 **사용자가 옷 사진을 찍어 올리면, AI가 해당 옷의 색상·카테고리·드레스코드·시즌을 자동으로 분류하여 앱 내 옷장에 저장하는 기능**이었다.
+지난 몇 달간 패션 관련 사이드 프로젝트에 참여했다. 당시 프로젝트의 핵심 기능 중 하나는 **사용자가 옷 사진을 찍어 올리면, AI가 해당 옷의 색상·카테고리·드레스코드·시즌을 자동으로 분류하여 앱 내 옷장에 저장하는 기능**이었다.
 
-이 기능을 구현하기 위해 처음에는 상용 이미지 분류 서비스를 도입하려 했지만, 비용 문제로 인해 직접 라이브러리를 개발하게 되었다. 이 글은 그 과정에서 탄생한 [**OutfitAI**](https://github.com/23tae/outfitai)를 소개한다.
+이 기능을 구현하기 위해 처음에는 상용 이미지 분류 서비스를 도입하려 했지만, 비용 문제로 인해 직접 라이브러리를 개발하게 되었다. 이 글은 그 과정에서 탄생한 [**OutfitAI**](https://pypi.org/project/outfitai/)를 소개한다.
 
-## 배경: 상용 SaaS의 높은 비용 장벽
+## 배경: SaaS의 높은 비용 장벽
 
-![pixyle_ai_homepage](/assets/img/project/outfitai/introduction/pixyle_ai_homepage.png)
+![pixyle_ai_homepage-1](/assets/img/project/outfitai/introduction/pixyle_ai_homepage-1.png)
 
-초기에 도입을 검토한 서비스는 [pixyle.ai](https://www.pixyle.ai/)였다. 패션 이미지 분류에 특화된 B2B SaaS로, 정확도 측면에서는 충분히 만족스러웠다. 그러나 가격 정책이 문제였다.
+초기에 도입을 검토한 서비스는 [pixyle.ai](https://www.pixyle.ai/)였다. 패션 이미지 분류에 특화된 B2B SaaS로, 정확도 측면에서는 충분히 만족스러웠다.
+
+![pixyle_ai_homepage-2](/assets/img/project/outfitai/introduction/pixyle_ai_homepage-2.png)
+
+문제는 가격이었다.
 
 - **월 구독료**: €120
 - **API 호출 한도**: 5,000회/월
@@ -141,7 +145,7 @@ asyncio.run(main())
 
 ### CLI로 사용
 
-![outfitai_cli_test_example](/assets/img/project/outfitai/introduction/outfitai_cli_test_example.png)
+![outfitai_cli_example](/assets/img/project/outfitai/introduction/outfitai_cli_example.png)
 
 ```bash
 # 단일 이미지 분류
@@ -156,6 +160,6 @@ outfitai path/to/images/ --batch
 
 ## 마치며
 
-OutfitAI는 비용 문제를 해결하기 위한 실용적인 필요에서 출발했지만, 개발 과정에서 멀티 프로바이더 추상화, 이미지 입력 레이어 설계, pydantic 기반 설정 관리, PyPI 배포 자동화까지 다양한 설계 포인트를 다루게 되었다.
+OutfitAI는 비용 문제를 해결하기 위한 단순한 목적으로 시작됐지만, 개발 과정에서 멀티 프로바이더 추상화, 이미지 입력 레이어 설계, pydantic 기반 설정 관리, PyPI 배포 자동화까지 다양한 설계 포인트를 다루게 되었다.
 
-이후 글들에서는 이러한 설계 결정의 배경과 구체적인 구현 방식을 다룰 예정이다.
+이후 글들에서는 이러한 설계의 배경과 세부적인 구현 방식을 다룰 예정이다.
