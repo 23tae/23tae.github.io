@@ -295,11 +295,11 @@ if not response.parts:  # None과 빈 리스트 형태 동시 검출
 
 | ![newstoon_reference_result-0](/assets/img/project/newsnack/image-research-agent/newstoon_reference_result-0.png) | ![newstoon_reference_result-1](/assets/img/project/newsnack/image-research-agent/newstoon_reference_result-1.png) |
 | :---: | :---: |
-| 1컷 | 2컷 |
+| 0컷 | 1컷 |
 
 | ![newstoon_reference_result-2](/assets/img/project/newsnack/image-research-agent/newstoon_reference_result-2.png) | ![newstoon_reference_result-3](/assets/img/project/newsnack/image-research-agent/newstoon_reference_result-3.png) |
 | :---: | :---: |
-| 3컷 | 4컷 |
+| 2컷 | 3컷 |
 
 ## 마치며
 

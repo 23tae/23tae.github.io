@@ -3,9 +3,8 @@ title: "멀티모달 AI 뉴스 플랫폼 '뉴스낵' 소개"
 date: 2026-02-13T09:00:00.000Z
 categories: [Project, 뉴스낵]
 tags: [introduction]
+image: /assets/img/project/newsnack/introduction/newsnack_cover.jpg
 ---
-
-![뉴스낵](/assets/img/project/newsnack/introduction/newsnack_cover.jpg)
 
 **[뉴스낵 이용하기](https://newsnack.site/)**
 
@@ -17,7 +16,7 @@ tags: [introduction]
 
 ## 배경
 
-AXZ의 가장 큰 고민은 **'이용자의 고령화와 신규 이용자의 부재'**였다. 플랫폼에 활력을 불어넣기 위해서는 젊은 층을 타깃으로 한 새로운 접근 방식이 필요했다.
+AXZ의 가장 큰 고민은 **'Daum의 트래픽 감소와 2030 세대의 이탈'**이었다. 플랫폼에 활력을 불어넣기 위해서는 젊은 층의 변화한 콘텐츠 소비 방식에 맞춘 새로운 접근이 필요했다.
 
 기업 소개에서 플랫폼 이용자가 가장 많이 소비하는 콘텐츠는 **뉴스**라는 점을 확인했다. 뉴스 소비 경험을 개선하는 것이 유입 문제 해결에 가장 직접적인 임팩트를 줄 수 있다고 판단하고, 뉴스에 집중하기로 했다.
 

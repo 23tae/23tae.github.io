@@ -3,9 +3,8 @@ title: "SaaS를 대체한 의류 이미지 분류 라이브러리, OutfitAI"
 date: 2025-03-04T09:00:00.000Z
 categories: [Project, OutfitAI]
 tags: [multimodal, ai]
+image: /assets/img/project/outfitai/introduction/outfitai_thumbnail.png
 ---
-
-![outfitai_thumbnail](/assets/img/project/outfitai/introduction/outfitai_thumbnail.png)
 
 ## 들어가며
 
@@ -17,7 +16,7 @@ tags: [multimodal, ai]
 
 ![pixyle_ai_homepage-1](/assets/img/project/outfitai/introduction/pixyle_ai_homepage-1.png)
 
-초기에 도입을 검토한 서비스는 [pixyle.ai](https://www.pixyle.ai/)였다. 패션 이미지 분류에 특화된 B2B SaaS로, 정확도 측면에서는 충분히 만족스러웠다.
+초기에 도입을 검토한 서비스는 [pixyle.ai](https://www.pixyle.ai/)였다. 패션 이미지 분류에 특화된 B2B SaaS로, 정확도 측면에서는 검증된 서비스였다.
 
 ![pixyle_ai_homepage-2](/assets/img/project/outfitai/introduction/pixyle_ai_homepage-2.png)
 

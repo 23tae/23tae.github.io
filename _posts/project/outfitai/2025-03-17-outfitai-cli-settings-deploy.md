@@ -4,9 +4,8 @@ date: 2025-03-17T09:00:00.000Z
 categories: [Project, OutfitAI]
 tags: [pypi, github-actions]
 mermaid: true
+image: /assets/img/project/outfitai/cli-settings-deploy/pypi_outfitai.png
 ---
-
-![pypi_outfitai](/assets/img/project/outfitai/cli-settings-deploy/pypi_outfitai.png)
 
 ## 들어가며
 
@@ -205,6 +204,8 @@ python -m outfitai image.jpg
 ```
 
 ## PyPI 배포 자동화
+
+![pypi_outfitai](/assets/img/project/outfitai/cli-settings-deploy/pypi_outfitai.png)
 
 ### setuptools_scm으로 버전 관리
 
