@@ -221,7 +221,7 @@ setup(
 )
 ```
 
-`git tag v1.0.0`를 달고 push하면 그 태그를 기반으로 패키지 버전이 `1.0.0`로 결정된다.
+`git tag v1.1.0`를 달고 push하면 그 태그를 기반으로 패키지 버전이 `1.1.0`로 결정된다.
 
 ![outfitai_version](/assets/img/project/outfitai/cli-settings-deploy/outfitai_version.png)
 

@@ -63,7 +63,7 @@ _Nano Banana 2 출시 소식_
 
 | ![nano_banana_image_example](/assets/img/project/newsnack/redis-circuit-breaker-1/nano_banana_image_example.png) | ![nano_banana2_image_example](/assets/img/project/newsnack/redis-circuit-breaker-1/nano_banana2_image_example.png) |
 | :--: | :--: |
-| 기존 모델(Gemini 2.5 Flash Image) | **신규 모델(Gemini 3.1 Flash Image)** |
+| 기존 Flash 모델(Gemini 2.5 Flash Image) | **신규 Flash 모델(Gemini 3.1 Flash Image)** |
 
 ## 주요 아키텍처: 메인 모델과 우회 모델 스위칭 전략
 
