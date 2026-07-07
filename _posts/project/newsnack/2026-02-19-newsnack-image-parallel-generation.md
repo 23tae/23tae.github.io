@@ -94,7 +94,7 @@ async def image_gen_node(state: AiArticleState):
 
 병렬 처리를 적용하면서 마주친 또 다른 문제는 구글 측의 **Rate Limit**과 일시적인 서버 과부하(`503 UNAVAILABLE`)였다.
 
-여러 기사에 대한 AI 기사 생성 요청이 동시에 들어오면, 각각의 생성 태스크가 `asyncio.gather`를 통해 3장의 이미지를 한 번에 병렬로 요청하므로 순간적으로 구글 API 서버에 과도한 트래픽이 집중되었다.
+여러 기사에 대한 뉴스툰 생성 요청이 동시에 들어오면, 각각의 생성 태스크가 `asyncio.gather`를 통해 3장의 이미지를 한 번에 병렬로 요청하므로 순간적으로 구글 API 서버에 과도한 트래픽이 집중되었다.
 
 ```text
 ERROR: 11:56:42 - app.engine.tasks.image - Error generating image 0: 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}

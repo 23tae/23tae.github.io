@@ -339,6 +339,13 @@ for cluster in clusters:
 
 ![issue_clustering_terminal](/assets/img/project/newsnack/data-pipeline/issue_clustering_terminal.png)
 
+## 전체 파이프라인 요약
+
+지금까지 살펴본 기사 수집부터 정제, 그리고 최종 이슈 군집화까지의 전체 ETL 파이프라인 흐름을 요약하면 다음과 같다.
+
+![newsnack_etl_processing_flow](/assets/img/project/newsnack/data-pipeline/newsnack_etl_processing_flow.webp)
+_ETL 파이프라인 데이터 처리 흐름_
+
 ## 마치며
 
-수집 파이프라인은 눈에 보이지는 않지만 전체 서비스 품질을 좌우한다. 타임아웃 방어와 서킷 브레이킹은 외부 시스템(언론사 서버)의 불안정성이 우리 파이프라인을 멈추지 못하도록 하고, 포토뉴스 필터는 AI가 허위 사실을 만들어낼 가능성을 원천 차단한다. 그 위에 TF-IDF 군집화로 중복을 제거함으로써 AI 서버는 정제된 이슈 데이터만을 받아 안정적이고 효율적으로 동작할 수 있는 구조가 완성된다.
+데이터 파이프라인은 눈에 보이지는 않지만 전체 서비스 품질을 좌우한다. 타임아웃 방어와 서킷 브레이킹은 외부 시스템(언론사 서버)의 불안정성이 우리 파이프라인을 멈추지 못하도록 하고, 포토뉴스 필터는 AI가 허위 사실을 만들어낼 가능성을 원천 차단한다. 그 위에 TF-IDF 군집화로 중복을 제거함으로써 AI 서버는 정제된 이슈 데이터만을 받아 안정적이고 효율적으로 동작할 수 있는 구조가 완성된다.

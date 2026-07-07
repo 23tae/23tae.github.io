@@ -149,6 +149,16 @@ OpenAI SDK가 반환한 Base64 데이터를 파이썬 표준 라이브러리인 
 |---|---|
 |![openai_image_result-2](/assets/img/project/newsnack/multi-provider-factory/openai_image_result-2.png)|![openai_image_result-3](/assets/img/project/newsnack/multi-provider-factory/openai_image_result-3.png)|
 
+## 전체 워크플로우 요약
+
+앞서 구현한 멀티 프로바이더 구조가 뉴스툰과 오늘의 뉴스낵 생성 로직에 각각 결합된 전체 워크플로우는 다음과 같다.
+
+![newstoon_workflow_1](/assets/img/project/newsnack/multi-provider-factory/newstoon_workflow_v1.webp)
+_'뉴스툰' 워크플로우_
+
+![today_newsnack_workflow](/assets/img/project/newsnack/multi-provider-factory/today_newsnack_workflow.webp)
+_'오늘의 뉴스낵' 워크플로우_
+
 ## 마치며
 
 구글 계정 정지라는 예측 불가능한 외부 장애가 팩토리 패턴 도입의 직접적인 계기였다. 단순히 OpenAI로 전면 전환하는 대신, 환경변수(`AI_PROVIDER`) 변경만으로 전환이 가능한 멀티 프로바이더 구조를 택한 결과 계정 정지 상황에서도 불과 7시간 만에 파이프라인을 재가동할 수 있었다.
